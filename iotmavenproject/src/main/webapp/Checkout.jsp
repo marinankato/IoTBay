@@ -1,6 +1,6 @@
 <html>
 <body>
-<h1>Checkout</h1>
+<h1>IoTBay | Checkout</h1>
 <!--still need to add the order summary on top or something once we have that---->
 <form>
 <label for="nameOnCard">Name on Card: </label>

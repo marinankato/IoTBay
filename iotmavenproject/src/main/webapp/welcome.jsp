@@ -13,8 +13,7 @@
         if ("admin".equals(username) && "password123".equals(password)) {
             out.println("<h2>Welcome, " + username + "!</h2>");
         } else {
-            out.println("<h2>Invalid username or password. Please try again.</h2>");
-            // response.sendRedirect("login.jsp");
+            out.println("<h2>Invalid username or password. Please try again <a href=login.jsp>here</a>.</h2>");
         }
     %>
 </body>

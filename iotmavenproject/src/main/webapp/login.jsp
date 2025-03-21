@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <title>IoTBay | Log in</title>
     <style>
         /* whole body style */
         body {
@@ -68,7 +68,7 @@
 <body>
     <div class="login">
         <h2>Login</h2>
-        <form action="welcome.jsp" method="post">
+        <form action="dashboard.jsp" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
