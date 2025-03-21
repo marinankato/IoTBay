@@ -5,7 +5,7 @@
     <style>
         /* whole body style */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             display: flex;
             justify-content: center;

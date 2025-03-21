@@ -5,19 +5,81 @@
 	String username = request.getParameter("username"); 
 	String password = request.getParameter("password");
 %>
-<%-- <style>
-</style> --%>
+<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body {
+		background-color: #f4f4f4;
+		display: flex;
+	}
+	#sidebar {
+		top: 0;
+		left: 10;
+		width: 250px;
+		height: 100%;
+		position: fixed;
+		background-color: #f9f9f9;
+		font-family: 'Arial', sans-serif;
+	}
+	#sidebar .logo {
+		font-size: 24px;
+		font-weight: 700;
+		margin-left: 20px;
+		height: 56px;
+		display:flex;
+		align-items: center;
+		color: #007bff;
+	}
+	#sidebar .menubar{
+		width: 100%;
+		margin-top: 48px;
+	}
+	#sidebar .menubar li {
+	height: 48px;
+	background: transparent;
+	margin-left: 30px;
+	}
+	#sidebar .menubar li a {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		border-radius: 48px;
+		font-size: 16px;
+		color:#2e2e2e;
+	}
+	#sidebar .menubar li a:hover {
+		color: #3C91E6;
+	}
+	#content {
+		top: 0;
+		margin-left: 280px;
+		width: calc(100% - 250px);
+	}
+	#content main {
+		width: 100%;
+		padding: 36px 24px;
+		font-family: 'Arial', sans-serif;
+	}
+	#content .welcomeText {
+		font-family: 'Arial', sans-serif;
+	}
+</style>
 
 <% 
 	// check if the username and password are correct
     if ("admin".equals(username) && "password123".equals(password)) {
 %> 
 <body>
-    <!-- SIDEBAR -->
-<section id="sidebar">		
-		<label class="text">IoTBay</span>
+<!-- SIDEBAR -->
+<section id="sidebar">	
+		<a href="dashboard.jsp" class="logo">	
+		<span class="text">IoTBay</span>
+		</a>
 	<ul class="menubar">
-	<li>
+		<li>
 			<a href="searchProducts.jsp">
 				<span class="text">Start Ordering</span>
 			</a>
@@ -45,12 +107,9 @@
 <!-- CONTENT -->
 	<section id="content">
 		<!-- MAIN -->
-	<top>
-	<h1>Hi, <%= username%>!</h1>
-	</top>
-	
-	<main>
 
+	<main>
+		<h1 class=welcomeText>Hi, <%= username%>!</h1><br>
 			<%-- Show something like this for staff view --%>
 			<ul class="box-info">
 				<li>
@@ -87,7 +146,7 @@
 			<table>
 				<thead>
 					<tr>
-					Show the user if staff logged in 
+					<%-- Show the user if staff is logged in  --%>
 					<th>User</th> 
 					<th>Order Date</th>
 					<th>Status</th>
