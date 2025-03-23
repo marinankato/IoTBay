@@ -1,4 +1,30 @@
 <html>
+<head>
+	<meta charset="UTF-8">
+    <title>IoTBay | Checkout</title>
+    <style>
+		body {
+			justify-content: center;
+
+			background-color: #f4f4f4;
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			width: 400px;
+			align-items: right;
+		}
+		
+		input[type="submit"] {
+			border-radius: 12px;
+			background-color: white;
+		}
+		input[type="submit"]:hover {
+			background-color: #f9f9f9;
+		}
+	</style>
+</head>
 <body>
 <h1>IoTBay | Checkout</h1>
 <!--still need to add the order summary on top or something once we have that---->
