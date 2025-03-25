@@ -43,6 +43,7 @@
 <br><br>
 <label for="cityName">City: </label>
 <input type="text" id="cityName" name="cityName" required>
+<br><br>
 <label for="state">State: </label>
 <select id="state" name="state" required>
 	<option value="NSW">NSW</option>
