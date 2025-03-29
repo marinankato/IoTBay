@@ -1,10 +1,6 @@
 <html>
 <title>IoTBay</title>
 
-<% 
-	String username = request.getParameter("username"); 
-	String password = request.getParameter("password");
-%>
 <style>
 	*{
 		margin: 0;
@@ -69,6 +65,8 @@
 </style>
 
 <% 
+	String username = request.getParameter("username"); 
+	String password = request.getParameter("password");
 	// check if the username and password are correct
     if ("admin".equals(username) && "password123".equals(password)) {
 %> 
