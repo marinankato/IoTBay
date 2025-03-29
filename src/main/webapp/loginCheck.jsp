@@ -22,11 +22,6 @@ body {
     font-size: 24px;
     margin-bottom: 20px;
 }
-.tick-icon {
-    font-size: 50px;
-    color: #28a745;
-    margin-bottom: 20px;
-}
 .message-container img {
     width: 40px;
     height: 40px;
@@ -56,9 +51,7 @@ body {
             <body>
                 <div class="message-container">
                     <img src="./images/green_tick.jpg">
-                    <h1>Login successful! Redirecting you to the dashboard...</h1>
-                    <!-- Optional link if user clicks it before the redirect -->
-                    <h2>Click <a href="dashboard.jsp">here</a> if page does not load.</h2>
+                    <h1>Login successful! Redirecting now...</h1>
                 </div>
 
                 <script>
