@@ -8,9 +8,10 @@
 <%
     if (session.getAttribute("user") == null) {
 %>
-    You are not logged in
-    <a href="login.jsp">Login</a>
-  
+    <ul>
+    <li>You are not logged in</li>
+    <li><a href="login.jsp">Login</a></li>
+    </ul>
 <%
     } else {
     User user = (User)session.getAttribute("user");

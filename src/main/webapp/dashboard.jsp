@@ -65,14 +65,8 @@
 	}
 </style>
 
-<% 
-	String username = request.getParameter("username"); 
-	String password = request.getParameter("password");
-	// check if the username and password are correct and allow login
-    if ("admin".equals(username) && "password123".equals(password)) {
-		User user = new User(username, password);
-    	session.setAttribute("user", user);
-%> 
+<% User user = (User) session.getAttribute("user"); %>
+
 <body>
 <!-- SIDEBAR -->
 <section id="sidebar">	
@@ -91,7 +85,7 @@
 			</a>
 		</li>
 		<li>
-			<a href="#">
+			<a href="editUser.jsp">
 				<span class="text">Account Settings</span>
 			</a>
 		</li>
@@ -104,13 +98,11 @@
 </section>	
 <!-- SIDEBAR -->
 
-
 <!-- CONTENT -->
 	<section id="content">
-		<!-- MAIN -->
-
+	<!-- MAIN -->
 	<main>
-		<h1 class=welcomeText>Hi, <%= username%>!</h1><br>
+		<h1 class=welcomeText>Hi, <%= user.getUsername()%>!</h1><br>
 			<%-- Show something like this for staff view --%>
 			<ul class="box-info">
 				<li>
@@ -186,9 +178,5 @@
 	</section>
 	<!-- CONTENT -->
 </body>
-<% } else { %>
-    Invalid username or password. <br>
-	Please try again <a href=login.jsp>here</a>
-<% } %>
 
 </html>
