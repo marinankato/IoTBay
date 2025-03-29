@@ -1,27 +1,25 @@
 <%@ page import="model.User"%>
 <html>
-<body>
-<h2>IoTBay - Online Ordering Application</h2>
+<meta charset="UTF-8">
+<title>IoTBay</title>
 
-<%-- link to login page --%>
+<body>
+    <h2>IoTBay - Online Ordering Application</h2>
 <%
     if (session.getAttribute("user") == null) {
 %>
-    <p align="right">You are not logged in</p>
-    <a style="float:right" align="right" href="login.jsp">Register</a>
+    You are not logged in
+    <a href="login.jsp">Login</a>
   
 <%
     } else {
-    User user = (User) session.getAttribute("user");
+    User user = (User)session.getAttribute("user");
 %>
-
-    <p align="right">You are logged in as <%= user.getName() %> &lt<%= user.getEmail() %>&gt</p>
-    <a style="float:right" align="right" href="logout.jsp">Logout</a>
-
-    <li>
-      <a href="edit_user.jsp">My Account</a>
-    </li>
-
+    <ul>
+    <li>You are logged in with <%= user.getUsername() %></li>
+    <li><a href="logout.jsp">Logout</a></li>
+    <li><a href="editUser.jsp">My Account</a></li>
+    </ul>
 <% } %>
 
 </body>

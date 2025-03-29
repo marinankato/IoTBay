@@ -3,34 +3,23 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     
-    String email;
-    String name;
+    String username;
     String password;
-
 
     public User() {
     }
 
-    public User(String email, String name, String password) {
-        this.email = email;
-        this.name = name;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public String getEmail() {
-        return this.email;
+    public String getUsername() {
+        return this.username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

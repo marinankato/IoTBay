@@ -1,3 +1,4 @@
+<%@page import="model.User"%>
 <html>
 <title>IoTBay</title>
 
@@ -67,8 +68,10 @@
 <% 
 	String username = request.getParameter("username"); 
 	String password = request.getParameter("password");
-	// check if the username and password are correct
+	// check if the username and password are correct and allow login
     if ("admin".equals(username) && "password123".equals(password)) {
+		User user = new User(username, password);
+    	session.setAttribute("user", user);
 %> 
 <body>
 <!-- SIDEBAR -->
@@ -93,7 +96,7 @@
 			</a>
 		</li>
 		<li>
-			<a href="login.jsp" class="logout">
+			<a href="logout.jsp" class="logout">
 				<span class="text">Logout</span>
 			</a>
 		</li>
@@ -183,9 +186,9 @@
 	</section>
 	<!-- CONTENT -->
 </body>
-<%     
-	} else {
-       	out.println("<h2>Invalid username or password. Please try again <a href=login.jsp>here</a>.</h2>");
-    }
-%>
+<% } else { %>
+    Invalid username or password. <br>
+	Please try again <a href=login.jsp>here</a>
+<% } %>
+
 </html>
