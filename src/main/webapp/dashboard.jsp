@@ -1,182 +1,164 @@
 <%@page import="model.User"%>
+<link href="https://unpkg.com/boxicons/css/boxicons.min.css" rel="stylesheet">
+
 <html>
-<title>IoTBay</title>
+<title>IoTBay Dashboard</title>
 
 <style>
-	*{
-		margin: 0;
-		padding: 0;
-	}
-	body {
-		background-color: #f4f4f4;
-		display: flex;
-	}
-	#sidebar {
-		top: 0;
-		left: 10;
-		width: 250px;
-		height: 100%;
-		position: fixed;
-		background-color: #f9f9f9;
-		font-family: 'Arial', sans-serif;
-	}
-	#sidebar .logo {
-		font-size: 24px;
-		font-weight: 700;
-		margin-left: 20px;
-		height: 56px;
-		display:flex;
-		align-items: center;
-		color: #007bff;
-	}
-	#sidebar .menubar{
-		width: 100%;
-		margin-top: 48px;
-	}
-	#sidebar .menubar li {
-	height: 48px;
-	background: transparent;
-	margin-left: 30px;
-	}
-	#sidebar .menubar li a {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		align-items: center;
-		border-radius: 48px;
-		font-size: 16px;
-		color:#2e2e2e;
-	}
-	#sidebar .menubar li a:hover {
-		color: #3C91E6;
-	}
-	#content {
-		top: 0;
-		margin-left: 280px;
-		width: calc(100% - 250px);
-	}
-	#content main {
-		width: 100%;
-		padding: 36px 24px;
-		font-family: 'Arial', sans-serif;
-	}
-	#content .welcomeText {
-		font-family: 'Arial', sans-serif;
-	}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #f4f4f4;
+        font-family: 'Arial', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        justify-content: flex-start;
+        padding: 40px 0;
+    }
+
+    .header {
+        width: 100%;
+        background-color: #ffffff;
+        padding: 20px 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+    }
+
+    .logo {
+        font-size: 2em;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .logo:hover {
+        color: #0056b3;
+    }
+
+    /* Welcome text on the top-right of the header */
+    .welcomeText {
+        font-size: 1.1em;
+        font-weight: normal;
+        color: #555555;
+        margin-left: auto;
+    }
+
+    #dashboard {
+        width: 80%;
+        max-width: 1200px;
+        padding: 20px;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 120px; /* Account for the fixed header */
+    }
+
+    .box {
+        background-color: #fff;
+        width: 250px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .box:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .box h3 {
+        margin-bottom: 15px;
+        font-size: 1.5em;
+        color: #007bff;
+    }
+
+    .box p {
+        font-size: 1em;
+        color: #555;
+        margin-bottom: 30px;
+    }
+
+    .box i {
+        font-size: 3em;
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    /* Button link styles inside the cards */
+    .box a {
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .box a:hover {
+        background-color: #0056b3;
+    }
 </style>
 
 <% User user = (User) session.getAttribute("user"); %>
 
 <body>
-<!-- SIDEBAR -->
-<section id="sidebar">	
-		<a href="dashboard.jsp" class="logo">	
-		<span class="text">IoTBay</span>
-		</a>
-	<ul class="menubar">
-		<li>
-			<a href="searchProducts.jsp">
-				<span class="text">Start Ordering</span>
-			</a>
-		</li>
-		<li>
-			<a href="orderHistory.jsp">
-				<span class="text">View Order History</span>
-			</a>
-		</li>
-		<li>
-			<a href="editUser.jsp">
-				<span class="text">Account Settings</span>
-			</a>
-		</li>
-		<li>
-			<a href="logout.jsp" class="logout">
-				<span class="text">Logout</span>
-			</a>
-		</li>
-	</ul>
-</section>	
-<!-- SIDEBAR -->
+    <!-- Header Section with Logo and Welcome Text -->
+    <div class="header">
+        <a href="dashboard.jsp" class="logo">IoTBay</a>
+        <span class="welcomeText">Logged in as: <%= user.getUsername() %></span>
+    </div>
 
-<!-- CONTENT -->
-	<section id="content">
-	<!-- MAIN -->
-	<main>
-		<h1 class=welcomeText>Hi, <%= user.getUsername()%>!</h1><br>
-			<%-- Show something like this for staff view --%>
-			<ul class="box-info">
-				<li>
-					<i class='bx bxs-calendar-check' ></i>
-					<span class="text">
-						<h3>1020</h3>
-						<p>New Order</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-group' ></i>
-					<span class="text">
-						<h3>2834</h3>
-						<p>Visitors</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-dollar-circle' ></i>
-					<span class="text">
-						<h3>$2543</h3>
-						<p>Total Sales</p>
-					</span>
-				</li>
-			</ul> 
+    <!-- Dashboard Content Section -->
+    <section id="dashboard">
+        <div class="box">
+            <i class="bx bxs-cart-add"></i>
+            <h3>Start Ordering</h3>
+            <p>Browse products and start placing your order.</p>
+            <a href="searchProducts.jsp">Go to Shop</a>
+        </div>
 
+        <div class="box">
+            <i class="bx bx-history"></i>
+            <h3>Order History</h3>
+            <p>View your past orders and track their status.</p>
+            <a href="orderHistory.jsp">View Orders</a>
+        </div>
 
-	<div class="table-data">
-		<div class="order">
-			<div class="head">
-			<h3>Recent Orders</h3>
-			<i class='bx bx-search' ></i>
-			<i class='bx bx-filter' ></i>
-			</div>
-			<table>
-				<thead>
-					<tr>
-					<%-- Show the user if staff is logged in  --%>
-					<th>User</th> 
-					<th>Order Date</th>
-					<th>Status</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-					<td>
-						<p>John Doe</p>
-					</td>
-						<td>01-10-2021</td>
-						<td><span class="status completed">Completed</span></td>
-					</tr>
-					<tr>					
-					<td>
-						<p>John Doe</p>
-					</td>
-						<td>01-10-2021</td>
-						<td><span class="status pending">Pending</span></td>
-					</tr>
-					<tr>
-					<td>
-						<p>John Doe</p>
-					</td>
-						<td>01-10-2021</td>
-						<td><span class="status process">Process</span></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	<a href="orderHistory.jsp"> Show more...</a>
+        <div class="box">
+            <i class="bx bxs-user-circle"></i>
+            <h3>Account Settings</h3>
+            <p>Update your personal information and settings.</p>
+            <a href="editUser.jsp">Edit Profile</a>
+        </div>
 
-	</main>
-	<!-- MAIN -->
-	</section>
-	<!-- CONTENT -->
+        <div class="box">
+            <i class="bx bx-log-out"></i>
+            <h3>Logout</h3>
+            <p>Logout from your account securely.</p>
+            <a href="logout.jsp">Logout</a>
+        </div>
+    </section>
+
 </body>
-
 </html>
