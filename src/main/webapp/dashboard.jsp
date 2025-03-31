@@ -1,5 +1,4 @@
 <%@page import="model.User"%>
-<link href="https://unpkg.com/boxicons/css/boxicons.min.css" rel="stylesheet">
 
 <html>
 <title>IoTBay Dashboard</title>
@@ -57,18 +56,18 @@
     }
 
     #dashboard {
-        width: 80%;
+        width: 90%;
         max-width: 1200px;
         padding: 20px;
         display: flex;
         justify-content: space-around;
         flex-wrap: wrap;
-        gap: 20px;
-        margin-top: 120px; /* Account for the fixed header */
+        gap: 15px;
+        margin-top: 120px; 
     }
 
     .box {
-        background-color: #fff;
+        background-color: #ffffff;
         width: 250px;
         padding: 20px;
         border-radius: 8px;
@@ -94,14 +93,14 @@
 
     .box p {
         font-size: 1em;
-        color: #555;
+        color: #555555;
         margin-bottom: 30px;
     }
 
-    .box i {
-        font-size: 3em;
-        color: #007bff;
-        margin-bottom: 20px;
+    .box img {
+        width: 50px;
+        height: 50px;
+        margin: 0 auto 20px;
     }
 
     /* Button link styles inside the cards */
@@ -132,28 +131,28 @@
     <!-- Dashboard Content Section -->
     <section id="dashboard">
         <div class="box">
-            <i class="bx bxs-cart-add"></i>
+            <img src="./images/cart.jpg">
             <h3>Start Ordering</h3>
             <p>Browse products and start placing your order.</p>
             <a href="searchProducts.jsp">Go to Shop</a>
         </div>
 
         <div class="box">
-            <i class="bx bx-history"></i>
+            <img src="./images/history.jpg">
             <h3>Order History</h3>
             <p>View your past orders and track their status.</p>
             <a href="orderHistory.jsp">View Orders</a>
         </div>
 
         <div class="box">
-            <i class="bx bxs-user-circle"></i>
+            <img src="./images/user.jpg">
             <h3>Account Settings</h3>
             <p>Update your personal information and settings.</p>
             <a href="editUser.jsp">Edit Profile</a>
         </div>
 
         <div class="box">
-            <i class="bx bx-log-out"></i>
+            <img src="./images/logout.jpg">
             <h3>Logout</h3>
             <p>Logout from your account securely.</p>
             <a href="logout.jsp">Logout</a>

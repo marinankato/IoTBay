@@ -72,9 +72,7 @@
         if ("admin".equals(email) && "password123".equals(password)) {
             user = new User(email, password);
             session.setAttribute("user", user);
-            // Redirect after a login success message
             %>       
-
             <body>
                 <div class="container">
                     <img src="./images/green_tick.jpg">
