@@ -60,7 +60,7 @@
  	<!-- Header Section with Logo and Welcome Text -->
     <div class="header">
         <a href="dashboard.jsp" class="logo">IoTBay</a>
-        <span class="welcomeText">Logged in as: <%= user.getUsername() %></span>
+        <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
     </div>
 
 </body>

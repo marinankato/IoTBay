@@ -7,6 +7,6 @@
     <%
         session.invalidate();
     %>
-    You have been logged out successfully. Click <a href="index.jsp">here</a> to return to main page.
+    You have been logged out successfully. Click <a href="index.jsp">here</a> to return to home page.
 </body>
 </html>

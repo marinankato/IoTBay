@@ -6,8 +6,8 @@
   <h2>My Account </h2>
   <!-- Form to display current user parameters and allow password change -->
   <form action="dashboard.jsp" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" value="<%= user.getUsername() %>">
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" value="<%= user.getEmail() %>">
     <br><br>
     
     <label for="password">Password:</label>

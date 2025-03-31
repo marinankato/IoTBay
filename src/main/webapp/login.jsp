@@ -68,9 +68,9 @@
 <body>
     <div class="login">
         <h2>Login</h2>
-        <form action="loginCheck.jsp" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+        <form action="welcome.jsp" method="post">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required>
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
