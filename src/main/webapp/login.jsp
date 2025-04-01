@@ -19,7 +19,7 @@
             background-color: #ffffff;
             padding: 20px 40px;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px color: #0000001A;;
             text-align: center;
             width: 300px;
         }
