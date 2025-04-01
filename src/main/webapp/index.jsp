@@ -91,7 +91,7 @@
             <li class="status">You are not logged in</li>
             <li class="buttons-container">
                 <button><a href="login.jsp"">Login</a></button>
-                <button><a href="#">Register</a></button>
+                <button><a href="register.jsp">Register</a></button>
             </li>
         </ul>
     <%
