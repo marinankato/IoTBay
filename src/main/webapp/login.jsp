@@ -77,6 +77,9 @@
 
             <input type="submit" value="Login">
         </form>
+        <div class="create-account">
+            Don't have an account? <a href="register.jsp">Create one</a >
+        </div>
     </div>
 </body>
 </html>
