@@ -79,7 +79,7 @@
 
                     <div class="welcomeMessage">
                     <h1>Welcome <%=user.getEmail() %>!</h1>
-                    <p>Your password is <%=user.getPassword()%></p>
+                    <%-- <p>Your password is <%=user.getPassword()%></p> --%>
                     <a href="dashboard.jsp">Continue</a>
                     </div>
                 </div>
