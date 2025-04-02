@@ -26,7 +26,7 @@
 
         .login h2 {
             margin-bottom: 20px;
-            color: #333;
+            color: #333333;
         }
 
         /* input style */

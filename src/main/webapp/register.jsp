@@ -4,7 +4,6 @@
     <title>IoTBay | Register</title>
     
     <style>
-       
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
@@ -27,7 +26,7 @@
 
         .register h2 {
             margin-bottom: 20px;
-            color: #333;
+            color: #333333;
         }
 
         /* input style */
