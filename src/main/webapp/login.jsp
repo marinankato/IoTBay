@@ -61,7 +61,7 @@
             display: block;
             text-align: left;
             margin: 10px 0 5px;
-            color: #555;
+            color: #555555;
         }
     </style>
 </head>
@@ -70,10 +70,10 @@
         <h2>Login</h2>
         <form action="welcome.jsp" method="post">
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required>
-
+            <input type="text" name="email" placeholder="Email" required>
+            
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" name="password" placeholder="Password" required>
 
             <input type="submit" value="Login">
         </form>
