@@ -69,7 +69,7 @@
 
     if (email != null && password != null) {
         // Check the credentials
-        if ("admin".equals(email) && "password123".equals(password)) {
+        if ("admin@gmail.com".equals(email) && "password123".equals(password)) {
             user = new User(email, password);
             session.setAttribute("user", user);
             %>       
