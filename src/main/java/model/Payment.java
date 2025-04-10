@@ -3,7 +3,7 @@ import java.io.Serializable;
 public class Payment implements Serializable{
     String name;
     String cardNo;
-    int cardSecurtiyCode;
+    int cardSecurityCode;
 
     public Payment(){}
 
@@ -19,11 +19,11 @@ public class Payment implements Serializable{
     public void setCardNo(String cardNo){
         this.cardNo = cardNo;
     }
-    public int getCardSecurtiyNo(){
-        return this.cardSecurtiyCode;
+    public int getCardSecurityNo(){
+        return this.cardSecurityCode;
     }
-    public void setCardSecurityNo(int cardSecurtiyCode){
-        this.cardSecurtiyCode = cardSecurtiyCode;
+    public void setCardSecurityNo(int cardSecurityCode){
+        this.cardSecurityCode = cardSecurityCode;
     }
 
 
