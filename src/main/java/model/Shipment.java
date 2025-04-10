@@ -14,7 +14,19 @@ public class Shipment implements Serializable{
     Date shipmentDate;
     int trackingNO;
     
-    public Shipment(){}
+    public Shipment(String shipmentID, int houseNO, String street, String suburb, String postcode, String state, String city, String country, String shipmentStatus, Date shipmentDate, int trackingNO){
+        this.shipmentID = shipmentID;
+        this.houseNO = houseNO;
+        this.street = street;
+        this.suburb = suburb;
+        this.postcode = postcode;
+        this.state = state;
+        this.city = city;
+        this.Country = country;
+        this.shipmentStatus = shipmentStatus;
+        this.shipmentDate = shipmentDate;
+        this.trackingNO = trackingNO;
+    }
     public String getShipmentID(){
         return this.shipmentID;
     }
