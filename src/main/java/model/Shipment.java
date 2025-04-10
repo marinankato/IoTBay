@@ -10,6 +10,5 @@ public class Shipment {
     String Country;
     
     public Shipment(){}
-    public int 
 
 }
