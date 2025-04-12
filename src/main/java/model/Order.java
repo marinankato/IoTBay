@@ -6,15 +6,15 @@ public class Order implements Serializable{
       int userID;
       Date orderDate;
       int totalPrice;
-      String orderStatus;
-
-      public Order(int orderID, int userID, Date orderDate, int totalPrice, String orderStatus){
-         this.orderID = orderID;
-         this.userID = userID;
-         this.orderDate = orderDate;
-         this.totalPrice = totalPrice;
-         this.orderStatus = orderStatus;
-      }
+      boolean orderStatus;
+ 
+   public Order(int orderID, int userID, Date orderDate, int totalPrice, boolean orderStatus) {
+      this.orderID = orderID;
+      this.userID = userID;
+      this.orderDate = orderDate;
+      this.totalPrice = totalPrice;
+      this.orderStatus = orderStatus;
+   }
 
       public int getOrderID(){
          return this.orderID;
@@ -28,7 +28,7 @@ public class Order implements Serializable{
       public Date getOrderDate(){
          return this.orderDate;
       }
-      public String getOrderStatus(){
+      public boolean getOrderStatus(){
          return this.orderStatus;
       }
 }
