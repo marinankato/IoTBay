@@ -8,9 +8,6 @@ CREATE TABLE Users (
     Role varchar(50)
 );
 
--- To delete an unwanted table:
--- DROP TABLE User;
-
 -- To delete all rows from table, 
 -- or specific row:
 
