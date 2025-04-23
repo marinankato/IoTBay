@@ -1,15 +1,18 @@
 package model;
 import java.io.Serializable;
+import java.util.Date;
 
 public class User implements Serializable {
     
     int userID;
     String firstName;
     String lastName;
+    String phoneNo;
     String email;
     String password;
     String role;
-    String phoneNo;
+    Date loginDate;
+    Date logoutDate;
     
     public User() {
     }
@@ -53,6 +56,14 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public String getPhoneNo() {
+        return this.phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
+
     public String getEmail() {
         return this.email;
     }
@@ -77,12 +88,20 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public String getPhoneNo() {
-        return this.phoneNo;
+    public Date getLoginDate() {
+        return this.loginDate;
     }
 
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
+    public void setLoginDate(Date loginDate) {
+        this.loginDate = loginDate;
+    }
+
+    public Date getLogoutDate() {
+        return this.logoutDate;
+    }
+
+    public void setLogoutDate(Date logoutDate) {
+        this.logoutDate = logoutDate;
     }
 
 }
