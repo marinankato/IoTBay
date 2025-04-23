@@ -7,6 +7,9 @@ CREATE TABLE Users (
     Password varchar(50),
     Role varchar(50)
 );
+-- To change to store login and logout date/time
+-- User can view their access logs and search the log records based on the date
+
 
 -- To delete all rows from table, 
 -- or specific row:
