@@ -1,15 +1,3 @@
--- CREATE TABLE Users (
---     userID INTEGER AUTOINCREMENT,
---     firstName VARCHAR(50),
---     lastName VARCHAR(50),
---     phoneNo VARCHAR(50),
---     email VARCHAR(150),
---     password VARCHAR(50),
---     role VARCHAR(50),
---     loginDate DATETIME,
---     logoutDate DATETIME
--- );
-
 CREATE TABLE "Users" (
     "userID"    INTEGER,
     "firstName"    VARCHAR(50),
