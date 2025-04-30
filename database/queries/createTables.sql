@@ -12,8 +12,8 @@ CREATE TABLE "Users" (
 );
 
 CREATE TABLE "Order" (
-    "userID"    INTEGER  PRIMARY KEY,
-    "orderID"   INTEGER,
+    "userID"    INTEGER  
+    "orderID"   INTEGER PRIMARY KEY,
     "orderDate" DATE,
     "totalPrice" NUMERIC,
     "itemPrice" NUMERIC, 
