@@ -10,4 +10,13 @@ CREATE TABLE "Users" (
     "logoutTime" DATETIME,
     PRIMARY KEY("userID" AUTOINCREMENT)
 );
+
+CREATE TABLE "Order" (
+    "userID"    INTEGER,
+    "orderID"   INTEGER,
+    "orderDate" DATE,
+    "totalPrice" NUMERIC,
+    PRIMARY KEY("userID" AUTOINCREMENT)
+);
+
 -- Enable: User can view their access logs and search the log records based on the date
