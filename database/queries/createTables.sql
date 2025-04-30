@@ -15,8 +15,8 @@ CREATE TABLE "Order" (
     "userID"    INTEGER  
     "orderID"   INTEGER PRIMARY KEY,
     "orderDate" DATE,
-    "totalPrice" NUMERIC,
-    "itemPrice" NUMERIC, 
+    "totalPrice" NUMERIC(7),
+    "itemPrice" NUMERIC(7), 
     FOREIGN KEY("userID")
 );
 
