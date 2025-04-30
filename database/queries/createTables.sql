@@ -12,11 +12,12 @@ CREATE TABLE "Users" (
 );
 
 CREATE TABLE "Order" (
-    "userID"    INTEGER,
+    "userID"    INTEGER  PRIMARY KEY,
     "orderID"   INTEGER,
     "orderDate" DATE,
     "totalPrice" NUMERIC,
-    PRIMARY KEY("userID" AUTOINCREMENT)
+    "itemPrice" NUMERIC, 
+    FOREIGN KEY("userID")
 );
 
 -- Enable: User can view their access logs and search the log records based on the date
