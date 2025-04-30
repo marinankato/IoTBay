@@ -50,6 +50,12 @@ public class DBUserManager {
                                                                                                                         // for
                                                                                                                         // add-operation
         // st.executeUpdate("sql query");
+        PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM User WHERE email = ? AND password = ?");
+        
+        ps.setString(1, email);
+        ps.setString(2, password);
+        int rs = ps.executeUpdate();
+        System.out.println(rs + " user inserted");
 
     }
 
