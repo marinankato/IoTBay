@@ -28,10 +28,10 @@ public class DBUserManager {
         ResultSet rs = ps.executeQuery();
 
         // search the ResultSet for a user using the parameters
-        if (rs.next()){
+        if (rs.next()) {
             // If a match is found, retrieve user data from the ResultSet
             String firstName = rs.getString("firstName");
-            String lastName= rs.getString("lastName");
+            String lastName = rs.getString("lastName");
             String phoneNo = rs.getString("phoneNo");
             String role = rs.getString("role");
             Date loginDate = rs.getDate("loginDate");
@@ -39,7 +39,8 @@ public class DBUserManager {
 
             // Create and return a new User object with the retrieved data
             return new User(email, password);
-            // return new User(userID, firstName, lastName, email, password, role, phoneNo, loginDate, logoutDate);
+            // return new User(userID, firstName, lastName, email, password, role, phoneNo,
+            // loginDate, logoutDate);
         }
 
         return null;
@@ -51,7 +52,7 @@ public class DBUserManager {
                                                                                                                         // add-operation
         // st.executeUpdate("sql query");
         PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM User WHERE email = ? AND password = ?");
-        
+
         ps.setString(1, email);
         ps.setString(2, password);
         int rs = ps.executeUpdate();
@@ -69,6 +70,27 @@ public class DBUserManager {
     // delete a user from the database
     public void deleteUser(String email) throws SQLException {
         // code for delete-operation
+
+    }
+
+    public void createUser(String firstName, String lastName, String phoneNo, String email, String password,
+            String role) {
+        try {
+            PreparedStatement ps = this.conn.prepareStatement(
+                    "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role) VALUES (?, ?, ?, ?, ?, ?)");
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            ps.setString(3, phoneNo);
+            ps.setString(4, email);
+            ps.setString(5, password);
+            ps.setString(6, role);
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
 
     }
 

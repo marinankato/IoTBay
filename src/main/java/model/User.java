@@ -1,9 +1,10 @@
 package model;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class User implements Serializable {
-    
+
     int userID;
     String firstName;
     String lastName;
@@ -13,7 +14,7 @@ public class User implements Serializable {
     String role;
     Date loginDate;
     Date logoutDate;
-    
+
     public User() {
     }
 
@@ -22,14 +23,15 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(int userID, String firstName, String lastName, String email, String password, String role, String phoneNo) {
+    public User(int userID, String firstName, String lastName, String phoneNo, String email, String password,
+            String role) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
+        String phoneNo;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.phoneNo = phoneNo;
     }
 
     public int getUserID() {

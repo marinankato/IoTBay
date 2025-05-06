@@ -17,7 +17,8 @@
     <h3>Create New User</h3>
     <form action="CreateUserServlet" method="post">
         <div class="form-group">
-            Full Name: <input type="text" name="fullName" required />
+            First Name: <input type="text" name="firstName" required />
+            Last Name: <input type="text" name="lastName" required />
             Phone Number: <input type="text" name="phone" required />
         </div>
         <div class="form-group">
@@ -39,8 +40,9 @@
     <!-- Search User -->
     <h3>Search Users</h3>
     <form action="SearchUserServlet" method="get">
-        Full Name: <input type="text" name="fullName" />
-        Phone: <input type="text" name="phone" />
+        First Name: <input type="text" name="firstName" />
+	    Last Name: <input type="text" name="lastName" /> <br>
+        Phone: <input type="text" name="phone" /> <br>
         <button type="submit">Search</button>
     </form>
 
@@ -60,9 +62,6 @@
             <th>Actions</th>
         </tr>
         </thead>
-        <tbody>
-        <%-- Insert dynamic user rows here using JSTL or Java code --%>
-        </tbody>
     </table>
 </div>
 </body>
