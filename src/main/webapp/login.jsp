@@ -19,14 +19,14 @@
             background-color: #ffffff;
             padding: 20px 40px;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px color: #0000001A;;
             text-align: center;
             width: 300px;
         }
 
         .login h2 {
             margin-bottom: 20px;
-            color: #333;
+            color: #333333;
         }
 
         /* input style */
@@ -61,7 +61,7 @@
             display: block;
             text-align: left;
             margin: 10px 0 5px;
-            color: #555;
+            color: #555555;
         }
     </style>
 </head>
@@ -70,13 +70,16 @@
         <h2>Login</h2>
         <form action="welcome.jsp" method="post">
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required>
-
+            <input type="text" name="email" placeholder="Email" required>
+            
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" name="password" placeholder="Password" required>
 
             <input type="submit" value="Login">
         </form>
+        <div class="create-account">
+            Don't have an account? <a href="register.jsp">Create one</a >
+        </div>
     </div>
 </body>
 </html>

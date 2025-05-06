@@ -1,2 +1,16 @@
+model/dao/DBOrder.class
+model/Order.class
+model/dao/DBUserManager.class
+model/dao/DBOrderManager.class
+model/Product.class
+controller/LoginServlet.class
+model/dao/DBOrderConnector.class
+controller/TestUserDB.class
+model/Shipment.class
+controller/ConnServlet.class
+model/dao/DBUserConnector.class
+model/Cart.class
+controller/Validator.class
 model/User.class
-model/App.class
+model/dao/DBUser.class
+model/Payment.class

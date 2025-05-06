@@ -4,29 +4,63 @@
     <title>IoTBay | Checkout</title>
     <style>
 		body {
-			justify-content: center;
-
-			background-color: #f4f4f4;
+		font-family: Arial, sans-serif;
+		background-color: #f9f9f9;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		margin: 0;
+		flex-direction: column; /* Stack the title and form */
+		}
+	
+		h1 {
+			font-size: 36px;
+			color: #007bff;
+			margin-bottom: 20px; /* Adds space between title and form */
+			text-align: center;
 		}
 
+
 		form {
-			display: flex;
-			flex-direction: column;
-			width: 400px;
-			align-items: right;
+			background-color: #ffffff;
+			padding: 20px 40px;
+			border-radius: 8px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+			width: 300px;
+		}
+		
+		label {
+			display: block;
+			margin-top: 10px;
+			color: #333;
+		}
+		
+		input, select {
+			width: 100%;
+			padding: 10px;
+			margin-top: 5px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			font-size: 16px;
 		}
 		
 		input[type="submit"] {
-			border-radius: 12px;
-			background-color: white;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			cursor: pointer;
+			margin-top: 20px;
 		}
+		
 		input[type="submit"]:hover {
-			background-color: #f9f9f9;
+			background-color: #0056b3;
 		}
 	</style>
 </head>
+
 <body>
-<h1>IoTBay | Checkout</h1>
+<h1>Checkout</h1>
 <!--still need to add the order summary on top or something once we have that---->
 <form>
 <label for="nameOnCard">Name on Card: </label>

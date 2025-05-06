@@ -69,7 +69,7 @@
 
     if (email != null && password != null) {
         // Check the credentials
-        if ("admin".equals(email) && "password123".equals(password)) {
+        if ("admin@gmail.com".equals(email) && "password123".equals(password)) {
             user = new User(email, password);
             session.setAttribute("user", user);
             %>       
@@ -79,7 +79,7 @@
 
                     <div class="welcomeMessage">
                     <h1>Welcome <%=user.getEmail() %>!</h1>
-                    <p>Your password is <%=user.getPassword()%></p>
+                    <%-- <p>Your password is <%=user.getPassword()%></p> --%>
                     <a href="dashboard.jsp">Continue</a>
                     </div>
                 </div>
