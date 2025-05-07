@@ -136,7 +136,6 @@
       var passwordField = document.getElementById("password");
       var checkbox = document.getElementById("showPassword");
 
-      // If the checkbox is checked, show the password, otherwise hide it
       if (checkbox.checked) {
         passwordField.type = "text"; // Unmask the password
       } else {

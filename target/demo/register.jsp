@@ -69,7 +69,14 @@
 <body>
     <div class="register">
         <h2>Register</h2>
-        <form action="welcome.jsp" method="post">
+
+        <%-- show the error message if invalid attempt --%>
+        <% String errMsg = (String)session.getAttribute("errorMsg"); %>
+        <% if (errMsg != null) { %>
+            <div class="errorMessage"><%= errMsg %></div>
+        <% } %>
+
+        <form action="RegisterServlet" method="post">
             <label for="email">Email:</label>
             <input type="text" name="email" placeholder="Email" required>
             

@@ -13,13 +13,10 @@ public class TestUserDB {
         try {
 
             DBUserConnector connector = new DBUserConnector();
-
             Connection conn = connector.openConnection();
-
             DBUserManager db = new DBUserManager(conn);
 
             System.out.print("User email: ");
-
             User user = db.findUser("admin@gmail.com", "password123");
 
             if (user != null) {
@@ -35,7 +32,5 @@ public class TestUserDB {
             Logger.getLogger(TestUserDB.class.getName()).log(Level.SEVERE, null, ex);
 
         }
-
     }
-
 }

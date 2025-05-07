@@ -5,6 +5,7 @@ model/dao/DBOrderManager.class
 model/Product.class
 controller/LoginServlet.class
 model/dao/DBOrderConnector.class
+controller/RegisterServlet.class
 controller/TestUserDB.class
 controller/OrderServlet.class
 model/Shipment.class

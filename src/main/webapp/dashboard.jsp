@@ -158,7 +158,10 @@
             <a href="logout.jsp">Logout</a>
         </div>
     </section>
+    
 <jsp:include page="/LoginServlet" flush="true" />
 <jsp:include page="/ConnServlet" flush="true" />
+<jsp:include page="/RegisterServlet" flush="true" />
+
 </body>
 </html>

@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").include(request, response);
         } else if (!validator.validatePassword(password) /* 10- validate password */ ) {
             // 11-set incorrect password error to the session
-            session.setAttribute("errorMsg", "Your password is not correctly formatted.");
+            session.setAttribute("errorMsg", "Your password should be at least 6 characters long.");
             // 12- redirect user back to the login.jsp
             request.getRequestDispatcher("login.jsp").include(request, response);
         } else if (user != null) {
