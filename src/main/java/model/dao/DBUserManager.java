@@ -40,13 +40,13 @@ public class DBUserManager {
 
             // Create and return a new User object with the retrieved data
             // return new User(email, password);
-            return new User(firstName, lastName, email, password, role, phoneNo);
+            return new User(firstName, lastName, phoneNo, email, password, role);
         }
         return null;
     }
 
     // Add a user-data into the database
-    public void addUser(String email, String name, String password, String gender, String favcol) throws SQLException {
+    public void addUser(String firstName, String lastName, String phoneNo, String email, String password, String role) throws SQLException {
         PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM Users WHERE email = ? AND password = ?");
 
         ps.setString(1, email);
@@ -69,8 +69,7 @@ public class DBUserManager {
 
     }
 
-    public void createUser(String firstName, String lastName, String phoneNo, String email, String password,
-            String role) {
+    public void createUser(String firstName, String lastName, String phoneNo, String email, String password, String role) {
         try {
             PreparedStatement ps = this.conn.prepareStatement(
                     "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role) VALUES (?, ?, ?, ?, ?, ?)");
