@@ -3,7 +3,7 @@ CREATE TABLE "Users" (
     "firstName"    VARCHAR(50),
     "lastName"    VARCHAR(50),
     "phoneNo" VARCHAR(10),
-    "email" VARCHAR(150),
+    "email" VARCHAR(150) UNIQUE,
     "password" VARCHAR(50),
     "role" VARCHAR(25),
     "loginDate" DATETIME,

@@ -59,7 +59,6 @@ public class LoginServlet extends HttpServlet {
             }
             if (user != null) {
                 // 12.5 clear your session of error messages
-                // session.invalidate();
                 session.removeAttribute("errorMsg");
                 // 13-save the logged in user object to the session
                 session.setAttribute("user", user);

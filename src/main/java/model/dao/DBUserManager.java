@@ -60,16 +60,33 @@ public class DBUserManager {
     }
 
     // update a user details in the database
-    public void updateUser(String email, String name, String password, String gender, String favcol)
-            throws SQLException {
-        // code for update-operation
-
+    public void updateUser(String firstName, String lastName, String phoneNo, String email, String password, String role) throws SQLException{
+        String sql = "UPDATE Users SET firstName = ?, lastName = ?, password = ?, gender = ?, favcol = ? WHERE email = ?";
+        PreparedStatement ps = this.conn.prepareStatement(sql);
+        
+        // Set the parameters for the update query
+        ps.setString(1, firstName);     // Assuming 'name' contains the user's full name
+        ps.setString(2, lastName);     // Assuming 'name' contains both first and last names
+        ps.setString(3, phoneNo); // Set the new password
+        ps.setString(4, email);   // Set the new gender
+        ps.setString(5, password);   // Set the new favorite color
+        ps.setString(6, role);    // Find the user by email to update their details
+        int rowsUpdated = ps.executeUpdate();
+        System.out.println(rowsUpdated + " user fieds updated.");
     }
 
     // delete a user from the database
     public void deleteUser(String email) throws SQLException {
-        // code for delete-operation
-
+        String query = "DELETE FROM Users WHERE email = ?";
+        PreparedStatement ps = this.conn.prepareStatement(query);
+        ps.setString(1, email);
+        int rowsDeleted = ps.executeUpdate();
+        
+        if (rowsDeleted > 0) {
+            System.out.println("User with email " + email + " has been deleted.");
+        } else {
+            System.out.println("No user found with email " + email);
+        }
     }
 
     public User findUserEmail(String email) throws SQLException{
