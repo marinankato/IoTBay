@@ -28,7 +28,7 @@ public class User implements Serializable {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
-        String phoneNo;
+        this.phoneNo = phoneNo;
         this.email = email;
         this.password = password;
         this.role = role;
