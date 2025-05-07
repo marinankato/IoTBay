@@ -109,6 +109,8 @@
         }
     %>
     
-  <jsp:include page="/ConnServlet" flush="true" />
+    <jsp:include page="/ConnServlet" flush="true" />
+    <jsp:include page="/DeleteUserServlet" flush="true" />
+
 </body>
 </html>

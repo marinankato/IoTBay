@@ -35,6 +35,11 @@
     <input type="submit" value="Save">
   </form>
 
+  <form action="DeleteUserServlet" method="post" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+    <input type="hidden" name="email" value="<%= user.getEmail() %>">
+    <input type="submit" value="Delete Account" style="background-color: red; color: white;">
+  </form>
+
   <script>
     // Function to toggle the password visibility
     function togglePasswordVisibility() {

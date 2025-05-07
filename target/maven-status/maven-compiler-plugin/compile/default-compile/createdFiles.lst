@@ -1,6 +1,7 @@
 model/dao/DBOrder.class
 model/Order.class
 model/dao/DBUserManager.class
+controller/DeleteUserServlet.class
 model/dao/DBOrderManager.class
 model/Product.class
 controller/LoginServlet.class
