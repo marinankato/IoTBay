@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import model.Order;
 
-public class OrderController extends HttpServlet {
+public class OrderServlet extends HttpServlet {
     private OrderDAO orderDAO;
 
     @Override
