@@ -68,7 +68,7 @@
 <body>
     <div class="login">
         <h2>Login</h2>
-        <form action="welcome.jsp" method="post">
+        <form action="LoginServlet" method="post">
             <label for="email">Email:</label>
             <input type="text" name="email" placeholder="Email" required>
             
