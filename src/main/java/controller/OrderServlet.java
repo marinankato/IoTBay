@@ -1,6 +1,7 @@
 package controller;
 
 import model.Order;
+import model.User;
 import model.dao.DBOrderConnector;
 import model.dao.DBOrderManager;
 
@@ -15,72 +16,99 @@ import java.util.List;
 
 @WebServlet("/OrderServlet")
 public class OrderServlet extends HttpServlet {
+    private static final SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
 
-        String action = request.getParameter("action");
-        HttpSession session = request.getSession();
-        int userID = ((model.User) session.getAttribute("user")).getUserID(); // assuming User object is in session
+        // parse optional filters
+        String idParam   = req.getParameter("orderID");
+        String dateParam = req.getParameter("orderDate");
+        Integer orderID  = (idParam   != null && !idParam.isEmpty())   ? Integer.valueOf(idParam)   : null;
+        java.sql.Date orderDate = null;
+        try {
+            if (dateParam != null && !dateParam.isEmpty()) {
+                Date d = DF.parse(dateParam);
+                orderDate = new java.sql.Date(d.getTime());
+            }
+        } catch (Exception ignore) { }
 
         try {
-            DBOrderConnector connector = new DBOrderConnector();
-            Connection conn = connector.openConnection();
-            DBOrderManager manager = new DBOrderManager(conn);
+            DBOrderConnector connFactory = new DBOrderConnector();
+            Connection conn = connFactory.openConnection();
+            DBOrderManager mgr = new DBOrderManager(conn);
+
+            List<Order> orders = (orderID != null || orderDate != null)
+                ? mgr.searchOrders(user.getUserID(), orderID, orderDate)
+                : mgr.getOrdersByUser(user.getUserID());
+
+            session.setAttribute("orders", orders);
+            connFactory.closeConnection();
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new ServletException(e);
+        }
+
+        resp.sendRedirect("orderHistory.jsp");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
+
+        String action = req.getParameter("action");
+        try {
+            DBOrderConnector connFactory = new DBOrderConnector();
+            Connection conn = connFactory.openConnection();
+            DBOrderManager mgr = new DBOrderManager(conn);
 
             switch (action) {
                 case "checkout":
-                    // Normally you'd calculate totalPrice from Cart, but here it's hardcoded/tested
-                    int totalPrice = 199; // Replace with dynamic logic later
-                    Date orderDate = new Date();
-
-                    Order newOrder = new Order(0, userID, orderDate, totalPrice, false); // status 'saved'
-                    manager.insertOrder(newOrder);
-                    response.sendRedirect("orderHistory.jsp");
+                    int total   = Integer.parseInt(req.getParameter("totalPrice"));
+                    Order oNew  = new Order(0, user.getUserID(), new Date(), total, false);
+                    mgr.insertOrder(oNew);
+                    session.setAttribute("message", "Order placed.");
                     break;
 
                 case "cancel":
-                    int cancelOrderId = Integer.parseInt(request.getParameter("orderID"));
-                    manager.updateOrderStatus(cancelOrderId, false); // set to 'saved' or 'cancelled'
-                    response.sendRedirect("orderHistory.jsp");
+                    int cancelId = Integer.parseInt(req.getParameter("orderID"));
+                    mgr.updateOrderStatus(cancelId, false);
+                    session.setAttribute("message", "Order cancelled.");
+                    break;
+
+                case "update":
+                    int uid       = Integer.parseInt(req.getParameter("orderID"));
+                    Date dt       = DF.parse(req.getParameter("orderDate"));
+                    int price     = Integer.parseInt(req.getParameter("totalPrice"));
+                    boolean stat  = Boolean.parseBoolean(req.getParameter("orderStatus"));
+                    Order oUpd    = new Order(uid, user.getUserID(), dt, price, stat);
+                    mgr.updateOrder(oUpd);
+                    session.setAttribute("message", "Order updated.");
                     break;
 
                 default:
-                    response.sendRedirect("error.jsp");
-                    break;
+                    session.setAttribute("error", "Unknown action: " + action);
             }
 
-            connector.closeConnection();
-
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            connFactory.closeConnection();
+        } catch (Exception e) {
+            throw new ServletException(e);
         }
-    }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
-        int userID = ((model.User) session.getAttribute("user")).getUserID();
-
-        try {
-            DBOrderConnector connector = new DBOrderConnector();
-            Connection conn = connector.openConnection();
-            DBOrderManager manager = new DBOrderManager(conn);
-
-            List<Order> orders = manager.getOrdersByUser(userID);
-            session.setAttribute("orders", orders);
-
-            connector.closeConnection();
-            response.sendRedirect("orderHistory.jsp");
-
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Error retrieving order history: " + e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
+        // redirect back through doGet so the list refreshes
+        resp.sendRedirect("order");
     }
 }
-
