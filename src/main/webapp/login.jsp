@@ -68,6 +68,12 @@
 <body>
     <div class="login">
         <h2>Login</h2>
+
+        <% String errMsg = (String)session.getAttribute("errorMsg");%>
+        <% if (errMsg != null) { %>
+        <p><%=errMsg%></p>
+        <% } %>
+        
         <form action="LoginServlet" method="post">
             <label for="email">Email:</label>
             <input type="text" name="email" placeholder="Email" required>
