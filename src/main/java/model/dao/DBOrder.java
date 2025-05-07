@@ -6,8 +6,8 @@ import java.sql.Connection;
 public abstract class DBOrder {
 
     // this path URL will differ for everyone, change to your path to db
-    protected String URL = "jdbc:sqlite:/Users/marinakato/Intro to Software Dev/IoTBay-1/database/iotdb.db";
-    protected String driver = "org.sqlite.JDBC"; 
-    protected Connection conn; 
+    protected String URL = "jdbc:sqlite:C://Users//alyss//OneDrive//Desktop//IntroSoftwareDev//IoTBay//database//iotdb.db";
+    protected String driver = "org.sqlite.JDBC";
+    protected Connection conn;
 
 }
