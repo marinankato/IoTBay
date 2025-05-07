@@ -60,19 +60,19 @@ public class DBUserManager {
     }
 
     // update a user details in the database
-    public void updateUser(String firstName, String lastName, String phoneNo, String email, String password, String role) throws SQLException{
-        String sql = "UPDATE Users SET firstName = ?, lastName = ?, password = ?, gender = ?, favcol = ? WHERE email = ?";
+    public void updateUser(String firstName, String lastName, String phoneNo, String email, String password, String originalEmail) throws SQLException {
+        String sql = "UPDATE Users SET firstName = ?, lastName = ?, phoneNo = ?, email = ?, password = ? WHERE email = ?";
         PreparedStatement ps = this.conn.prepareStatement(sql);
-        
-        // Set the parameters for the update query
-        ps.setString(1, firstName);     // Assuming 'name' contains the user's full name
-        ps.setString(2, lastName);     // Assuming 'name' contains both first and last names
-        ps.setString(3, phoneNo); // Set the new password
-        ps.setString(4, email);   // Set the new gender
-        ps.setString(5, password);   // Set the new favorite color
-        ps.setString(6, role);    // Find the user by email to update their details
+
+        ps.setString(1, firstName);
+        ps.setString(2, lastName);
+        ps.setString(3, phoneNo);
+        ps.setString(4, email);         // new email if edited
+        ps.setString(5, password);
+        ps.setString(6, originalEmail); // used to find the correct row
+
         int rowsUpdated = ps.executeUpdate();
-        System.out.println(rowsUpdated + " user fieds updated.");
+        System.out.println(rowsUpdated + " user fields updated.");
     }
 
     // delete a user from the database

@@ -9,6 +9,7 @@ controller/RegisterServlet.class
 controller/TestUserDB.class
 controller/OrderServlet.class
 model/Shipment.class
+controller/EditUserServlet.class
 controller/ConnServlet.class
 model/dao/DBUserConnector.class
 model/Cart.class

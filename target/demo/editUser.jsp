@@ -5,7 +5,20 @@
 <body>
   <h2>My Account </h2>
   <!-- Form to display current user parameters and allow password change -->
-  <form action="dashboard.jsp" method="post">
+  <form action="EditUserServlet" method="post">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" value="<%= user.getFirstName() %>">
+    <br><br>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" value="<%= user.getLastName() %>">
+    <br><br>
+
+    <label for="phoneNo">Phone Number:</label>
+    <input type="text" id="phoneNo" name="phoneNo" value="<%= user.getPhoneNo() %>">
+    <br><br>
+
+    <input type="hidden" name="originalEmail" value="<%= user.getEmail() %>">
     <label for="email">Email:</label>
     <input type="text" id="email" name="email" value="<%= user.getEmail() %>">
     <br><br>

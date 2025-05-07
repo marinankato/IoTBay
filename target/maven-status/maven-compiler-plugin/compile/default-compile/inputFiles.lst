@@ -13,6 +13,7 @@
 /Users/marinakato/Intro to Software Dev/IoTBay/src/main/java/controller/OrderServlet.java
 /Users/marinakato/Intro to Software Dev/IoTBay/src/main/java/model/dao/DBOrder.java
 /Users/marinakato/Intro to Software Dev/IoTBay/src/main/java/model/Order.java
+/Users/marinakato/Intro to Software Dev/IoTBay/src/main/java/controller/EditUserServlet.java
 /Users/marinakato/Intro to Software Dev/IoTBay/src/main/java/model/Payment.java
 /Users/marinakato/Intro to Software Dev/IoTBay/src/main/java/model/dao/DBUser.java
 /Users/marinakato/Intro to Software Dev/IoTBay/src/main/java/model/dao/DBOrderConnector.java

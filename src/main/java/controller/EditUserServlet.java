@@ -1,0 +1,66 @@
+package controller;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import model.User;
+import model.dao.DBUserManager;
+
+@WebServlet("/EditUserServlet")
+public class EditUserServlet extends HttpServlet {
+
+    @Override
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        Validator validator = new Validator();
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String phoneNo = request.getParameter("phoneNo");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        // String role = request.getParameter("role");
+        String originalEmail = request.getParameter("originalEmail"); 
+        
+        DBUserManager dbmanager = (DBUserManager) session.getAttribute("manager");
+        if (dbmanager == null) {
+            throw new IOException("Can't find DB Manager");
+        }
+
+        if (!validator.validateEmail(email) /* 7- validate email */ ) {
+
+            session.setAttribute("errorMsg", "Your email is not correctly formatted.");
+            request.getRequestDispatcher("editUser.jsp").forward(request, response);
+
+        } else if (!validator.validatePassword(password) /* 10- validate password */ ) {
+
+            session.setAttribute("errorMsg", "Your password must be at least 6 characters long.");
+            request.getRequestDispatcher("editUser.jsp").forward(request, response);
+
+        } else {
+            try {
+                dbmanager.updateUser(firstName, lastName, phoneNo, email, password, originalEmail);
+                // Fetch updated user and store it in session
+                User updatedUser = dbmanager.findUser(email, password);
+                session.setAttribute("user", updatedUser);
+                session.removeAttribute("errorMsg");
+                response.sendRedirect("dashboard.jsp");
+
+            } catch (SQLException ex) {
+                Logger.getLogger(EditUserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ServletException("Database error when updating user", ex);
+            }
+        }
+    }
+}
