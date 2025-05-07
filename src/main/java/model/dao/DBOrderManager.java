@@ -1,6 +1,7 @@
 package model.dao;
 import model.Order;
 import java.sql.*;
+import java.util.List;
 public class DBOrderManager {
     private Connection conn;
 
@@ -17,6 +18,16 @@ public class DBOrderManager {
             stmt.setBoolean(4, order.getOrderStatus());
             stmt.executeUpdate();
         }
+    }
+
+    public void updateOrderStatus(int cancelOrderId, boolean b) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateOrderStatus'");
+    }
+
+    public List<Order> getOrdersByUser(int userID) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getOrdersByUser'");
     }
 
 }

@@ -6,7 +6,7 @@ import java.sql.Connection;
 public abstract class DBUser {
 
     // this path URL will differ for everyone, change to your path to db
-    protected String URL = "jdbc:sqlite:/Users/marinakato/Intro to Software Dev/IoTBay-oldVer/database/iotdb.db";
+    protected String URL = "jdbc:sqlite:/Users/marinakato/Intro to Software Dev/IoTBay/database/iotdb.db";
     protected String driver = "org.sqlite.JDBC";
     protected Connection conn;
 

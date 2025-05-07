@@ -26,7 +26,7 @@ public class OrderServlet extends HttpServlet {
         try {
             DBOrderConnector connector = new DBOrderConnector();
             Connection conn = connector.openConnection();
-            OrderManager manager = new DBOrderManager(conn);
+            DBOrderManager manager = new DBOrderManager(conn);
 
             switch (action) {
                 case "checkout":
@@ -68,7 +68,7 @@ public class OrderServlet extends HttpServlet {
         try {
             DBOrderConnector connector = new DBOrderConnector();
             Connection conn = connector.openConnection();
-            OrderManager manager = new OrderManager(conn);
+            DBOrderManager manager = new DBOrderManager(conn);
 
             List<Order> orders = manager.getOrdersByUser(userID);
             session.setAttribute("orders", orders);
