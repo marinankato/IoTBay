@@ -40,8 +40,9 @@ public class RegisterServlet extends HttpServlet {
 
         User user = null;
         try {
-            // 6- find user by email and password
-            user = dbmanager.findUser(email, password);
+            // 6- find user by email 
+            user = dbmanager.findUserEmail(email);
+            
         } catch (SQLException ex) {
             Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -51,24 +52,26 @@ public class RegisterServlet extends HttpServlet {
             // purpose is to demonstrate error message in login page
             session.setAttribute("errorMsg", "Your email is not correctly formatted.");
             // 9- redirect user back to the login.jsp
-            request.getRequestDispatcher("register.jsp").include(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         } else if (!validator.validatePassword(password) /* 10- validate password */ ) {
             // 11-set incorrect password error to the session
             session.setAttribute("errorMsg", "Your password must be at least 6 characters long.");
             // 12- redirect user back to the login.jsp
-            request.getRequestDispatcher("register.jsp").include(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         } else if (user != null) {
             session.setAttribute("errorMsg", "You already have an account.");
-            request.getRequestDispatcher("login.jsp").include(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             // they are new so need to be added onto database
             try {
                 dbmanager.addUser(firstName, lastName, phoneNo, email, password, role);
+                user = dbmanager.findUser(email, password);
+                session.setAttribute("user", user);
             } catch (SQLException e) {
                 Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, e);
                 e.printStackTrace();
             }
-            request.getRequestDispatcher("dashboard.jsp").include(request, response);
+            response.sendRedirect("dashboard.jsp");
         }
     }
 }

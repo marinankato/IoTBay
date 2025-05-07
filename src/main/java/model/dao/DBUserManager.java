@@ -47,13 +47,16 @@ public class DBUserManager {
 
     // Add a user-data into the database
     public void addUser(String firstName, String lastName, String phoneNo, String email, String password, String role) throws SQLException {
-        PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM Users WHERE email = ? AND password = ?");
-
-        ps.setString(1, email);
-        ps.setString(2, password);
-        int rs = ps.executeUpdate();
-        System.out.println(rs + " user inserted");
-
+        String query = "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = this.conn.prepareStatement(query);
+        ps.setString(1, firstName);
+        ps.setString(2, lastName);
+        ps.setString(3, phoneNo);
+        ps.setString(4, email);
+        ps.setString(5, password);
+        ps.setString(6, role);
+        int rowsInserted = ps.executeUpdate();
+        System.out.println(rowsInserted + " user inserted");
     }
 
     // update a user details in the database
@@ -69,24 +72,40 @@ public class DBUserManager {
 
     }
 
-    public void createUser(String firstName, String lastName, String phoneNo, String email, String password, String role) {
-        try {
-            PreparedStatement ps = this.conn.prepareStatement(
-                    "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role) VALUES (?, ?, ?, ?, ?, ?)");
-            ps.setString(1, firstName);
-            ps.setString(2, lastName);
-            ps.setString(3, phoneNo);
-            ps.setString(4, email);
-            ps.setString(5, password);
-            ps.setString(6, role);
-            ps.executeUpdate();
-            ps.close();
+    // this does the same as addUser above
+    // public void createUser(String firstName, String lastName, String phoneNo, String email, String password, String role) throws SQLException{
+    //         PreparedStatement ps = this.conn.prepareStatement(
+    //                 "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role) VALUES (?, ?, ?, ?, ?, ?)");
+    //         ps.setString(1, firstName);
+    //         ps.setString(2, lastName);
+    //         ps.setString(3, phoneNo);
+    //         ps.setString(4, email);
+    //         ps.setString(5, password);
+    //         ps.setString(6, role);
+    //         ps.executeUpdate();
+    //         ps.close();
+    // }
 
-        } catch (SQLException e) {
+    public User findUserEmail(String email) throws SQLException{
+        String sql = "SELECT * FROM Users WHERE email = ? AND password = ?";
+        PreparedStatement ps = this.conn.prepareStatement(sql);
+        ps.setString(1, email);
 
-            e.printStackTrace();
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            // If a match is found, retrieve user data from the ResultSet
+            String firstName = rs.getString("firstName");
+            String lastName = rs.getString("lastName");
+            String phoneNo = rs.getString("phoneNo");
+            String password = rs.getString("password");
+            String role = rs.getString("role");
+
+            // Create and return a new User object with the retrieved data
+            // return new User(email, password);
+            return new User(firstName, lastName, phoneNo, email, password, role);
         }
-
+        return null;
     }
 
 }
