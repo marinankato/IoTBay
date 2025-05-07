@@ -11,10 +11,9 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.*;.util.Date;
+import java.util.Date;
 import java.util.List;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @WebServlet("/OrderServlet")
 public class OrderServlet extends HttpServlet {
