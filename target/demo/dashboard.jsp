@@ -125,7 +125,7 @@
     <!-- Header Section with Logo and Welcome Text -->
     <div class="header">
         <a href="dashboard.jsp" class="logo">IoTBay</a>
-        <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
+        <span class="welcomeText">Logged in as: <%= user.getFirstName() %></span>
     </div>
 
     <!-- Dashboard Content Section -->
