@@ -1,11 +1,9 @@
 package controller;
 
 import java.sql.*;
-
 import java.util.logging.*;
 
 import model.*;
-
 import model.dao.*;
 
 public class TestUserDB {
