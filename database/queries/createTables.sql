@@ -6,8 +6,8 @@ CREATE TABLE "Users" (
     "email" VARCHAR(150),
     "password" VARCHAR(50),
     "role" VARCHAR(25),
-    "loginTime" DATETIME,
-    "logoutTime" DATETIME,
+    "loginDate" DATETIME,
+    "logoutDate" DATETIME,
     PRIMARY KEY("userID" AUTOINCREMENT)
 );
 
