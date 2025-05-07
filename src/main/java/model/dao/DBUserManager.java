@@ -19,7 +19,7 @@ public class DBUserManager {
     // Find user by email and password in the database
     public User findUser(String email, String password) throws SQLException {
         // setup the select sql query string
-        PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM \"user\" WHERE email = ? AND password = ?");
+        PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM Users WHERE email = ? AND password = ?");
         ps.setString(1, email);
         ps.setString(2, password);
 
@@ -51,7 +51,7 @@ public class DBUserManager {
                                                                                                                         // for
                                                                                                                         // add-operation
         // st.executeUpdate("sql query");
-        PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM User WHERE email = ? AND password = ?");
+        PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM Users WHERE email = ? AND password = ?");
 
         ps.setString(1, email);
         ps.setString(2, password);

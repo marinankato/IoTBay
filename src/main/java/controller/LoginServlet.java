@@ -71,7 +71,7 @@ public class LoginServlet extends HttpServlet {
             // 9- redirect user back to the login.jsp
             request.getRequestDispatcher("login.jsp").include(request, response);
 
-        } else if (!validator.validateEmail(password) /* 10- validate password */ ) {
+        } else if (!validator.validatePassword(password) /* 10- validate password */ ) {
 
             // 11-set incorrect password error to the session
             session.setAttribute("errorMsg", "Your password is not correctly formatted.");
