@@ -83,6 +83,7 @@
                     <a href="dashboard.jsp">Continue</a>
                     </div>
                 </div>
+                <jsp:include page="/LoginServlet" flush="true" />
             </body>
          
        <% } else { %>
