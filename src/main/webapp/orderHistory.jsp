@@ -65,30 +65,66 @@
         <a href="dashboard.jsp" class="logo">IoTBay</a>
         <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
     </div>
-
-    <div style="margin-top: 100px; width: 80%;">
-        <h2>Your Order History</h2>
+    <body>
+        <h1>Your Orders</h1>
+        <form action="order" method="get">
+          Search by ID: <input type="text" name="orderID"/>
+          Date:         <input type="date" name="orderDate"/>
+          <input type="submit" value="Search"/>
+        </form>
         <%
-            List<Order> orders = (List<Order>) session.getAttribute("orders");
-            if (orders != null && !orders.isEmpty()) {
-                for (Order o : orders) {
+          List<Order> orders = (List<Order>) session.getAttribute("orders");
+          String msg = (String) session.getAttribute("message");
+          if (msg != null) { out.println("<p style='color:green;'>" + msg + "</p>"); session.removeAttribute("message"); }
         %>
-                    <div>
-                        <p>Order ID: <%= o.getOrderID() %></p>
-                        <p>Date: <%= o.getOrderDate() %></p>
-                        <p>Total: $<%= o.getTotalPrice() %></p>
-                        <p>Status: <%= o.getOrderStatus() ? "Submitted" : "Saved" %></p>
-                        <hr>
-                    </div>
         <%
-                }
-            } else {
+          if (orders != null && !orders.isEmpty()) {
         %>
-                <p>No orders found.</p>
+          <table border="1" cellpadding="5">
+            <tr>
+              <th>ID</th><th>Date</th><th>Total</th><th>Status</th><th>Actions</th>
+            </tr>
+            <%
+              for (Order o : orders) {
+                boolean submitted = o.getOrderStatus();
+                String fmtDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(o.getOrderDate());
+            %>
+            <tr>
+              <td><%= o.getOrderID()  %></td>
+              <td><%= fmtDate         %></td>
+              <td>$<%= o.getTotalPrice() %></td>
+              <td><%= submitted ? "Submitted" : "Saved" %></td>
+              <td>
+                <% if (!submitted) { %>
+                  <!-- Update form -->
+                  <form action="order" method="post" style="display:inline">
+                    <input type="hidden" name="action"     value="update"/>
+                    <input type="hidden" name="orderID"    value="<%= o.getOrderID() %>"/>
+                    Date:    <input type="date" name="orderDate"    value="<%= fmtDate %>"/>
+                    Total:   <input type="text" name="totalPrice"   value="<%= o.getTotalPrice() %>"/>
+                    Status:  <select name="orderStatus">
+                               <option value="false" selected>Saved</option>
+                               <option value="true">Submitted</option>
+                             </select>
+                    <input type="submit" value="Update"/>
+                  </form>
+                  <!-- Cancel form -->
+                  <form action="order" method="post" style="display:inline">
+                    <input type="hidden" name="action"  value="cancel"/>
+                    <input type="hidden" name="orderID" value="<%= o.getOrderID() %>"/>
+                    <input type="submit" value="Cancel"/>
+                  </form>
+                <% } %>
+              </td>
+            </tr>
+            <% } %>
+          </table>
         <%
-            }
+          } else {
+            out.println("<p>No orders found.</p>");
+          }
         %>
-    </div>
+      </body>
 
 </body>
 </html>
