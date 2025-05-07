@@ -62,7 +62,8 @@
 <body>
 <h1>Checkout</h1>
 <!--still need to add the order summary on top or something once we have that---->
-<form>
+<form action="order" method="post">
+    <input type="hidden" name="action" value="checkout">
 <label for="nameOnCard">Name on Card: </label>
 <input type="text" id="nameOnCard" name="nameOnCard" required>
 <br><br>

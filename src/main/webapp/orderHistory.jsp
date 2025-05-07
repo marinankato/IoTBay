@@ -1,4 +1,7 @@
 <%@page import="model.User"%>
+<%@page import="java.util.List"%>
+<%@page import="model.Order"%>
+
 <html>
 <title>IoTBay | Order History</title>
 
@@ -61,6 +64,30 @@
     <div class="header">
         <a href="dashboard.jsp" class="logo">IoTBay</a>
         <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
+    </div>
+
+    <div style="margin-top: 100px; width: 80%;">
+        <h2>Your Order History</h2>
+        <%
+            List<Order> orders = (List<Order>) session.getAttribute("orders");
+            if (orders != null && !orders.isEmpty()) {
+                for (Order o : orders) {
+        %>
+                    <div>
+                        <p>Order ID: <%= o.getOrderID() %></p>
+                        <p>Date: <%= o.getOrderDate() %></p>
+                        <p>Total: $<%= o.getTotalPrice() %></p>
+                        <p>Status: <%= o.getOrderStatus() ? "Submitted" : "Saved" %></p>
+                        <hr>
+                    </div>
+        <%
+                }
+            } else {
+        %>
+                <p>No orders found.</p>
+        <%
+            }
+        %>
     </div>
 
 </body>
