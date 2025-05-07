@@ -19,7 +19,8 @@ public class DBUserManager {
     // Find user by email and password in the database
     public User findUser(String email, String password) throws SQLException {
         // setup the select sql query string
-        PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM Users WHERE email = ? AND password = ?");
+        String sql = "SELECT * FROM Users WHERE email = ? AND password = ?";
+        PreparedStatement ps = this.conn.prepareStatement(sql);
         ps.setString(1, email);
         ps.setString(2, password);
 
@@ -34,23 +35,18 @@ public class DBUserManager {
             String lastName = rs.getString("lastName");
             String phoneNo = rs.getString("phoneNo");
             String role = rs.getString("role");
-            Date loginDate = rs.getDate("loginDate");
-            Date logoutDate = rs.getDate("logoutDate");
+            // Date loginDate = rs.getDate("loginDate");
+            // Date logoutDate = rs.getDate("logoutDate");
 
             // Create and return a new User object with the retrieved data
-            return new User(email, password);
-            // return new User(userID, firstName, lastName, email, password, role, phoneNo,
-            // loginDate, logoutDate);
+            // return new User(email, password);
+            return new User(firstName, lastName, email, password, role, phoneNo);
         }
-
         return null;
     }
 
     // Add a user-data into the database
-    public void addUser(String email, String name, String password, String gender, String favcol) throws SQLException { // code
-                                                                                                                        // for
-                                                                                                                        // add-operation
-        // st.executeUpdate("sql query");
+    public void addUser(String email, String name, String password, String gender, String favcol) throws SQLException {
         PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM Users WHERE email = ? AND password = ?");
 
         ps.setString(1, email);
