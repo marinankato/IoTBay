@@ -6,4 +6,4 @@ DROP TABLE Users;
 -- or specific row:
 
 -- DELETE FROM Users;
--- WHERE UserID=1;
+-- WHERE email="example@gmail.com";
