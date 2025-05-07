@@ -4,7 +4,7 @@ import java.sql.*;
 public class DBOrderManager {
     private Connection conn;
 
-    public DBOrderManager(Connection conn) {
+    public DBOrderManager(Connection conn) throws SQLException {
         this.conn = conn;
     }
 
@@ -19,22 +19,4 @@ public class DBOrderManager {
         }
     }
 
-    public List<Order> fetchOrdersByUser(int userID) throws SQLException {
-        List<Order> orders = new ArrayList<>();
-        String sql = "SELECT * FROM Orders WHERE userID = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userID);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                orders.add(new Order(
-                        rs.getInt("orderID"),
-                        rs.getInt("userID"),
-                        rs.getDate("orderDate"),
-                        rs.getInt("totalPrice"),
-                        rs.getBoolean("orderStatus")));
-            }
-        }
-
-        return orders;
-    }
 }
