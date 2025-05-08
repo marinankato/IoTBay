@@ -2,6 +2,10 @@ package model.dao;
 
 import model.User;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /* 
 * DBManager is the primary DAO class to interact with the database. 
@@ -106,6 +110,30 @@ public class DBUserManager {
             return new User(firstName, lastName, phoneNo, email, password, role);
         }
         return null;
+    }
+
+    //method to get all the users for the table
+    public List<Map<String, String>> getAllUsers() {
+        List<Map<String, String>> allUsers = new ArrayList<>();
+        try {
+            String query = "SELECT * from Users";
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            while(rs.next()) {
+                Map<String, String> user = new HashMap<>();
+                user.put("id", String.valueOf(rs.getInt("id")));
+                user.put("firstName", rs.getString("firstName"));
+                user.put("lastName", rs.getString("lastName"));
+                user.put("phoneNo", rs.getString("phoneNo"));
+                user.put("email", rs.getString("email"));
+                user.put("role", rs.getString("role"));
+                allUsers.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getStackTrace());
+        }
+        return allUsers;
     }
 
 }
