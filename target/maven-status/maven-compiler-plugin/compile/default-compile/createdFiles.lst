@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 model\dao\DBUser.class
 controller\LoginServlet.class
 model\Cart.class
@@ -18,3 +19,25 @@ controller\RegisterServlet.class
 model\dao\DBOrderConnector.class
 model\User.class
 controller\Validator.class
+=======
+model/dao/DBOrder.class
+model/Order.class
+model/dao/DBUserManager.class
+controller/DeleteUserServlet.class
+model/dao/DBOrderManager.class
+model/Product.class
+controller/LoginServlet.class
+model/dao/DBOrderConnector.class
+controller/RegisterServlet.class
+controller/TestUserDB.class
+controller/OrderServlet.class
+model/Shipment.class
+controller/EditUserServlet.class
+controller/ConnServlet.class
+model/dao/DBUserConnector.class
+model/Cart.class
+controller/Validator.class
+model/User.class
+model/dao/DBUser.class
+model/Payment.class
+>>>>>>> 0791ad2 (fixed imports in order servlet)

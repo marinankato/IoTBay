@@ -5,17 +5,21 @@ import model.User;
 import model.dao.DBOrderConnector;
 import model.dao.DBOrderManager;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-import java.io.IOException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+//import javax.servlet.http.*;
+//import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.text.SimpleDateFormat;
 
-@WebServlet("/OrderServlet")
+@WebServlet("/order")
 public class OrderServlet extends HttpServlet {
     private static final SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -49,7 +53,7 @@ public class OrderServlet extends HttpServlet {
             List<Order> orders = (orderID != null || orderDate != null)
                 ? mgr.searchOrders(user.getUserID(), orderID, orderDate)
                 : mgr.getOrdersByUser(user.getUserID());
-
+            
             session.setAttribute("orders", orders);
             connFactory.closeConnection();
         } catch (ClassNotFoundException | SQLException e) {
@@ -110,6 +114,5 @@ public class OrderServlet extends HttpServlet {
         }
 
         // redirect back through doGet so the list refreshes
-        resp.sendRedirect("order");
-    }
+        req.getRequestDispatcher("orderHistory.jsp").forward(req, resp);    }
 }
