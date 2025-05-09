@@ -98,7 +98,7 @@
     <h2>IoT Device Catalogue</h2>
 
     <div class="form-section">
-        <h3>🔍 Search Devices</h3>
+        <h3>Search Devices</h3>
         <form action="<%= request.getContextPath() %>/devices" method="post">
             <input type="hidden" name="action" value="search" />
             <input type="text" name="name" placeholder="Device name" />
@@ -164,7 +164,7 @@
 
     <% if (isStaff) { %>
     <div class="form-section">
-        <h3>➕ Add New Device</h3>
+        <h3>Add New Device</h3>
         <form action="<%= request.getContextPath() %>/devices" method="post">
             <input type="text" name="name" placeholder="Device name" required />
             <input type="text" name="type" placeholder="Device type" required />

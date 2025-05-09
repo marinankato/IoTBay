@@ -54,7 +54,7 @@ public class IoTDeviceServlet extends HttpServlet {
                 request.getRequestDispatcher("/iotdeviceView.jsp").forward(request, response);
             }
 
-            // 权限检查逻辑（只有 staff 可以修改、添加、删除）
+            // Handle delete, update, and add actions
             else if ("delete".equals(action)) {
                 if (!"staff".equalsIgnoreCase(role)) {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, "Only staff can delete.");
