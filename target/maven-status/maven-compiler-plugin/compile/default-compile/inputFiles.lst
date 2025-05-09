@@ -1,10 +1,12 @@
 D:\Desktop\IoTBay\src\main\java\controller\OrderServlet.java
 D:\Desktop\IoTBay\src\main\java\model\dao\DBOrder.java
+D:\Desktop\IoTBay\src\main\java\model\dao\IoTDeviceDAO.java
 D:\Desktop\IoTBay\src\main\java\model\Payment.java
 D:\Desktop\IoTBay\src\main\java\model\Cart.java
 D:\Desktop\IoTBay\src\main\java\controller\TestUserDB.java
 D:\Desktop\IoTBay\src\main\java\model\dao\DBUser.java
 D:\Desktop\IoTBay\src\main\java\model\Product.java
+D:\Desktop\IoTBay\src\main\java\model\IoTDevice.java
 D:\Desktop\IoTBay\src\main\java\model\Shipment.java
 D:\Desktop\IoTBay\src\main\java\model\dao\DBUserManager.java
 D:\Desktop\IoTBay\src\main\java\controller\DeleteUserServlet.java
@@ -15,6 +17,7 @@ D:\Desktop\IoTBay\src\main\java\controller\ConnServlet.java
 D:\Desktop\IoTBay\src\main\java\controller\LoginServlet.java
 D:\Desktop\IoTBay\src\main\java\model\Order.java
 D:\Desktop\IoTBay\src\main\java\controller\RegisterServlet.java
+D:\Desktop\IoTBay\src\main\java\controller\IoTDeviceServlet.java
 D:\Desktop\IoTBay\src\main\java\model\dao\DBOrderManager.java
 D:\Desktop\IoTBay\src\main\java\controller\Validator.java
 D:\Desktop\IoTBay\src\main\java\model\dao\DBOrderConnector.java

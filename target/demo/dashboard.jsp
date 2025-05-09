@@ -134,7 +134,7 @@
             <img src="./images/cart.jpg">
             <h3>Start Ordering</h3>
             <p>Browse products and start placing your order.</p>
-            <a href="searchProducts.jsp">Go to Shop</a>
+            <a href="<%= request.getContextPath() %>/devices">Go to Shop</a>
         </div>
 
         <div class="box">

@@ -1,3 +1,13 @@
+DROP TABLE IF EXISTS iot_device;
+CREATE TABLE iot_device (
+
+    device_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    device_name VARCHAR(100) NOT NULL,
+    device_type VARCHAR(50) NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL
+); 
+DROP TABLE IF EXISTS Users;
 CREATE TABLE "Users" (
     "userID"    INTEGER,
     "firstName"    VARCHAR(50),
@@ -10,7 +20,7 @@ CREATE TABLE "Users" (
     "logoutDate" DATETIME,
     PRIMARY KEY("userID" AUTOINCREMENT)
 );
-
+DROP TABLE IF EXISTS Orders;
 CREATE TABLE "Orders" (
     "orderID"     INTEGER PRIMARY KEY AUTOINCREMENT,
     "userID"      INTEGER,

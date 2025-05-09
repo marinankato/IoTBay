@@ -4,6 +4,7 @@ model\Cart.class
 model\dao\DBOrder.class
 model\dao\DBUserConnector.class
 controller\ConnServlet.class
+model\IoTDevice.class
 controller\OrderServlet.class
 controller\TestUserDB.class
 model\Payment.class
@@ -14,7 +15,9 @@ controller\DeleteUserServlet.class
 controller\EditUserServlet.class
 model\dao\DBOrderManager.class
 model\Product.class
+controller\IoTDeviceServlet.class
 controller\RegisterServlet.class
 model\dao\DBOrderConnector.class
+model\dao\IoTDeviceDAO.class
 model\User.class
 controller\Validator.class
