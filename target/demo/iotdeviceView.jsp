@@ -182,28 +182,28 @@
                     if (devices != null && !devices.isEmpty()) {
                         for (IoTDevice device : devices) {
                 %>
-                <tr>
-                    <td><%= device.getId() %></td>
-                    <td><%= device.getName() %></td>
-                    <td><%= device.getType() %></td>
-                    <td>$<%= String.format("%.2f", device.getPrice()) %></td>
-                    <td><%= device.getQuantity() %></td>
-                    <% if (isStaff) { %>
-                    <td>
-                        <form class="operation" action="<%= request.getContextPath() %>/devices" method="get">
-                            <input type="hidden" name="action" value="edit" />
-                            <input type="hidden" name="id" value="<%= device.getId() %>" />
-                            <input type="submit" value="Edit" />
-                        </form>
+                    <tr>
+                        <td><%= device.getId() %></td>
+                        <td><%= device.getName() %></td>
+                        <td><%= device.getType() %></td>
+                        <td>$<%= String.format("%.2f", device.getPrice()) %></td>
+                        <td><%= device.getQuantity() %></td>
+                        <% if (isStaff) { %>
+                        <td>
+                            <form class="operation" action="<%= request.getContextPath() %>/devices" method="get">
+                                <input type="hidden" name="action" value="edit" />
+                                <input type="hidden" name="id" value="<%= device.getId() %>" />
+                                <input type="submit" value="Edit" />
+                            </form>
 
-                        <form class="operation" action="<%= request.getContextPath() %>/devices" method="post">
-                            <input type="hidden" name="action" value="delete" />
-                            <input type="hidden" name="id" value="<%= device.getId() %>" />
-                            <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this device?');" />
-                        </form>
-                    </td>
-                    <% } %>
-                </tr>
+                            <form class="operation" action="<%= request.getContextPath() %>/devices" method="post">
+                                <input type="hidden" name="action" value="delete" />
+                                <input type="hidden" name="id" value="<%= device.getId() %>" />
+                                <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this device?');" />
+                            </form>
+                        </td>
+                        <% } %>
+                    </tr>
                 <%
                         }
                     } else {
@@ -216,16 +216,16 @@
         </table>
 
         <% if (isStaff) { %>
-        <div class="search-add">
-            <h3>Add New Device</h3>
-            <form action="<%= request.getContextPath() %>/devices" method="post">
-                <input type="text" name="name" placeholder="Device name" required />
-                <input type="text" name="type" placeholder="Device type" required />
-                <input type="number" step="0.01" name="price" placeholder="Price" required />
-                <input type="number" name="quantity" placeholder="Quantity" required />
-                <input type="submit" value="Add Device" />
-            </form>
-        </div>
+            <div class="search-add">
+                <h3>Add New Device</h3>
+                <form action="<%= request.getContextPath() %>/devices" method="post">
+                    <input type="text" name="name" placeholder="Device name" required />
+                    <input type="text" name="type" placeholder="Device type" required />
+                    <input type="number" step="0.01" name="price" placeholder="Price" required />
+                    <input type="number" name="quantity" placeholder="Quantity" required />
+                    <input type="submit" value="Add Device" />
+                </form>
+            </div>
         <% } %>
 
     </body>

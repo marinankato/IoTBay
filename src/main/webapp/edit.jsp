@@ -2,14 +2,15 @@
 <%@ page import="model.User" %>
 
 <%
+    // Check if the user is logged in and has the role of "staff"
     User user = (User) session.getAttribute("user");
     boolean isStaff = user != null && "staff".equalsIgnoreCase(user.getRole());
-
+    // If not, redirect to the devices page
     if (!isStaff) {
         response.sendRedirect(request.getContextPath() + "/devices");
         return;
     }
-
+    // Get the device object from the request
     IoTDevice device = (IoTDevice) request.getAttribute("device");
 %>
 
@@ -144,6 +145,7 @@
             <% String error = (String) request.getAttribute("error"); %>
             <% if (error != null) { %>
                 <p class="error"><%= error %></p>
+                //% Clear the error message after displaying it
             <% } %>
 
             <form action="<%= request.getContextPath() %>/devices" method="post">

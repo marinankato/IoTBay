@@ -18,7 +18,7 @@ public class IoTDevice implements Serializable {
         this.type = type;
         this.price = price;
         this.quantity = quantity;
-    }
+    }// Constructor with parameters
 
     public int getId() {
         return id;
