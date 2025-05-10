@@ -42,7 +42,7 @@ public class IoTDeviceServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         String role = (user != null) ? user.getRole() : "";
-
+        IoTDeviceDAO dao = new IoTDeviceDAO();
         String action = request.getParameter("action");
 
         try {
@@ -74,7 +74,13 @@ public class IoTDeviceServlet extends HttpServlet {
                 String type = request.getParameter("type");
                 double price = Double.parseDouble(request.getParameter("price"));
                 int quantity = Integer.parseInt(request.getParameter("quantity"));
-
+                if (price < 0 || quantity < 0) {
+                    request.setAttribute("error", "Price and quantity must be non-negative.");
+                    IoTDevice device = new IoTDevice(id, name, type, price, quantity);
+                    request.setAttribute("device", device);
+                    request.getRequestDispatcher("/edit.jsp").forward(request, response);
+                    return;
+                }
                 IoTDevice updated = new IoTDevice(id, name, type, price, quantity);
                 new IoTDeviceDAO().updateDevice(updated);
                 response.sendRedirect("devices");
@@ -84,12 +90,16 @@ public class IoTDeviceServlet extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, "Only staff can add.");
                     return;
                 }
-
                 String name = request.getParameter("name");
                 String type = request.getParameter("type");
                 double price = Double.parseDouble(request.getParameter("price"));
                 int quantity = Integer.parseInt(request.getParameter("quantity"));
-
+                if (price < 0 || quantity < 0) {
+                    request.setAttribute("error", "Price and quantity must be non-negative.");
+                    request.setAttribute("devices", dao.getAllDevices());
+                    request.getRequestDispatcher("/iotdeviceView.jsp").forward(request, response);
+                    return;
+                }
                 IoTDevice device = new IoTDevice(0, name, type, price, quantity);
                 new IoTDeviceDAO().addDevice(device);
                 response.sendRedirect("devices");

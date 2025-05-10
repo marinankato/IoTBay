@@ -1,6 +1,5 @@
 <%@ page import="model.IoTDevice" %>
 <%@ page import="model.User" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
     User user = (User) session.getAttribute("user");
@@ -15,93 +14,160 @@
 %>
 
 <html>
-<head>
-    <title>Edit IoT Device</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f9fc;
-            color: #333;
-            padding: 40px;
-        }
+    <head>
+        <title>Edit IoT Device</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f7f9fc;
+                color: #333;
+                padding: 40px;
+                font-size: 18px;
+            }
 
-        h2 {
-            color: #007bff;
-            margin-bottom: 20px;
-        }
+            .header {
+                width: 100%;
+                background-color: #ffffff;
+                padding: 20px 0;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 40px;
+            }
 
-        form {
-            background-color: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-        }
+            .logo {
+                font-size: 2em;
+                font-weight: bold;
+                color: #007bff;
+                text-decoration: none;
+            }
 
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
+            .logo:hover {
+                color: #0056b3;
+            }
 
-        input[type="text"],
-        input[type="number"] {
-            width: 100%;
-            padding: 8px 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
+            .welcomeText {
+                font-size: 1.1em;
+                font-weight: normal;
+                color: #555555;
+                margin-right: 50px;
+            }
 
-        input[type="submit"] {
-            margin-top: 20px;
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
+            .container {
+                max-width: 700px;
+                margin: 0 auto;
+                text-align: left;
+            }
 
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
+            h2 {
+                color: #007bff;
+                margin-bottom: 25px;
+                text-align: center;
+                font-size: 28px;
+                margin-top: 40px;
+            }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #007bff;
-        }
+            form {
+                background-color: #fff;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            }
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <h2>Edit IoT Device</h2>
+            label {
+                display: block;
+                margin-top: 20px;
+                font-weight: bold;
+            }
 
-    <form action="<%= request.getContextPath() %>/devices" method="post">
-        <input type="hidden" name="action" value="update" />
-        <input type="hidden" name="id" value="<%= device.getId() %>" />
+            input[type="text"],
+            input[type="number"] {
+                width: 100%;
+                padding: 12px;
+                margin-top: 8px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+            }
 
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="<%= device.getName() %>" required />
+            input[type="submit"] {
+                margin-top: 25px;
+                background-color: #007bff;
+                color: #fff;
+                padding: 12px 20px;
+                font-size: 18px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+                width: 100%;
+            }
 
-        <label for="type">Type:</label>
-        <input type="text" id="type" name="type" value="<%= device.getType() %>" required />
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
 
-        <label for="price">Price:</label>
-        <input type="number" step="0.01" id="price" name="price" value="<%= device.getPrice() %>" required />
+            .back-link {
+                display: block;
+                margin-top: 25px;
+                text-align: center;
+                text-decoration: none;
+                color: #007bff;
+                font-size: 16px;
+            }
 
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" value="<%= device.getQuantity() %>" required />
+            .back-link:hover {
+                text-decoration: underline;
+            }
 
-        <input type="submit" value="Update Device" />
-    </form>
+            .error {
+                color: red;
+                font-weight: bold;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <a href="dashboard.jsp" class="logo">IoTBay</a>
+            <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
+        </div>
+        <div class="container">
+            <h2>Edit IoT Device</h2>
 
-    <a href="<%= request.getContextPath() %>/devices" class="back-link">← Back to Catalogue</a>
-</body>
+            <% String error = (String) request.getAttribute("error"); %>
+            <% if (error != null) { %>
+                <p class="error"><%= error %></p>
+            <% } %>
+
+            <form action="<%= request.getContextPath() %>/devices" method="post">
+                <input type="hidden" name="action" value="update" />
+                <input type="hidden" name="id" value="<%= device.getId() %>" />
+
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="<%= device.getName() %>" required />
+
+                <label for="type">Type:</label>
+                <input type="text" id="type" name="type" value="<%= device.getType() %>" required />
+
+                <label for="price">Price:</label>
+                <input type="number" step="0.01" id="price" name="price" value="<%= device.getPrice() %>" required />
+
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" value="<%= device.getQuantity() %>" required />
+
+                <input type="submit" value="Update Device" />
+            </form>
+
+            <a href="<%= request.getContextPath() %>/devices" class="back-link"> Back to Catalogue</a>
+        </div>
+    </body>
 </html>
+
+
