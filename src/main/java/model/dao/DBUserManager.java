@@ -136,4 +136,48 @@ public class DBUserManager {
         return allUsers;
     }
 
+    //method to search users
+    public List<Map<String, String>> searchUsers(String searchQuery) {
+        List<Map<String, String>> searchedUsers = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM Users WHERE (firstName LIKE ? AND lastName LIKE ?) OR phoneNo LIKE ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            String searchPattern = "%" + searchQuery + "%";
+
+            ps.setString(1, searchPattern);
+            ps.setString(2, searchPattern);
+            ps.setString(3, searchPattern);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Map<String, String> user = new HashMap<>();
+                user.put("id", String.valueOf(resultSet.getInt("id")));
+                user.put("firstName", resultSet.getString("firstName"));
+                user.put("lastName", resultSet.getString("lastName"));
+                user.put("phoneNo", resultSet.getString("phoneNo"));
+                user.put("email", resultSet.getString("email"));
+                user.put("role", resultSet.getString("role"));
+
+                searchedUsers.add(user);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return searchedUsers;
+    }
+
+
+    //delete users with user id
+    public void deleteUser(int userID) {
+        try {
+            String query = "DELETE FROM Users WHERE userID = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, userID);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }
