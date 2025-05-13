@@ -1,12 +1,14 @@
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import model.dao.DBUserConnector;
-import model.dao.DBUserManager;
+package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import model.dao.DBUserConnector;
+import model.dao.DBUserManager;
 
 public class UserManagementServlet extends HttpServlet {
     private DBUserManager dao;
