@@ -180,4 +180,96 @@ public class DBUserManager {
         }
     }
 
+    public Map<String, String> getUserById(int id) {
+    Map<String, String> user = new HashMap<>();
+    String sql = "SELECT * FROM Users WHERE id = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            user.put("id", String.valueOf(rs.getInt("id")));
+            user.put("firstName", rs.getString("firstName"));
+            user.put("lastName", rs.getString("lastName"));
+            user.put("phoneNo", rs.getString("phoneNo"));
+            user.put("email", rs.getString("email"));
+            user.put("role", rs.getString("role"));
+            user.put("status", rs.getString("status"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return user;
 }
+
+    //update users
+    public void updateUser(int id, String firstName, String lastName, String phoneNo, String email, String role, String status) {
+        String sql = "UPDATE Users SET firstName=?, lastName=?, phoneNo=?, email=?, role=?, status=? WHERE id=?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            ps.setString(3, phoneNo);
+            ps.setString(4, email);
+            ps.setString(5, role);
+            ps.setString(6, status);
+            ps.setInt(7, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //create users properly
+    public void createUser(String parameter, String parameter2, String parameter3, String parameter4, String parameter5,
+            String parameter6) {
+        String sql = "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, parameter);
+            ps.setString(2, parameter2);
+            ps.setString(3, parameter3);
+            ps.setString(4, parameter4);
+            ps.setString(5, parameter5);
+            ps.setString(6, parameter6);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //search users
+    public List<Map<String, String>> searchUsers(String fname, String lname, String phone) {
+        List<Map<String, String>> results = new ArrayList<>();
+        String sql = "SELECT * FROM Users WHERE " +
+                     "(firstName LIKE ? OR ? = '') AND " +
+                     "(lastName LIKE ? OR ? = '') AND " +
+                     "(phoneNo LIKE ? OR ? = '')";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + fname + "%");
+            ps.setString(2, fname);
+            ps.setString(3, "%" + lname + "%");
+            ps.setString(4, lname);
+            ps.setString(5, "%" + phone + "%");
+            ps.setString(6, phone);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Map<String, String> user = new HashMap<>();
+                user.put("id", rs.getString("id"));
+                user.put("firstName", rs.getString("firstName"));
+                user.put("lastName", rs.getString("lastName"));
+                user.put("phoneNo", rs.getString("phoneNo"));
+                user.put("email", rs.getString("email"));
+                user.put("role", rs.getString("role"));
+                results.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+
+}
+
+
+

@@ -15,7 +15,7 @@
 
     <!-- Create User Form -->
     <h3>Create New User</h3>
-    <form action="CreateUserServlet" method="post">
+    <form action="user-management" method="post">
         <div class="form-group">
             First Name: <input type="text" name="firstName" required />
             Last Name: <input type="text" name="lastName" required />
@@ -39,7 +39,7 @@
 
     <!-- Search User -->
     <h3>Search Users</h3>
-    <form action="SearchUserServlet" method="get">
+    <form action="user-management"method="get">
         First Name: <input type="text" name="firstName" />
 	    Last Name: <input type="text" name="lastName" /> <br>
         Phone: <input type="text" name="phone" /> <br>
@@ -48,20 +48,40 @@
 
     <hr/>
 
-    <!-- User List -->
-    <h3>User List</h3>
-    <table>
+    <!-- User List Table -->
+    <h2>User List</h2>
+    <table border="1">
         <thead>
-        <tr>
-            <th>ID</th>
-            <th>Full Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>User Type</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone No</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
         </thead>
+        <tbody>
+            <%
+                UserDAO dao = new UserDAO();
+                List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users");
+                for (Map<String, String> user : users) {
+            %>
+            <tr>
+                <td><%= user.get("id") %></td>
+                <td><%= user.get("firstName") %></td>
+                <td><%= user.get("lastName") %></td>
+                <td><%= user.get("phoneNo") %></td>
+                <td><%= user.get("email") %></td>
+                <td><%= user.get("role") %></td>
+                <td>
+                    <a href="user-management?action=update&id=<%= user.get("id") %>">Update</a> | 
+                    <a href="user-management?action=delete&id=<%= user.get("id") %>">Delete</a>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
     </table>
 </div>
 </body>

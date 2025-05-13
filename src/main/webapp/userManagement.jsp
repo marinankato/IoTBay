@@ -1,3 +1,5 @@
+<%@ page import="java.util.*, model.UserDAO" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>User Management - System Admin</title>
@@ -16,6 +18,7 @@
     <!-- Create User Form -->
     <h3>Create New User</h3>
     <form action="user-management" method="post">
+        <input type="hidden" name="action" value="create" />
         <div class="form-group">
             First Name: <input type="text" name="firstName" required />
             Last Name: <input type="text" name="lastName" required />
@@ -27,7 +30,7 @@
         </div>
         <div class="form-group">
             User Type:
-            <select name="userType">
+            <select name="role">
                 <option value="customer">Customer</option>
                 <option value="staff">Staff</option>
             </select>
@@ -39,35 +42,63 @@
 
     <!-- Search User -->
     <h3>Search Users</h3>
-    <form action="user-management"method="get">
+    <form action="user-management" method="get">
         First Name: <input type="text" name="firstName" />
-	    Last Name: <input type="text" name="lastName" /> <br>
-        Phone: <input type="text" name="phone" /> <br>
+        Last Name: <input type="text" name="lastName" />
+        Phone: <input type="text" name="phone" />
         <button type="submit">Search</button>
     </form>
 
     <hr/>
 
+    <!-- Update User Form -->
+    <%
+        Map<String, String> editingUser = (Map<String, String>) request.getAttribute("editingUser");
+        if (editingUser != null) {
+    %>
+        <h3>Update User</h3>
+        <form action="user-management" method="post">
+            <input type="hidden" name="action" value="updateUser" />
+            <input type="hidden" name="userId" value="<%= editingUser.get("id") %>" />
+            <div class="form-group">
+                First Name: <input type="text" name="firstName" value="<%= editingUser.get("firstName") %>" required />
+                Last Name: <input type="text" name="lastName" value="<%= editingUser.get("lastName") %>" required />
+                Phone: <input type="text" name="phone" value="<%= editingUser.get("phoneNo") %>" required />
+            </div>
+            <div class="form-group">
+                Email: <input type="email" name="email" value="<%= editingUser.get("email") %>" required />
+                Role:
+                <select name="role">
+                    <option value="customer" <%= "customer".equals(editingUser.get("role")) ? "selected" : "" %>>Customer</option>
+                    <option value="staff" <%= "staff".equals(editingUser.get("role")) ? "selected" : "" %>>Staff</option>
+                </select>
+                Status:
+                <select name="status">
+                    <option value="active" <%= "active".equals(editingUser.get("status")) ? "selected" : "" %>>Active</option>
+                    <option value="inactive" <%= "inactive".equals(editingUser.get("status")) ? "selected" : "" %>>Inactive</option>
+                </select>
+            </div>
+            <button type="submit">Update User</button>
+        </form>
+        <hr/>
+    <%
+        }
+    %>
+
     <!-- User List Table -->
     <h2>User List</h2>
-    <table border="1">
+    <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone No</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Actions</th>
+                <th>ID</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <%
-                UserDAO dao = new UserDAO();
-                List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users");
+        <%
+            List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users");
+            if (users != null) {
                 for (Map<String, String> user : users) {
-            %>
+        %>
             <tr>
                 <td><%= user.get("id") %></td>
                 <td><%= user.get("firstName") %></td>
@@ -75,12 +106,16 @@
                 <td><%= user.get("phoneNo") %></td>
                 <td><%= user.get("email") %></td>
                 <td><%= user.get("role") %></td>
+                <td><%= user.get("status") %></td>
                 <td>
-                    <a href="user-management?action=update&id=<%= user.get("id") %>">Update</a> | 
+                    <a href="user-management?action=update&id=<%= user.get("id") %>">Update</a> |
                     <a href="user-management?action=delete&id=<%= user.get("id") %>">Delete</a>
                 </td>
             </tr>
-            <% } %>
+        <%
+                }
+            }
+        %>
         </tbody>
     </table>
 </div>

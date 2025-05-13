@@ -4,6 +4,7 @@
 
 
 <%
+    // Check if the user is logged in and has the role of "staff"
     User user = (User) session.getAttribute("user");
     boolean isStaff = user != null && "staff".equalsIgnoreCase(user.getRole());
 %>
@@ -136,7 +137,7 @@
             .search-add {
                 margin-bottom: 40px;
             }
-        </style>
+        </style> 
     </head>
     <body>
         <div class="header">
@@ -172,12 +173,15 @@
                     <th>Price</th>
                     <th>Quantity</th>
                     <% if (isStaff) { %>
-                        <th>Actions</th>
+                        <th>Actions</th> 
+                        <%-- if is staff can see actions --%>
                     <% } %>
                 </tr>
             </thead>
             <tbody>
                 <%
+                    // Retrieve the list of devices from the request attribute
+                    // This should be set in the servlet handling the request
                     List<IoTDevice> devices = (List<IoTDevice>) request.getAttribute("devices");
                     if (devices != null && !devices.isEmpty()) {
                         for (IoTDevice device : devices) {
@@ -190,6 +194,7 @@
                         <td><%= device.getQuantity() %></td>
                         <% if (isStaff) { %>
                         <td>
+
                             <form class="operation" action="<%= request.getContextPath() %>/devices" method="get">
                                 <input type="hidden" name="action" value="edit" />
                                 <input type="hidden" name="id" value="<%= device.getId() %>" />

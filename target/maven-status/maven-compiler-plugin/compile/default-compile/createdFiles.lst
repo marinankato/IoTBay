@@ -1,4 +1,5 @@
 model\dao\DBUser.class
+UserManagementServlet.class
 controller\LoginServlet.class
 model\Cart.class
 model\dao\DBOrder.class
