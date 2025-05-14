@@ -20,7 +20,6 @@ import model.dao.DBUserManager;
 public class LoginServlet extends HttpServlet {
 
     @Override
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -63,20 +62,15 @@ public class LoginServlet extends HttpServlet {
                 session.removeAttribute("errorMsg");
                 // 13-save the logged in user object to the session
                 session.setAttribute("user", user);
-
                 // get the current datetime and log it for the user
-
                 LocalDateTime loginDateTime = LocalDateTime.now();
-                session.setAttribute("loginTime", loginDateTime);
-                // System.out.println("User " + user.getEmail() + " logged in at: " + loginDateTime);
                 try {
                     dbmanager.updateUserLoginDate(user.getEmail(), loginDateTime);
-                    // dbmanager.addAccessDate(user.getUserID(), loginDateTime);
+                    dbmanager.addAccessDate(user.getUserID(), "logged in", loginDateTime);
                 } catch (SQLException e) {
                     Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, e);
                     e.printStackTrace();
                 }
-
                 // 14- redirect user to the main page
                 response.sendRedirect("dashboard.jsp");
             } else {

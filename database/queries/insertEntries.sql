@@ -49,3 +49,26 @@ INSERT INTO iot_device (device_name, device_type, unit_price, quantity) VALUES
 ('Ceiling Light Panel', 'Lighting', 89.99, 40),
 ('CO2 Monitor', 'Sensor', 139.99, 18),
 ('Wi-Fi Repeater', 'Networking', 49.99, 55);
+
+INSERT INTO AccessLogs (userId, action, accessDate) 
+VALUES 
+('1', 'logged in', '2025-05-14 20:47:07'),
+('2', 'logged in', '2025-05-14 20:47:07'),
+('3', 'logged in', '2025-05-14 20:47:07'),
+('4', 'logged in', '2025-05-14 20:47:07'),
+('5', 'logged in', '2025-05-14 20:47:07'),
+('6', 'logged in', '2025-05-14 20:47:07'),
+('7', 'logged in', '2025-05-14 20:47:07'),
+('8', 'logged in', '2025-05-14 20:47:07'),
+('9', 'logged in', '2025-05-14 20:47:07'),
+('10', 'logged in', '2025-05-14 20:47:07'),
+('1', 'logged out', '2025-05-14 21:57:07'),
+('2', 'logged out', '2025-05-14 21:47:07'),
+('3', 'logged out', '2025-05-14 22:47:07'),
+('4', 'logged out', '2025-05-14 21:47:07'),
+('5', 'logged out', '2025-05-14 20:57:07'),
+('6', 'logged out', '2025-05-14 20:49:07'),
+('7', 'logged out', '2025-05-14 20:51:07'),
+('8', 'logged out', '2025-05-14 20:57:07'),
+('9', 'logged out', '2025-05-14 20:52:07'),
+('10', 'logged out', '2025-05-14 20:48:57');
