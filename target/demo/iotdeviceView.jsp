@@ -12,6 +12,12 @@
     <head>
         <title>IoT Device Catalogue</title>
         <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f7f9fc;
@@ -56,7 +62,7 @@
                 font-size: 1.1em;
                 font-weight: normal;
                 color: #555555;
-                margin-right: 50px;
+                margin-left: auto;
             }
 
             th,td { 
@@ -142,7 +148,7 @@
     <body>
         <div class="header">
             <a href="dashboard.jsp" class="logo">IoTBay</a>
-            <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
+            <span class="welcomeText">Logged in as: <%= user.getFirstName() %></span>
         </div>
 
         <h2>IoT Device Catalogue</h2>

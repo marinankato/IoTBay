@@ -9,9 +9,50 @@
         table, th, td { border: 1px solid #ddd; border-collapse: collapse; padding: 10px; }
         th { background-color: #f2f2f2; }
         .form-group { margin-bottom: 10px; }
+
+        .header {
+            width: 100%;
+            background-color: #ffffff;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .logo {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .logo:hover {
+            color: #0056b3;
+        }
+
+        /* Welcome text on the top-right of the header */
+        .welcomeText {
+            font-size: 1.1em;
+            font-weight: normal;
+            color: #555555;
+            margin-left: auto;
+        }
     </style>
 </head>
+
+<% User user = (User)session.getAttribute("user"); %>
 <body>
+    <div class="header">
+        <a href="dashboard.jsp" class="logo">IoTBay</a>
+        <span class="welcomeText">Logged in as: <%= user.getFirstName() %></span>
+    </div>
+
 <div class="container">
     <h2>System Admin - User Management</h2>
 
@@ -93,7 +134,8 @@
                 <th>ID</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <%-- not quite working as yet so am just commenting out for the moment --%>
+        <%-- <tbody>
         <%
             List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users");
             if (users != null) {
@@ -116,7 +158,7 @@
                 }
             }
         %>
-        </tbody>
+        </tbody> --%>
     </table>
 </div>
 </body>
