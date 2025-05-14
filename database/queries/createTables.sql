@@ -30,4 +30,11 @@ CREATE TABLE "Orders" (
     FOREIGN KEY("userID") REFERENCES Users("userID")
 );
 
--- Enable: User can view their access logs and search the log records based on the date
+DROP TABLE IF EXISTS Access_Logs;
+CREATE TABLE Access_Logs (
+    "logId"     INTEGER PRIMARY KEY AUTOINCREMENT,
+    "userID"      INTEGER,
+    "loginDate" DATETIME,
+    "logoutDate" DATETIME,
+    FOREIGN KEY("userID") REFERENCES Users("userID")
+); 
