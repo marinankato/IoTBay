@@ -53,7 +53,7 @@
     }
 
     /* Style for buttons inside <ul> */
-    ul li button {
+    ul button {
         display: inline-block;
         padding: 10px 20px;
         margin: 10px;
@@ -93,6 +93,7 @@
                 <a href="login.jsp"><button>Login</button></a>
                 <a href="register.jsp"><button>Register</button></a>
             </li>
+            <a href="GuestLoginServlet"><button>Continue as Guest</button></a>
         </ul>
     <%
         } else {

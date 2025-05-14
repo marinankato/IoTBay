@@ -22,6 +22,8 @@ model/dao/DBOrderConnector.class
 controller/RegisterServlet.class
 controller/OrderServlet.class
 controller/EditUserServlet.class
+controller/GuestLoginServlet.class
 controller/Validator.class
+model/AccessLogs.class
 model/User.class
 model/dao/DBUser.class
