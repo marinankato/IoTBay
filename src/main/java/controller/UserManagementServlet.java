@@ -7,7 +7,7 @@ import java.util.Map;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
-import model.dao.DBUserConnector;
+
 import model.dao.DBUserManager;
 
 public class UserManagementServlet extends HttpServlet {
