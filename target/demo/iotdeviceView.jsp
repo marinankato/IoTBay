@@ -2,16 +2,16 @@
 <%@ page import="model.IoTDevice" %>
 <%@ page import="model.User" %>
 
-
 <%
     // Check if the user is logged in and has the role of "staff"
     User user = (User) session.getAttribute("user");
     boolean isStaff = user != null && "staff".equalsIgnoreCase(user.getRole());
+    boolean isCustomer = user != null && "customer".equalsIgnoreCase(user.getRole());
 %>
 <html>
     <head>
-        <title>IoT Device Catalogue</title>
-        <style>
+    <title>IoT Device Catalogue</title>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -181,6 +181,8 @@
                     <% if (isStaff) { %>
                         <th>Actions</th> 
                         <%-- if is staff can see actions --%>
+                        <% } else if (isCustomer) { %>
+                        <th>Add to Cart</th>
                     <% } %>
                 </tr>
             </thead>
@@ -213,6 +215,14 @@
                                 <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this device?');" />
                             </form>
                         </td>
+                        <% } else if (isCustomer) { %>
+                            <td>
+                                <form action="<%= request.getContextPath() %>/cart" method="post">
+                                    <input type="hidden" name="deviceId" value="<%= device.getId() %>" />
+                                    <input type="number" name="quantity" min="1" max="<%= device.getQuantity() %>" value="1" required />
+                                    <input type="submit" value="Add to Cart" />
+                                </form>
+                            </td>
                         <% } %>
                     </tr>
                 <%
