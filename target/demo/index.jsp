@@ -102,7 +102,7 @@
         <ul>
             <li class="status">You are logged in as: <%= user.getEmail() %></li>
             <li class="buttons-container">
-                <button><a href="logout.jsp">Logout</a></button>
+                <button><a href="LogoutServlet">Logout</a></button>
                 <button><a href="editUser.jsp">View Account</a></button>
             </li>
         </ul>

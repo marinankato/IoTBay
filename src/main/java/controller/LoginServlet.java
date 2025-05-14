@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,6 +63,12 @@ public class LoginServlet extends HttpServlet {
                 session.removeAttribute("errorMsg");
                 // 13-save the logged in user object to the session
                 session.setAttribute("user", user);
+
+                LocalDateTime loginTime = LocalDateTime.now();
+                session.setAttribute("loginTime", loginTime);
+                System.out.println("User " + user.getEmail() + " logged in at: " + loginTime);
+                // dbmanager.AccessLogsDBManager(user.getUserId(), loginTime);
+
                 // 14- redirect user to the main page
                 response.sendRedirect("dashboard.jsp");
             } else {

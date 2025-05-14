@@ -157,7 +157,7 @@
                 <img src="./images/logout.jpg">
                 <h3>Logout</h3>
                 <p>Logout from your account securely.</p>
-                <a href="logout.jsp">Logout</a>
+                <a href="LogoutServlet">Logout</a>
             </div>
         </section>
 
@@ -190,7 +190,7 @@
                 <img src="./images/logout.jpg">
                 <h3>Logout</h3>
                 <p>Logout from your account securely.</p>
-                <a href="logout.jsp">Logout</a>
+                <a href="LogoutServlet">Logout</a>
             </div>
         </section>
 
@@ -223,7 +223,7 @@
                 <img src="./images/logout.jpg">
                 <h3>Logout</h3>
                 <p>Logout from your account securely.</p>
-                <a href="logout.jsp">Logout</a>
+                <a href="LogoutServlet">Logout</a>
             </div>
         </section>
     <% } else { %>
@@ -248,7 +248,7 @@
             <img src="./images/logout.jpg">
             <h3>Logout</h3>
             <p>Logout from your account securely.</p>
-            <a href="logout.jsp">Logout</a>
+            <a href="LogoutServlet">Logout</a>
         </div>
     </section>
     <% } %>
