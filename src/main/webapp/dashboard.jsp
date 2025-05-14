@@ -140,8 +140,8 @@
         <div class="box">
             <img src="./images/history.jpg">
             <h3>Order History</h3>
-            <p>View your past orders and track their status.</p>
-            <a href="orderHistory.jsp">View Orders</a>
+            <p>View your past orders, create an order and track their status.</p>
+            <a href="<%= request.getContextPath() %>/order">View Orders</a>
         </div>
 
         <div class="box">

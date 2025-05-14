@@ -6,7 +6,8 @@ VALUES
 ('luck', 'Watts','0411222333','customer@gmail.com','password123', 'customer', '2024-11-11 13:23:44', '2024-11-11 13:23:44');
 
 INSERT INTO Orders (userID, orderDate, totalPrice, orderStatus)
-VALUES (1, '2025-05-07', 199.99, 'saved');
+VALUES (2, '2025-05-14',  42.42, 'saved');
+
 
 INSERT INTO iot_device (device_name, device_type, unit_price, quantity) VALUES
 ('Smart Sensor', 'Sensor', 99.99, 50),

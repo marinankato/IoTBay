@@ -1,146 +1,235 @@
-<%@ page import="model.User" %>
-<%@ page import="java.util.List" %>
-<%@ page import="model.Order" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-
+<%@ page language="java"
+         contentType="text/html; charset=UTF-8"
+         import="model.ShoppingCart,model.User,model.Order,model.IoTDevice,java.util.List,java.text.SimpleDateFormat" %>
+<!DOCTYPE html>
 <html>
-<title>IoTBay | Order History</title>
-
-<style>
-	* {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
+<head>
+  <meta charset="UTF-8">
+  <title>IoTBay | Order History</title>
+  <style>
     body {
-        background-color: #f4f4f4;
-        font-family: 'Arial', sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        justify-content: flex-start;
-        padding: 40px 0;
+      font-family: Arial, sans-serif;
+      background-color: #f7f9fc;
+      margin: 0;
+      padding: 40px;
+      color: #333;
     }
 
     .header {
-        width: 100%;
-        background-color: #ffffff;
-        padding: 20px 0;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 40px;
+      width: 100%;
+      background-color: #ffffff;
+      padding: 20px 40px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: fixed;
+      top: 0; left: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
     }
 
     .logo {
-        font-size: 2em;
-        font-weight: bold;
-        color: #007bff;
-        text-decoration: none;
+      font-size: 2em;
+      font-weight: bold;
+      color: #007bff;
+      text-decoration: none;
     }
-
     .logo:hover {
-        color: #0056b3;
+      color: #0056b3;
     }
 
     .welcomeText {
-        font-size: 1.1em;
-        font-weight: normal;
-        color: #555555;
-        margin-left: auto;
-      
-      table { 
-        border-collapse:collapse; margin:20px auto; 
-      }
-
-      th,td { 
-        border:1px solid #ccc; padding:8px; 
-      }
-      
-      form.search { 
-        margin:20px; 
-      }
+      font-size: 1.1em;
+      color: #555555;
+      margin-right: 50px;
     }
-</style>
 
-  <body>
+    .container {
+      max-width: 900px;
+      margin: 100px auto 0;
+      padding: 0 20px;
+    }
 
-<% 
-User user = (User) session.getAttribute("user");
+    h2 {
+      color: #007bff;
+      margin-bottom: 15px;
+    }
+
+    .search-add {
+      margin-bottom: 30px;
+    }
+    form.search {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    input[type="text"],
+    input[type="date"] {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 180px;
+    }
+    input[type="submit"] {
+      padding: 8px 14px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    /* messages */
+    .message {
+      color: green;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+    }
+    th {
+      background-color: #007bff;
+      color: #fff;
+    }
+    tr:hover {
+      background-color: #f1f5ff;
+    }
+
+    .operation {
+      display: inline-block;
+      margin-right: 5px;
+    }
+    .btn-new-order {
+      display: inline-block;
+      padding: 8px 14px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: background-color 0.2s;
+    }
+    .btn-new-order:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<%
+  User user = (User) session.getAttribute("user");
   if (user == null) {
-    response.sendRedirect("login.jsp");
+    response.sendRedirect("login.jsp"); 
     return;
   }
-List<Order> orders = (List<Order>) session.getAttribute("orders");
+  @SuppressWarnings("unchecked")
+  List<Order> orders = (List<Order>) session.getAttribute("orders");
+
+  ShoppingCart cart = (ShoppingCart) session.getAttribute("shoppingCart");
+  int cartCount = (cart == null ? 0 : cart.getItems().size());
 %>
- 	<!-- Header Section with Logo and Welcome Text -->
-    <div class="header">
-        <a href="dashboard.jsp" class="logo">IoTBay</a>
-        <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
-    </div>
+
+
+<div class="header">
+  <a href="dashboard.jsp" class="logo">IoTBay</a>
+  <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
+</div>
+
+<div class="container">
   
-<h1>Your Orders</h1>
+  <h2>Your Orders</h2>
+  <div class="search-add">
+    <a href="devices" class="btn-new-order">New Order</a>
+    <a href="${pageContext.request.contextPath}/cart"
+       class="btn-new-order">
+      View Cart (<%= cartCount %>)
+    </a>
+  </div>
 
-<form action="order" method="get">
-  Search by ID: <input type="text" name="orderID"/>
-  Date:         <input type="date" name="orderDate"/>
-  <input type="submit" value="Search"/>
+  <form class="search"
+  action="<%= request.getContextPath() %>/order"
+  method="get">
+<label>Order ID:
+<input type="text" name="orderID"
+       value="<%= request.getParameter("orderID")==null?"":request.getParameter("orderID") %>"/>
+</label>
+<label>Date:
+<input type="date" name="orderDate"
+       value="<%= request.getParameter("orderDate")==null?"":request.getParameter("orderDate") %>"/>
+</label>
+<button type="submit">Search</button>
 </form>
-<h1>Your Orders</h1>
 
-<form class="search" action="order" method="get">
-  Order ID: <input type="text" name="orderID"/>
-  Date:     <input type="date" name="orderDate"/>
-  <input type="submit" value="Search"/>
-</form>
+<%
+  String error = (String) request.getAttribute("error");
+  if (error != null) {
+%>
+  <p class="error"><%= error %></p>
+<%
+  }
+%>
 
 <% if (orders != null && !orders.isEmpty()) { %>
   <table>
     <tr><th>ID</th><th>Date</th><th>Total</th><th>Status</th><th>Actions</th></tr>
     <% for (Order o : orders) {
-         boolean submitted = o.getOrderStatus();
-         String fmt = new SimpleDateFormat("yyyy-MM-dd").format(o.getOrderDate());
+         boolean sub = o.getOrderStatus();
+         String fmt = new SimpleDateFormat("yyyy-MM-dd")
+                          .format(o.getOrderDate());
     %>
-      <tr>
-        <td><%= o.getOrderID()      %></td>
-        <td><%= fmt                 %></td>
-        <td>$<%= o.getTotalPrice()  %></td>
-        <td><%= submitted ? "Submitted" : "Saved" %></td>
-        <td>
-          <% if (!submitted) { %>
-            <!-- update form -->
-            <form action="order" method="post" style="display:inline">
-              <input type="hidden" name="action"     value="update"/>
-              <input type="hidden" name="orderID"    value="<%= o.getOrderID() %>"/>
-              <input type="date"   name="orderDate"  value="<%= fmt %>"/>
-              <input type="text"   name="totalPrice" value="<%= o.getTotalPrice() %>"/>
-              <select name="orderStatus">
-                <option value="false" selected>Saved</option>
-                <option value="true">Submitted</option>
-              </select>
-              <input type="submit" value="Update"/>
-            </form>
-            <!-- cancel form -->
-            <form action="order" method="post" style="display:inline">
-              <input type="hidden" name="action"  value="cancel"/>
-              <input type="hidden" name="orderID" value="<%= o.getOrderID() %>"/>
-              <input type="submit" value="Cancel"/>
-            </form>
-          <% } %>
-        </td>
-      </tr>
+    <tr>
+      <td><%= o.getOrderID() %></td>
+      <td><%= fmt            %></td>
+      <td>$<%= String.format("%.2f", o.getTotalPrice()) %></td>
+      <td><%= sub ? "Submitted" : "Saved" %></td>
+      <td>
+
+        <% if (!sub) { %>
+        <!-- Update form -->
+        <form action="order" method="post" style="display:inline">
+          <input type="hidden" name="action"    value="update"/>
+          <input type="hidden" name="orderID"   value="<%= o.getOrderID() %>"/>
+          <input type="hidden" name="orderStatus" value="false"/>
+          <input type="date"   name="orderDate"  value="<%= fmt %>" required/>
+          <input type="text"   name="totalPrice" value="<%= String.format("%.2f", o.getTotalPrice()) %>" required/>
+          <input type="submit" value="Update"/>
+        </form>
+        <!-- Cancel form -->
+        <form action="order" method="post" style="display:inline">
+          <input type="hidden" name="action"  value="cancel"/>
+          <input type="hidden" name="orderID" value="<%= o.getOrderID() %>"/>
+          <input type="submit" value="Cancel"/>
+        </form>
+        <% } %>
+      </td>
+    </tr>
     <% } %>
   </table>
 <% } else { %>
   <p>No orders found.</p>
 <% } %>
-
+</div>
 </body>
 </html>

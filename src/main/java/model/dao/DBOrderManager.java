@@ -17,7 +17,7 @@ public class DBOrderManager {
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, order.getRelatedCustomer());
             stmt.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
-            stmt.setInt(3, order.getTotalPrice());
+            stmt.setDouble(3, order.getTotalPrice());
             stmt.setBoolean(4, order.getOrderStatus());
             stmt.executeUpdate();
         }
@@ -59,7 +59,7 @@ public class DBOrderManager {
                       rs.getInt("orderID"),
                       rs.getInt("userID"),
                       rs.getDate("orderDate"),
-                      rs.getInt("totalPrice"),
+                      rs.getDouble("totalPrice"),
                       rs.getBoolean("orderStatus")
                     ));
                 }
@@ -83,7 +83,7 @@ public class DBOrderManager {
         String sql = "UPDATE Orders SET orderDate=?, totalPrice=?, orderStatus=? WHERE orderID=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setDate(1, new java.sql.Date(o.getOrderDate().getTime()));
-            stmt.setInt(2, o.getTotalPrice());
+            stmt.setDouble(2, o.getTotalPrice());
             stmt.setBoolean(3, o.getOrderStatus());
             stmt.setInt(4, o.getOrderID());
             stmt.executeUpdate();
@@ -95,8 +95,16 @@ public class DBOrderManager {
             rs.getInt("orderID"),
             rs.getInt("userID"),
             rs.getDate("orderDate"),
-            rs.getInt("totalPrice"),
+            rs.getDouble("totalPrice"),
             rs.getBoolean("orderStatus")
         );
+    }
+
+    public void deleteOrder(int orderID) throws SQLException {
+        String sql = "DELETE FROM Orders WHERE orderID = ?";
+        try (PreparedStatement p = conn.prepareStatement(sql)) {
+            p.setInt(1, orderID);
+            p.executeUpdate();
+        }
     }
 }

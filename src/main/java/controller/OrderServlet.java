@@ -33,7 +33,6 @@ public class OrderServlet extends HttpServlet {
             return;
         }
 
-        // parse optional filters
         String idParam   = req.getParameter("orderID");
         String dateParam = req.getParameter("orderDate");
         Integer orderID  = (idParam   != null && !idParam.isEmpty())   ? Integer.valueOf(idParam)   : null;
@@ -44,7 +43,6 @@ public class OrderServlet extends HttpServlet {
                 orderDate = new java.sql.Date(d.getTime());
             }
         } catch (Exception ignore) { }
-
         try {
             DBOrderConnector connFactory = new DBOrderConnector();
             Connection conn = connFactory.openConnection();
@@ -53,6 +51,12 @@ public class OrderServlet extends HttpServlet {
             List<Order> orders = (orderID != null || orderDate != null)
                 ? mgr.searchOrders(user.getUserID(), orderID, orderDate)
                 : mgr.getOrdersByUser(user.getUserID());
+
+                if ((orderID != null || orderDate != null) && orders.isEmpty()) {
+                    req.setAttribute("error", "No orders match your search.");
+                    req.getRequestDispatcher("/orderHistory.jsp").forward(req, resp);
+                    return;
+                }
             
             session.setAttribute("orders", orders);
             connFactory.closeConnection();
@@ -60,7 +64,7 @@ public class OrderServlet extends HttpServlet {
             throw new ServletException(e);
         }
 
-        resp.sendRedirect("orderHistory.jsp");
+        req.getRequestDispatcher("/orderHistory.jsp").forward(req, resp);
     }
 
     @Override
@@ -82,7 +86,7 @@ public class OrderServlet extends HttpServlet {
 
             switch (action) {
                 case "checkout":
-                    int total   = Integer.parseInt(req.getParameter("totalPrice"));
+                    double total   = Double.parseDouble(req.getParameter("totalPrice"));
                     Order oNew  = new Order(0, user.getUserID(), new Date(), total, false);
                     mgr.insertOrder(oNew);
                     session.setAttribute("message", "Order placed.");
@@ -90,14 +94,14 @@ public class OrderServlet extends HttpServlet {
 
                 case "cancel":
                     int cancelId = Integer.parseInt(req.getParameter("orderID"));
-                    mgr.updateOrderStatus(cancelId, false);
-                    session.setAttribute("message", "Order cancelled.");
+                    mgr.deleteOrder(cancelId);
+                    req.getSession().setAttribute("message", "Order cancelled.");
                     break;
 
                 case "update":
                     int uid       = Integer.parseInt(req.getParameter("orderID"));
                     Date dt       = DF.parse(req.getParameter("orderDate"));
-                    int price     = Integer.parseInt(req.getParameter("totalPrice"));
+                    double price     = Double.parseDouble(req.getParameter("totalPrice"));
                     boolean stat  = Boolean.parseBoolean(req.getParameter("orderStatus"));
                     Order oUpd    = new Order(uid, user.getUserID(), dt, price, stat);
                     mgr.updateOrder(oUpd);
@@ -113,6 +117,6 @@ public class OrderServlet extends HttpServlet {
             throw new ServletException(e);
         }
 
-        // redirect back through doGet so the list refreshes
-        req.getRequestDispatcher("orderHistory.jsp").forward(req, resp);    }
+        resp.sendRedirect(req.getContextPath() + "/order");
+    }
 }

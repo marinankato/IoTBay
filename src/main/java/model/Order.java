@@ -5,10 +5,10 @@ public class Order implements Serializable{
       int orderID;
       int userID;
       Date orderDate;
-      int totalPrice;
+      double totalPrice;
       boolean orderStatus;
  
-   public Order(int orderID, int userID, Date orderDate, int totalPrice, boolean orderStatus) {
+   public Order(int orderID, int userID, Date orderDate, double totalPrice, boolean orderStatus) {
       this.orderID = orderID;
       this.userID = userID;
       this.orderDate = orderDate;
@@ -22,7 +22,7 @@ public class Order implements Serializable{
       public int getRelatedCustomer(){
          return this.userID;
       }
-      public int getTotalPrice(){
+      public double getTotalPrice(){
          return this.totalPrice; 
       }
       public Date getOrderDate(){
