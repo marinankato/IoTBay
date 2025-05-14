@@ -5,7 +5,7 @@
 </head>
 <body>
     <%
-        session.invalidate();
+        session.invalidate(); //clears the user from session
     %>
     You have been logged out successfully. Click <a href="index.jsp">here</a> to return to home page.
 </body>

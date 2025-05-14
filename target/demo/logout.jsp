@@ -5,7 +5,10 @@
 </head>
 <body>
     <%
-        session.invalidate();
+        // HttpSession session = request.getSession(false);
+        // if (session != null) {
+            session.invalidate(); // This clears all session attributes including "user"
+// }
     %>
     You have been logged out successfully. Click <a href="index.jsp">here</a> to return to home page.
 </body>

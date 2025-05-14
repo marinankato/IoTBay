@@ -90,8 +90,8 @@
         <ul>
             <li class="status">You are not logged in</li>
             <li class="buttons-container">
-                <button><a href="login.jsp"">Login</a></button>
-                <button><a href="register.jsp">Register</a></button>
+                <a href="login.jsp"><button>Login</button></a>
+                <a href="register.jsp"><button>Register</button></a>
             </li>
         </ul>
     <%
