@@ -16,8 +16,8 @@ CREATE TABLE "Users" (
     "email" VARCHAR(150) UNIQUE,
     "password" VARCHAR(50),
     "role" VARCHAR(25),
-    "loginDate" DATETIME,
-    "logoutDate" DATETIME,
+    "loginDate" TEXT,
+    "logoutDate" TEXT,
     PRIMARY KEY("userID" AUTOINCREMENT)
 );
 DROP TABLE IF EXISTS Orders;
@@ -30,11 +30,11 @@ CREATE TABLE "Orders" (
     FOREIGN KEY("userID") REFERENCES Users("userID")
 );
 
-DROP TABLE IF EXISTS Access_Logs;
-CREATE TABLE Access_Logs (
+DROP TABLE IF EXISTS AccessLogs;
+CREATE TABLE AccessLogs (
     "logId"     INTEGER PRIMARY KEY AUTOINCREMENT,
-    "userID"      INTEGER,
-    "loginDate" DATETIME,
-    "logoutDate" DATETIME,
+    "userId"      INTEGER,
+    "action" TEXT CHECK(action IN ('logged in', 'logged out')),
+    "accessDate" TEXT,
     FOREIGN KEY("userID") REFERENCES Users("userID")
 ); 

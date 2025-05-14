@@ -1,7 +1,7 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class User implements Serializable {
 
@@ -12,8 +12,8 @@ public class User implements Serializable {
     String email;
     String password;
     String role;
-    Date loginDate;
-    Date logoutDate;
+    LocalDateTime loginDate;
+    LocalDateTime logoutDate;
 
     public User() {
     }
@@ -88,19 +88,19 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public Date getLoginDate() {
+    public LocalDateTime getLoginDate() {
         return this.loginDate;
     }
 
-    public void setLoginDate(Date loginDate) {
+    public void setLoginDate(LocalDateTime loginDate) {
         this.loginDate = loginDate;
     }
 
-    public Date getLogoutDate() {
+    public LocalDateTime getLogoutDate() {
         return this.logoutDate;
     }
 
-    public void setLogoutDate(Date logoutDate) {
+    public void setLogoutDate(LocalDateTime logoutDate) {
         this.logoutDate = logoutDate;
     }
 

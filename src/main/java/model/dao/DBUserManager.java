@@ -2,6 +2,9 @@ package model.dao;
 
 import model.User;
 import java.sql.*;
+// import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +66,7 @@ public class DBUserManager {
         System.out.println(rowsInserted + " user inserted");
     }
 
-    // update a user details in the database
+    // update a user's details in the database
     public void updateUser(String firstName, String lastName, String phoneNo, String email, String password, String originalEmail) throws SQLException {
         String sql = "UPDATE Users SET firstName = ?, lastName = ?, phoneNo = ?, email = ?, password = ? WHERE email = ?";
         PreparedStatement ps = this.conn.prepareStatement(sql);
@@ -91,6 +94,91 @@ public class DBUserManager {
         } else {
             System.out.println("No user found with email " + email);
         }
+    }
+
+    // // set/update the user to hold their most recent login date/time 
+    // public void setLoginDate(String email, LocalDateTime loginDateTime) throws SQLException {
+    //     String query = "UPDATE Users SET loginDate = ? WHERE email = ?";
+    //     PreparedStatement ps = this.conn.prepareStatement(query);
+
+    //     // Format the datetime as a string SQLite can understand (e.g. "2025-05-14 18:32:00")
+    //     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    //     String formattedDate = loginDateTime.format(formatter);
+
+    //     ps.setString(1, formattedDate);
+    //     ps.setString(2, email);
+
+    //     int rowsUpdated = ps.executeUpdate();
+    //     System.out.println(rowsUpdated + " login timestamp updated for " + email);
+    // }
+
+    //  set/update the user to hold their most recent login date/time 
+    public void updateUserLoginDate(String email, LocalDateTime loginDateTime) throws SQLException {
+        String query = "UPDATE Users SET loginDate = ? WHERE email = ?";
+        PreparedStatement ps = this.conn.prepareStatement(query);
+
+        // Format the datetime as a string SQLite can understand (e.g. "2025-05-14 18:32:00")
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = loginDateTime.format(formatter);
+
+        ps.setString(1, formattedDate);
+        ps.setString(2, email);
+
+        int rowsUpdated = ps.executeUpdate();
+        System.out.println(rowsUpdated + " login timestamp updated for " + email);
+    }
+
+    //  set/update the user to hold their most recent logout date/time
+    public void updateUserLogoutDate(String email, LocalDateTime logoutDateTime) throws SQLException {
+        String query = "UPDATE Users SET logoutDate = ? WHERE email = ?";
+        PreparedStatement ps = this.conn.prepareStatement(query);
+
+        // Format the datetime as a string SQLite can understand (e.g. "2025-05-14 18:32:00")
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = logoutDateTime.format(formatter);
+
+        ps.setString(1, formattedDate);
+        ps.setString(2, email);
+
+        int rowsUpdated = ps.executeUpdate();
+        System.out.println(rowsUpdated + " logout timestamp updated for " + email);
+    }
+
+    // date, action, user id
+    public int addAccessDate(int userId, LocalDateTime loginDateTime) throws SQLException {
+        String query = "INSERT INTO AccessLogs (userId, loginDate) VALUES (?, ?)";
+        PreparedStatement ps = this.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+    
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = loginDateTime.format(formatter);
+    
+        ps.setInt(1, userId);
+        ps.setString(2, formattedDate);
+    
+        int rowsInserted = ps.executeUpdate();
+        ResultSet rs = ps.getGeneratedKeys();
+    
+        int logId = -1;
+        if (rs.next()) {
+            logId = rs.getInt(1);
+        }
+    
+        System.out.println(rowsInserted + " login timestamp added for userId: " + userId + ", logId: " + logId);
+        return logId;
+    }
+
+    public void updateLogoutDate(int logId, LocalDateTime logoutDateTime) throws SQLException {
+        String query = "UPDATE AccessLogs SET logoutDate = ? WHERE logId = ?";
+        PreparedStatement ps = this.conn.prepareStatement(query);
+    
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = logoutDateTime.format(formatter);
+    
+        ps.setString(1, formattedDate);
+        ps.setInt(2, logId);
+    
+        int rowsUpdated = ps.executeUpdate();
+        System.out.println(rowsUpdated + " logout timestamp updated in access log for logId: " + logId);
     }
 
     public User findUserEmail(String email) throws SQLException{
