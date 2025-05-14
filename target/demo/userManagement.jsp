@@ -1,4 +1,4 @@
-<%@ page import="java.util.*, model.UserDAO" %>
+<%@ page import="java.util.*, model.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
