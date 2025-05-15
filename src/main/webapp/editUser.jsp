@@ -201,6 +201,18 @@
 
     <div class="box">
         <h3>Access Logs</h3>
+
+        <%-- filter the date to view logs --%>
+        <form action="EditUserServlet" method="get">
+            <label for="filterDate" style="font-weight: bold; color: #333333;">Filter by Date:</label>
+            <%
+                String filterDate = request.getParameter("filterDate");
+                if (filterDate == null) filterDate = "";
+            %>
+            <input type="date" id="filterDate" name="filterDate" value="<%= filterDate %>">
+            <input type="submit" value="Filter">
+        </form>
+        
         <table>
             <tr>
                 <th>Action</th>

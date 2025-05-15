@@ -13,8 +13,7 @@ public class AccessLogs implements Serializable {
     public AccessLogs() {
     }
 
-    public AccessLogs(int logId, int userID, String action, LocalDateTime accessDate) {
-        this.logId = logId;
+    public AccessLogs(int userID, String action, LocalDateTime accessDate) {
         this.userID = userID;
         this.action = action;
         this.accessDate = accessDate;
