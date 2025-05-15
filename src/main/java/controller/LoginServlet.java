@@ -72,7 +72,7 @@ public class LoginServlet extends HttpServlet {
                     e.printStackTrace();
                 }
                 // 14- redirect user to the main page
-                response.sendRedirect("dashboard.jsp");
+                request.getRequestDispatcher("dashboard.jsp").forward(request, response);
             } else {
             // 15-set user does not exist error to the session
             session.setAttribute("errorMsg", "The login credentials don't match.");

@@ -253,10 +253,10 @@
     </section>
     <% } %>
 
-<jsp:include page="/LoginServlet" flush="true" />
+<%-- <jsp:include page="/LoginServlet" flush="true" />
 <jsp:include page="/ConnServlet" flush="true" />
 <jsp:include page="/RegisterServlet" flush="true" />
-<jsp:include page="/EditUserServlet" flush="true" />
+<jsp:include page="/EditUserServlet" flush="true" /> --%>
 
 </body>
 </html>

@@ -1,4 +1,7 @@
 <%@ page import="model.User"%>
+<%@ page import="model.AccessLogs" %>
+<%@ page import="java.util.List" %>
+
 <html>
 <head>
 <style>
@@ -59,7 +62,10 @@
 </style>
 </head>
 
-<% User user = (User)session.getAttribute("user"); %>
+<% 
+User user = (User)session.getAttribute("user");
+List<AccessLogs> logs = (List<AccessLogs>) request.getAttribute("accessLogs"); 
+%>
 
 <body>
   <div class="header">
@@ -120,6 +126,32 @@
       }
     }
   </script>
+
+  <h3>Access Logs</h3>
+  <table border="1" cellpadding="8" cellspacing="0">
+    <tr>
+      <th>Action</th>
+      <th>Access Date</th>
+    </tr>
+    <%
+      if (logs != null && !logs.isEmpty()) {
+          for (AccessLogs log : logs) {
+    %>
+      <tr>
+        <td><%= log.getAction() %></td>
+        <td><%= log.getAccessDate().format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")) %></td>
+      </tr>
+    <%
+          }
+      } else {
+    %>
+      <tr>
+        <td colspan="2">No access logs found.</td>
+      </tr>
+    <%
+      }
+    %>
+  </table>
 
 </body>
 </html>

@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,8 +12,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
+import model.AccessLogs;
 import model.User;
+import model.dao.AccessLogsDBManager;
 import model.dao.DBUserManager;
 
 @WebServlet("/EditUserServlet")
@@ -63,4 +65,31 @@ public class EditUserServlet extends HttpServlet {
             }
         }
     }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        AccessLogsDBManager dbmanager = (AccessLogsDBManager) session.getAttribute("manager");
+        if (dbmanager == null) {
+            throw new IOException("Can't find DB Manager");
+        }
+
+        List<AccessLogs> logs;
+        try {
+            logs = dbmanager.getLogsByUserId(user.getUserID());
+            request.setAttribute("accessLogs", logs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        request.getRequestDispatcher("editUser.jsp").forward(request, response);
+    }
+    
 }

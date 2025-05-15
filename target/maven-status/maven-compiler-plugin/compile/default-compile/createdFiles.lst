@@ -1,5 +1,6 @@
 controller/DeleteUserServlet.class
 model/Product.class
+model/dao/AccessLogsDBConnector.class
 controller/TestUserDB.class
 model/Shipment.class
 controller/ConnServlet.class
@@ -20,11 +21,13 @@ model/ShoppingCart.class
 controller/LoginServlet.class
 model/dao/DBOrderConnector.class
 controller/RegisterServlet.class
+model/dao/AccessLogsDB.class
 controller/OrderServlet.class
 controller/LogoutServlet.class
 controller/EditUserServlet.class
 controller/GuestLoginServlet.class
 controller/Validator.class
 model/AccessLogs.class
+model/dao/AccessLogsDBManager.class
 model/User.class
 model/dao/DBUser.class
