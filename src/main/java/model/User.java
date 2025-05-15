@@ -23,13 +23,26 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(String firstName, String lastName, String phoneNo, String email, String password, String role) {
+    public User(int userId, String firstName, String lastName, String phoneNo, String email, String password, String role) {
+        this.userID = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNo = phoneNo;
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    public User(int userId, String firstName, String lastName, String phoneNo, String email, String password, String role, LocalDateTime loginDate, LocalDateTime logoutDate) {
+        this.userID = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNo = phoneNo;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.loginDate = loginDate;
+        this.logoutDate = logoutDate;
     }
 
     public int getUserID() {

@@ -37,23 +37,24 @@ public class DBUserManager {
         // search the ResultSet for a user using the parameters
         if (rs.next()) {
             // If a match is found, retrieve user data from the ResultSet
+            int userId = rs.getInt("userID"); 
             String firstName = rs.getString("firstName");
             String lastName = rs.getString("lastName");
             String phoneNo = rs.getString("phoneNo");
             String role = rs.getString("role");
-            // Date loginDate = rs.getDate("loginDate");
-            // Date logoutDate = rs.getDate("logoutDate");
+            Date loginDate = rs.getDate("loginDate");
+            Date logoutDate = rs.getDate("logoutDate");
 
             // Create and return a new User object with the retrieved data
-            return new User(firstName, lastName, phoneNo, email, password, role);
+            return new User(userId, firstName, lastName, phoneNo, email, password, role);
         }
         return null;
     }
 
     // Add a user-data into the database
-    public void addUser(String firstName, String lastName, String phoneNo, String email, String password, String role) throws SQLException {
+    public int addUser(String firstName, String lastName, String phoneNo, String email, String password, String role) throws SQLException {
         String query = "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = this.conn.prepareStatement(query);
+        PreparedStatement ps = this.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS); // also get the auto-generated userId
         ps.setString(1, firstName);
         ps.setString(2, lastName);
         ps.setString(3, phoneNo);
@@ -61,7 +62,17 @@ public class DBUserManager {
         ps.setString(5, password);
         ps.setString(6, role);
         int rowsInserted = ps.executeUpdate();
-        System.out.println(rowsInserted + " user inserted");
+
+        if (rowsInserted == 0) {
+            throw new SQLException("Creating user failed, no rows inserted.");
+        }
+
+        ResultSet generatedKeys = ps.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            return generatedKeys.getInt(1); // this is the userId
+        } else {
+            throw new SQLException("Creating user failed, no ID obtained.");
+        }
     }
 
     // update a user's details in the database
@@ -107,7 +118,7 @@ public class DBUserManager {
         ps.setString(2, email);
 
         int rowsUpdated = ps.executeUpdate();
-        System.out.println(rowsUpdated + " login timestamp updated for " + email);
+        System.out.println(rowsUpdated + " login timestamp updated for " + email + " at " + formattedDate);
     }
 
     //  set/update the user to hold their most recent logout date/time
@@ -123,7 +134,7 @@ public class DBUserManager {
         ps.setString(2, email);
 
         int rowsUpdated = ps.executeUpdate();
-        System.out.println(rowsUpdated + " logout timestamp updated for " + email);
+        System.out.println(rowsUpdated + " logout timestamp updated for " + email + " at " + formattedDate);
     }
 
     // store user id, action (login/logout) and date 
@@ -139,7 +150,7 @@ public class DBUserManager {
         ps.setString(3, formattedDate);
     
         int rowsInserted = ps.executeUpdate();
-        System.out.println(rowsInserted + " access timestamp added for userId: " + userId);
+        System.out.println(rowsInserted + " access timestamp added for userId:" + userId + " at " + formattedDate);
     }
 
     public User findUserEmail(String email) throws SQLException{
@@ -150,13 +161,17 @@ public class DBUserManager {
 
         if (rs.next()) {
             // If a match is found, retrieve user data from the ResultSet
+            int userId = rs.getInt("userID"); 
             String firstName = rs.getString("firstName");
             String lastName = rs.getString("lastName");
             String phoneNo = rs.getString("phoneNo");
             String password = rs.getString("password");
             String role = rs.getString("role");
+            Date loginDate = rs.getDate("loginDate");
+            Date logoutDate = rs.getDate("logoutDate");
 
-            return new User(firstName, lastName, phoneNo, email, password, role);
+            // Create and return a new User object with the retrieved data
+            return new User(userId, firstName, lastName, phoneNo, email, password, role);
         }
         return null;
     }

@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,6 +33,12 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String role = request.getParameter("role");
         
+        if (role == null || (!role.equals("customer") && !role.equals("staff"))) {
+            session.setAttribute("errorMsg", "Please select a valid role.");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
+        }
+
         // 5- retrieve the manager instance from session
         DBUserManager dbmanager = (DBUserManager) session.getAttribute("manager");
         if (dbmanager == null) {
@@ -64,14 +71,17 @@ public class RegisterServlet extends HttpServlet {
         } else {
             // they are new so need to be added onto database
             try {
-                dbmanager.addUser(firstName, lastName, phoneNo, email, password, role);
-                user = dbmanager.findUser(email, password);
+                int userId = dbmanager.addUser(firstName, lastName, phoneNo, email, password, role);
+                dbmanager.updateUserLoginDate(email, LocalDateTime.now());
+
+                user = new User(userId, firstName, lastName, phoneNo, email, password, role);
                 session.setAttribute("user", user);
+                dbmanager.addAccessDate(user.getUserID(), "logged in", LocalDateTime.now());
             } catch (SQLException e) {
                 Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, e);
                 e.printStackTrace();
             }
-            response.sendRedirect("dashboard.jsp");
+            request.getRequestDispatcher("dashboard.jsp").forward(request, response);
         }
     }
 }
