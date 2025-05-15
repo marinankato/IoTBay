@@ -149,8 +149,8 @@
             <div class="box">
                 <img src="./images/user.jpg">
                 <h3>Account Settings</h3>
-                <p>Update your personal information and settings.</p>
-                <a href="EditUserServlet">Edit Profile</a>
+                <p>Update your personal information and view your access logs.</p>
+                <a href="EditUserServlet">View Profile</a>
             </div>
 
             <div class="box">
@@ -182,8 +182,8 @@
             <div class="box">
                 <img src="./images/user.jpg">
                 <h3>Account Settings</h3>
-                <p>Update your personal information and settings.</p>
-                <a href="EditUserServlet">Edit Profile</a>
+                <p>Update your personal information and view your access logs.</p>
+                <a href="EditUserServlet">View Profile</a>
             </div>
 
             <div class="box">
@@ -215,8 +215,8 @@
             <div class="box">
                 <img src="./images/user.jpg">
                 <h3>Account Settings</h3>
-                <p>Update your personal information and settings.</p>
-                <a href="EditUserServlet">Edit Profile</a>
+                <p>Update your personal information and view your access logs.</p>
+                <a href="EditUserServlet">View Profile</a>
             </div>
 
             <div class="box">

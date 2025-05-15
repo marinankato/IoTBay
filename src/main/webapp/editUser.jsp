@@ -4,7 +4,9 @@
 
 <html>
 <head>
-<style>
+  <meta charset="UTF-8">
+  <title>Edit Profile | IoTBay</title>    
+  <style>
     * {
         margin: 0;
         padding: 0;
@@ -18,15 +20,14 @@
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
-        justify-content: flex-start;
-        padding: 40px 0;
+        padding-top: 100px;
     }
 
     .header {
         width: 100%;
         background-color: #ffffff;
-        padding: 20px 0;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+        padding: 20px 40px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         position: fixed;
         top: 0;
         left: 0;
@@ -34,7 +35,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 40px;
     }
 
     .logo {
@@ -48,110 +48,192 @@
         color: #0056b3;
     }
 
-    /* Welcome text on the top-right of the header */
     .welcomeText {
         font-size: 1.1em;
-        font-weight: normal;
         color: #555555;
-        margin-left: auto;
     }
-    
-    .editing {
-     margin-top: 50px; 
+
+    .profile-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 30px;
+        width: 90%;
+        max-width: 1200px;
+        margin-top: 30px;
     }
-</style>
+
+    .box {
+        background-color: #ffffff;
+        flex: 1 1 45%;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2, h3 {
+        margin-bottom: 20px;
+        color: #007bff;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+    .checkbox-container {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .checkbox-container label {
+        margin-right: 10px;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .delete-button {
+        margin-top: 15px;
+        background-color: #dc3545;
+    }
+
+    .delete-button:hover {
+        background-color: #c82333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    td {
+        color: #555;
+    }
+
+    .no-logs {
+        text-align: center;
+        color: #999;
+    }
+  </style>
 </head>
 
-<% 
-User user = (User)session.getAttribute("user");
-List<AccessLogs> logs = (List<AccessLogs>) request.getAttribute("accessLogs"); 
+<%
+  User user = (User) session.getAttribute("user");
+  List<AccessLogs> logs = (List<AccessLogs>) request.getAttribute("accessLogs");
 %>
 
 <body>
   <div class="header">
-    <a href="dashboard.jsp" class="logo">IoTBay</a>        
+    <a href="dashboard.jsp" class="logo">IoTBay</a>
     <span class="welcomeText">Logged in as: <%= user.getFirstName() %></span>
   </div>
 
-  <div class="editing">
-    <h2>My Account </h2>
-    <!-- Form to display current user parameters and allow password change -->
-    <form action="EditUserServlet" method="post">
-      <label for="firstName">First Name:</label>
-      <input type="text" id="firstName" name="firstName" value="<%= user.getFirstName() %>">
-      <br><br>
+  <div class="profile-container">
+    <div class="box">
+      <h2>Edit Profile</h2>
+        <form action="EditUserServlet" method="post">
+          <label for="firstName">First Name:</label>
+          <input type="text" id="firstName" name="firstName" value="<%= user.getFirstName() %>" required>
 
-      <label for="lastName">Last Name:</label>
-      <input type="text" id="lastName" name="lastName" value="<%= user.getLastName() %>">
-      <br><br>
+          <label for="lastName">Last Name:</label>
+          <input type="text" id="lastName" name="lastName" value="<%= user.getLastName() %>" required>
 
-      <label for="phoneNo">Phone Number:</label>
-      <input type="text" id="phoneNo" name="phoneNo" value="<%= user.getPhoneNo() %>">
-      <br><br>
+          <label for="phoneNo">Phone Number:</label>
+          <input type="text" id="phoneNo" name="phoneNo" value="<%= user.getPhoneNo() %>" required>
 
-      <input type="hidden" name="originalEmail" value="<%= user.getEmail() %>">
-      <label for="email">Email:</label>
-      <input type="text" id="email" name="email" value="<%= user.getEmail() %>">
-      <br><br>
-      
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" value="<%= user.getPassword() %>">
-      <br><br>
-      
-      <!-- Checkbox to toggle password visibility -->
-      <label for="showPassword">Show Password</label>
-      <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
-      <br><br>
-      
-      <input type="submit" value="Save">
-    </form>
+          <input type="hidden" name="originalEmail" value="<%= user.getEmail() %>">
+          <label for="email">Email:</label>
+          <input type="text" id="email" name="email" value="<%= user.getEmail() %>" required>
 
-    <form action="DeleteUserServlet" method="post" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
-      <input type="hidden" name="email" value="<%= user.getEmail() %>">
-      <input type="submit" value="Delete Account" style="background-color: red; color: white;">
-    </form>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" value="<%= user.getPassword() %>" required>
+
+          <div class="checkbox-container">
+              <label for="showPassword">Show Password</label>
+              <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+          </div>
+
+          <input type="submit" value="Save Changes">
+        </form>
+
+        <form action="DeleteUserServlet" method="post"
+              onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+            <input type="hidden" name="email" value="<%= user.getEmail() %>">
+            <input type="submit" class="delete-button" value="Delete Account">
+        </form>
+    </div>
+
+    <div class="box">
+        <h3>Access Logs</h3>
+        <table>
+            <tr>
+                <th>Action</th>
+                <th>Access Date</th>
+            </tr>
+            <%
+                if (logs != null && !logs.isEmpty()) {
+                    for (AccessLogs log : logs) {
+            %>
+                <tr>
+                    <td><%= log.getAction() %></td>
+                    <td><%= log.getAccessDate().format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")) %></td>
+                </tr>
+            <%
+                    }
+                } else {
+            %>
+                <tr>
+                    <td colspan="2" class="no-logs">No access logs found.</td>
+                </tr>
+            <%
+                }
+            %>
+        </table>
+    </div>
   </div>
 
   <script>
-    // Function to toggle the password visibility
     function togglePasswordVisibility() {
-      var passwordField = document.getElementById("password");
-      var checkbox = document.getElementById("showPassword");
-
-      // If the checkbox is checked, show the password, otherwise hide it
-      if (checkbox.checked) {
-        passwordField.type = "text"; // Unmask the password
-      } else {
-        passwordField.type = "password"; // Mask the password
-      }
+      const passwordField = document.getElementById("password");
+      const checkbox = document.getElementById("showPassword");
+      passwordField.type = checkbox.checked ? "text" : "password";
     }
   </script>
-
-  <h3>Access Logs</h3>
-  <table border="1" cellpadding="8" cellspacing="0">
-    <tr>
-      <th>Action</th>
-      <th>Access Date</th>
-    </tr>
-    <%
-      if (logs != null && !logs.isEmpty()) {
-          for (AccessLogs log : logs) {
-    %>
-      <tr>
-        <td><%= log.getAction() %></td>
-        <td><%= log.getAccessDate().format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")) %></td>
-      </tr>
-    <%
-          }
-      } else {
-    %>
-      <tr>
-        <td colspan="2">No access logs found.</td>
-      </tr>
-    <%
-      }
-    %>
-  </table>
-
 </body>
 </html>
