@@ -77,7 +77,7 @@ public class EditUserServlet extends HttpServlet {
             return;
         }
 
-        AccessLogsDBManager dbmanager = (AccessLogsDBManager) session.getAttribute("manager");
+        AccessLogsDBManager dbmanager = (AccessLogsDBManager) session.getAttribute("logsManager");
         if (dbmanager == null) {
             throw new IOException("Can't find DB Manager");
         }

@@ -150,7 +150,7 @@
                 <img src="./images/user.jpg">
                 <h3>Account Settings</h3>
                 <p>Update your personal information and settings.</p>
-                <a href="editUser.jsp">Edit Profile</a>
+                <a href="EditUserServlet">Edit Profile</a>
             </div>
 
             <div class="box">
@@ -183,7 +183,7 @@
                 <img src="./images/user.jpg">
                 <h3>Account Settings</h3>
                 <p>Update your personal information and settings.</p>
-                <a href="editUser.jsp">Edit Profile</a>
+                <a href="EditUserServlet">Edit Profile</a>
             </div>
 
             <div class="box">
@@ -216,7 +216,7 @@
                 <img src="./images/user.jpg">
                 <h3>Account Settings</h3>
                 <p>Update your personal information and settings.</p>
-                <a href="editUser.jsp">Edit Profile</a>
+                <a href="EditUserServlet">Edit Profile</a>
             </div>
 
             <div class="box">

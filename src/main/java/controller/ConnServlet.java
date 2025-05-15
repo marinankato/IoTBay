@@ -20,6 +20,7 @@ public class ConnServlet extends HttpServlet {
 
     private DBUserConnector db;
     private DBUserManager manager;
+    private AccessLogsDBManager logsManager;
     private Connection conn;
 
     @Override // Create and instance of DBConnector for the deployment session
@@ -37,13 +38,16 @@ public class ConnServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         conn = db.openConnection();
+
         try {
             manager = new DBUserManager(conn);
+            logsManager = new AccessLogsDBManager(conn);
         } catch (SQLException ex) {
             Logger.getLogger(ConnServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         // export the DB manager to the view-session (JSPs)
         session.setAttribute("manager", manager);
+        session.setAttribute("logsManager", logsManager);
     }
 
     @Override // Destroy the servlet and release the resources of the application (terminate
