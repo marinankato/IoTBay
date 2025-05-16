@@ -45,13 +45,6 @@ public class OrderServlet extends HttpServlet {
         // 2) actually load them
         orders = mgr.getOrdersByUser(user.getUserID());
 
-        // 3) immediately log what came back
-        System.out.println(">>> fetched " + orders.size() 
-            + " orders for userID=" + user.getUserID());                   // <<<<
-        for (Order o : orders) {
-          System.out.println("    " + o);
-        }
-
         cf.closeConnection();
       } catch (Exception e) {
         throw new ServletException(e);
