@@ -71,8 +71,8 @@ public class LoginServlet extends HttpServlet {
                     Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, e);
                     e.printStackTrace();
                 }
-                // 14- redirect user to the main page
-                request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+                // 14- redirect user to the main page(show login success message)
+                request.getRequestDispatcher("welcome.jsp").forward(request, response);
             } else {
             // 15-set user does not exist error to the session
             session.setAttribute("errorMsg", "The login credentials don't match.");

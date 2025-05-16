@@ -63,36 +63,22 @@
 </style>
 
 <%
-    User user = (User) session.getAttribute("user"); // Check if user is already in session
-    String email = request.getParameter("email");
-    String password = request.getParameter("password");
-
-    if (email != null && password != null) {
-        // Check the credentials
-        if ("admin@gmail.com".equals(email) && "password123".equals(password)) {
-            user = new User(email, password);
-            session.setAttribute("user", user);
-            %>       
-            <body>
-                <div class="container">
-                    <img src="./images/green_tick.jpg">
-
-                    <div class="welcomeMessage">
-                    <h1>Welcome <%=user.getEmail() %>!</h1>
-                    <%-- <p>Your password is <%=user.getPassword()%></p> --%>
-                    <a href="dashboard.jsp">Continue</a>
-                    </div>
-                </div>
-                <jsp:include page="/LoginServlet" flush="true" />
-            </body>
-         
-       <% } else { %>
-       <%-- Login failed, show error message and redirect to login page --%>
-            <script type="text/javascript">
-                alert('Login Failed! Invalid credentials please try again.');
-                setTimeout(function() { window.location.href = 'login.jsp'; }, 300);
-            </script>
-       <% }
+    User user = (User) session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("login.jsp");
+        return;
     }
-%>
+%> 
+<body>
+    <div class="container">
+        <img src="./images/green_tick.jpg">
+
+        <div class="welcomeMessage">
+        <h1>Welcome <%=user.getFirstName() %>!</h1>
+        <%-- <p>Your password is <%=user.getPassword()%></p> --%>
+        <a href="dashboard.jsp">Continue to Dashboard</a>
+        </div>
+    </div>
+</body>
+
 </html>
