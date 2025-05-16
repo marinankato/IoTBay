@@ -7,6 +7,12 @@
   <meta charset="UTF-8">
   <title>IoTBay | Order History</title>
   <style>
+    * {
+       margin: 0;
+       padding: 0;
+        box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background-color: #f7f9fc;
@@ -39,9 +45,10 @@
     }
 
     .welcomeText {
-      font-size: 1.1em;
-      color: #555555;
-      margin-right: 50px;
+        font-size: 1.1em;
+        font-weight: normal;
+        color: #555555;
+        margin-left: auto;
     }
 
     .container {

@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #e3f2fd, #ffffff);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -14,68 +14,73 @@
             margin: 0;
         }
 
-        /* login container style */
         .register {
             background-color: #ffffff;
-            padding: 20px 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px color: #0000001A;;
-            text-align: center;
-            width: 300px;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            width: 350px;
         }
 
         .register h2 {
-            margin-bottom: 20px;
-            color: #333333;
+            margin-bottom: 25px;
+            color: #007bff;
+            font-weight: bold;
         }
 
-        /* input style */
+        .register label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-size: 14px;
+            text-align: left;
+        }
+
         .register input[type="text"],
-        .register input[type="password"] {
+        .register input[type="password"],
+        .register select {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+            padding: 10px 12px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
+            border-radius: 5px;
+            font-size: 15px;
+            background-color: #fdfdfd;
         }
 
-        /* submit button style */
+        .register select {
+            background-color: #fefefe;
+            cursor: pointer;
+        }
+
         .register input[type="submit"] {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .register input[type="submit"]:hover {
             background-color: #0056b3;
         }
 
-        /* label style */
-        .register label {
-            display: block;
-            text-align: left;
-            margin: 10px 0 5px;
-            color: #555555;
-        }
-
-
         .have-account {
-            margin-top: 15px;
+            margin-top: 20px;
             text-align: center;
             font-size: 14px;
-            color: #444444;
+            color: #444;
         }
 
         .have-account a {
             color: #007bff;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: bold;
         }
 
         .have-account a:hover {
@@ -85,10 +90,12 @@
         .errorMessage {
             background-color: #f8d7da;
             color: #721c24;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 10px 12px;
+            margin-bottom: 20px;
             border-left: 5px solid #f5c6cb;
             border-radius: 4px;
+            font-size: 14px;
+            text-align: left;
         }
 
     </style>
@@ -118,12 +125,20 @@
 
             <label for="phoneNo">Phone Number:</label>
             <input type="text" name="phoneNo" placeholder="Phone Number" required>
+
+            <label for="role">Registering as:</label>
+            <select name="role" required>
+                <option value="">Select Role</option>
+                <option value="customer">Customer</option>
+                <option value="staff">Staff</option>
+            </select>
             
             <input type="submit" value="Register">
         </form>
 
         <div class="have-account">
         <p>Already have an account? <a href="login.jsp">Login</a></p>
+        <p>Continue as a Guest? <a href="GuestLoginServlet">Click here</a></p>
         </div>
     </div>
 

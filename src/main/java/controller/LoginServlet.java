@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +20,6 @@ import model.dao.DBUserManager;
 public class LoginServlet extends HttpServlet {
 
     @Override
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -62,8 +62,17 @@ public class LoginServlet extends HttpServlet {
                 session.removeAttribute("errorMsg");
                 // 13-save the logged in user object to the session
                 session.setAttribute("user", user);
-                // 14- redirect user to the main page
-                response.sendRedirect("dashboard.jsp");
+                // get the current datetime and log it for the user
+                LocalDateTime loginDateTime = LocalDateTime.now();
+                try {
+                    dbmanager.updateUserLoginDate(user.getEmail(), loginDateTime);
+                    dbmanager.addAccessDate(user.getUserID(), "logged in", loginDateTime);
+                } catch (SQLException e) {
+                    Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, e);
+                    e.printStackTrace();
+                }
+                // 14- redirect user to the main page(show login success message)
+                request.getRequestDispatcher("welcome.jsp").forward(request, response);
             } else {
             // 15-set user does not exist error to the session
             session.setAttribute("errorMsg", "The login credentials don't match.");

@@ -2,6 +2,8 @@ package model.dao;
 
 import model.User;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,12 +37,13 @@ public class DBUserManager {
         // search the ResultSet for a user using the parameters
         /*if (rs.next()) {
             // If a match is found, retrieve user data from the ResultSet
+            int userId = rs.getInt("userID"); 
             String firstName = rs.getString("firstName");
             String lastName = rs.getString("lastName");
             String phoneNo = rs.getString("phoneNo");
             String role = rs.getString("role");
-            // Date loginDate = rs.getDate("loginDate");
-            // Date logoutDate = rs.getDate("logoutDate");
+            Date loginDate = rs.getDate("loginDate");
+            Date logoutDate = rs.getDate("logoutDate");
 
             // Create and return a new User object with the retrieved data
             // return new User(email, password);
@@ -62,9 +65,9 @@ public class DBUserManager {
     }
 
     // Add a user-data into the database
-    public void addUser(String firstName, String lastName, String phoneNo, String email, String password, String role) throws SQLException {
+    public int addUser(String firstName, String lastName, String phoneNo, String email, String password, String role) throws SQLException {
         String query = "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = this.conn.prepareStatement(query);
+        PreparedStatement ps = this.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS); // also get the auto-generated userId
         ps.setString(1, firstName);
         ps.setString(2, lastName);
         ps.setString(3, phoneNo);
@@ -72,10 +75,20 @@ public class DBUserManager {
         ps.setString(5, password);
         ps.setString(6, role);
         int rowsInserted = ps.executeUpdate();
-        System.out.println(rowsInserted + " user inserted");
+
+        if (rowsInserted == 0) {
+            throw new SQLException("Creating user failed, no rows inserted.");
+        }
+
+        ResultSet generatedKeys = ps.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            return generatedKeys.getInt(1); // this is the userId
+        } else {
+            throw new SQLException("Creating user failed, no ID obtained.");
+        }
     }
 
-    // update a user details in the database
+    // update a user's details in the database
     public void updateUser(String firstName, String lastName, String phoneNo, String email, String password, String originalEmail) throws SQLException {
         String sql = "UPDATE Users SET firstName = ?, lastName = ?, phoneNo = ?, email = ?, password = ? WHERE email = ?";
         PreparedStatement ps = this.conn.prepareStatement(sql);
@@ -105,6 +118,54 @@ public class DBUserManager {
         }
     }
 
+    //  set/update the user to hold their most recent login date/time 
+    public void updateUserLoginDate(String email, LocalDateTime loginDateTime) throws SQLException {
+        String query = "UPDATE Users SET loginDate = ? WHERE email = ?";
+        PreparedStatement ps = this.conn.prepareStatement(query);
+
+        // Format the datetime as a string SQLite can understand (e.g. "2025-05-14 18:32:00")
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = loginDateTime.format(formatter);
+
+        ps.setString(1, formattedDate);
+        ps.setString(2, email);
+
+        int rowsUpdated = ps.executeUpdate();
+        System.out.println(rowsUpdated + " login timestamp updated for " + email + " at " + formattedDate);
+    }
+
+    //  set/update the user to hold their most recent logout date/time
+    public void updateUserLogoutDate(String email, LocalDateTime logoutDateTime) throws SQLException {
+        String query = "UPDATE Users SET logoutDate = ? WHERE email = ?";
+        PreparedStatement ps = this.conn.prepareStatement(query);
+
+        // Format the datetime as a string SQLite can understand (e.g. "2025-05-14 18:32:00")
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = logoutDateTime.format(formatter);
+
+        ps.setString(1, formattedDate);
+        ps.setString(2, email);
+
+        int rowsUpdated = ps.executeUpdate();
+        System.out.println(rowsUpdated + " logout timestamp updated for " + email + " at " + formattedDate);
+    }
+
+    // store user id, action (login/logout) and date 
+    public void addAccessDate(int userId, String action, LocalDateTime accessDate) throws SQLException {
+        String query = "INSERT INTO AccessLogs (userId, action, accessDate) VALUES (?, ?, ?)";
+        PreparedStatement ps = this.conn.prepareStatement(query);
+    
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = accessDate.format(formatter);
+    
+        ps.setInt(1, userId);
+        ps.setString(2, action);
+        ps.setString(3, formattedDate);
+    
+        int rowsInserted = ps.executeUpdate();
+        System.out.println(rowsInserted + " access timestamp added for userId:" + userId + " at " + formattedDate);
+    }
+
     public User findUserEmail(String email) throws SQLException{
         String sql = "SELECT * FROM Users WHERE email = ?";
         PreparedStatement ps = this.conn.prepareStatement(sql);
@@ -113,13 +174,17 @@ public class DBUserManager {
 
         if (rs.next()) {
             // If a match is found, retrieve user data from the ResultSet
+            int userId = rs.getInt("userID"); 
             String firstName = rs.getString("firstName");
             String lastName = rs.getString("lastName");
             String phoneNo = rs.getString("phoneNo");
             String password = rs.getString("password");
             String role = rs.getString("role");
+            Date loginDate = rs.getDate("loginDate");
+            Date logoutDate = rs.getDate("logoutDate");
 
-            return new User(firstName, lastName, phoneNo, email, password, role);
+            // Create and return a new User object with the retrieved data
+            return new User(userId, firstName, lastName, phoneNo, email, password, role);
         }
         return null;
     }
@@ -213,7 +278,7 @@ public class DBUserManager {
     return user;
 }
 
-    //update users
+    //update users search with id
     public void updateUser(int id, String firstName, String lastName, String phoneNo, String email, String role, String status) {
         String sql = "UPDATE Users SET firstName=?, lastName=?, phoneNo=?, email=?, role=?, status=? WHERE id=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {

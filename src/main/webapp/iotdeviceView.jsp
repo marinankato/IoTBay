@@ -2,16 +2,22 @@
 <%@ page import="model.IoTDevice" %>
 <%@ page import="model.User" %>
 
-
 <%
     // Check if the user is logged in and has the role of "staff"
     User user = (User) session.getAttribute("user");
     boolean isStaff = user != null && "staff".equalsIgnoreCase(user.getRole());
+    boolean isCustomer = user != null && "customer".equalsIgnoreCase(user.getRole());
 %>
 <html>
     <head>
-        <title>IoT Device Catalogue</title>
-        <style>
+    <title>IoT Device Catalogue</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f7f9fc;
@@ -56,7 +62,7 @@
                 font-size: 1.1em;
                 font-weight: normal;
                 color: #555555;
-                margin-right: 50px;
+                margin-left: auto;
             }
 
             th,td { 
@@ -142,7 +148,7 @@
     <body>
         <div class="header">
             <a href="dashboard.jsp" class="logo">IoTBay</a>
-            <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
+            <span class="welcomeText">Logged in as: <%= user.getFirstName() %></span>
         </div>
 
         <h2>IoT Device Catalogue</h2>
@@ -175,6 +181,8 @@
                     <% if (isStaff) { %>
                         <th>Actions</th> 
                         <%-- if is staff can see actions --%>
+                        <% } else if (isCustomer) { %>
+                        <th>Add to Cart</th>
                     <% } %>
                 </tr>
             </thead>
@@ -207,6 +215,14 @@
                                 <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this device?');" />
                             </form>
                         </td>
+                        <% } else if (isCustomer) { %>
+                            <td>
+                                <form action="<%= request.getContextPath() %>/cart" method="post">
+                                    <input type="hidden" name="deviceId" value="<%= device.getId() %>" />
+                                    <input type="number" name="quantity" min="1" max="<%= device.getQuantity() %>" value="1" required />
+                                    <input type="submit" value="Add to Cart" />
+                                </form>
+                            </td>
                         <% } %>
                     </tr>
                 <%

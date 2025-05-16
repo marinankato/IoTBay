@@ -119,7 +119,15 @@
     }
 </style>
 
-<% User user = (User) session.getAttribute("user"); %>
+<%
+    User user = (User) session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+    // check the user's role
+    String role = user.getRole();
+%>
 
 <body>
     <!-- Header Section with Logo and Welcome Text -->
@@ -128,7 +136,99 @@
         <span class="welcomeText">Logged in as: <%= user.getFirstName() %></span>
     </div>
 
-    <!-- Dashboard Content Section -->
+    <% if ("admin".equalsIgnoreCase(role)) { %>
+    <!-- Admin dashboard content -->
+        <section id="dashboard">
+            <div class="box">
+                <img src="./images/user_access.jpg">
+                <h3>User Records</h3>
+                <p>Manage and view all existing user accounts.</p>
+                <a href="userManagement.jsp">View User Accounts</a>
+            </div>
+
+            <div class="box">
+                <img src="./images/user.jpg">
+                <h3>Account Settings</h3>
+                <p>Update your personal information and view your access logs.</p>
+                <a href="EditUserServlet">View Profile</a>
+            </div>
+
+            <div class="box">
+                <img src="./images/logout.jpg">
+                <h3>Logout</h3>
+                <p>Logout from your account securely.</p>
+                <a href="LogoutServlet">Logout</a>
+            </div>
+        </section>
+
+    <% } else if ("customer".equalsIgnoreCase(role)) { %>  
+        <!-- Customer dashboard -->
+        <%-- browse, search, order, track their orders, manage their accounts, view history logs, save payments and shipments details --%>
+        <section id="dashboard">
+            <div class="box">
+                <img src="./images/cart.jpg">
+                <h3>Start Ordering</h3>
+                <p>Browse products and start placing your order.</p>
+                <a href="<%= request.getContextPath() %>/devices">Go to Shop</a>
+            </div>
+
+            <div class="box">
+                <img src="./images/history.jpg">
+                <h3>Order History</h3>
+                <p>View your past orders and track their status.</p>
+                <a href="orderHistory.jsp">View Orders</a>
+            </div>
+
+            <div class="box">
+                <img src="./images/user.jpg">
+                <h3>Account Settings</h3>
+                <p>Update your personal information and view your access logs.</p>
+                <a href="EditUserServlet">View Profile</a>
+            </div>
+
+            <div class="box">
+                <img src="./images/logout.jpg">
+                <h3>Logout</h3>
+                <p>Logout from your account securely.</p>
+                <a href="LogoutServlet">Logout</a>
+            </div>
+        </section>
+
+    <% } else if ("staff".equalsIgnoreCase(role)) { %>
+    <!-- Staff dashboard -->
+    <%-- manage the device collection, track customer orders, and manage users and application access logs --%>
+        <section id="dashboard">
+            <div class="box">
+                <img src="./images/cart.jpg">
+                <h3>Start Ordering</h3>
+                <p>Browse products and start placing your order.</p>
+                <a href="<%= request.getContextPath() %>/devices">Go to Shop</a>
+            </div>
+
+            <div class="box">
+                <img src="./images/history.jpg">
+                <h3>Order History</h3>
+                <p>View your past orders and track their status.</p>
+                <a href="orderHistory.jsp">View Orders</a>
+            </div>
+
+            <div class="box">
+                <img src="./images/user.jpg">
+                <h3>Account Settings</h3>
+                <p>Update your personal information and view your access logs.</p>
+                <a href="EditUserServlet">View Profile</a>
+            </div>
+
+            <div class="box">
+                <img src="./images/logout.jpg">
+                <h3>Logout</h3>
+                <p>Logout from your account securely.</p>
+                <a href="LogoutServlet">Logout</a>
+            </div>
+        </section>
+    <% } else { %>
+    <!-- Non-registered user dashboard -->
+    <%-- browse, search, purchase and track their orders --%>
     <section id="dashboard">
         <div class="box">
             <img src="./images/cart.jpg">
@@ -140,29 +240,23 @@
         <div class="box">
             <img src="./images/history.jpg">
             <h3>Order History</h3>
-            <p>View your past orders, create an order and track their status.</p>
-            <a href="<%= request.getContextPath() %>/order">View Orders</a>
-        </div>
-
-        <div class="box">
-            <img src="./images/user.jpg">
-            <h3>Account Settings</h3>
-            <p>Update your personal information and settings.</p>
-            <a href="editUser.jsp">Edit Profile</a>
+            <p>View your past orders and track their status.</p>
+            <a href="orderHistory.jsp">View Orders</a>
         </div>
 
         <div class="box">
             <img src="./images/logout.jpg">
             <h3>Logout</h3>
             <p>Logout from your account securely.</p>
-            <a href="logout.jsp">Logout</a>
+            <a href="LogoutServlet">Logout</a>
         </div>
     </section>
-    
-<jsp:include page="/LoginServlet" flush="true" />
+    <% } %>
+
+<%-- <jsp:include page="/LoginServlet" flush="true" />
 <jsp:include page="/ConnServlet" flush="true" />
 <jsp:include page="/RegisterServlet" flush="true" />
-<jsp:include page="/EditUserServlet" flush="true" />
+<jsp:include page="/EditUserServlet" flush="true" /> --%>
 
 </body>
 </html>

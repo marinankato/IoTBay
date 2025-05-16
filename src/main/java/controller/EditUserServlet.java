@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,8 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
+import model.AccessLogs;
 import model.User;
+import model.dao.AccessLogsDBManager;
 import model.dao.DBUserManager;
 
 @WebServlet("/EditUserServlet")
@@ -63,4 +66,44 @@ public class EditUserServlet extends HttpServlet {
             }
         }
     }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        AccessLogsDBManager dbmanager = (AccessLogsDBManager) session.getAttribute("logsManager");
+        if (dbmanager == null) {
+            throw new ServletException("AccessLogsDBManager not found in session");
+        }
+        String filterDateStr = request.getParameter("filterDate");
+        List<AccessLogs> logs;
+
+        if (filterDateStr != null && !filterDateStr.isEmpty()) {
+            LocalDate filterDate = LocalDate.parse(filterDateStr);  // Format: yyyy-MM-dd
+            try {
+                logs = dbmanager.getLogsByUserIdAndDate(user.getUserID(), filterDate);
+                request.setAttribute("accessLogs", logs);
+            } catch (SQLException e) {
+                Logger.getLogger(EditUserServlet.class.getName()).log(Level.SEVERE, "Error fetching access logs", e);
+                request.setAttribute("errorMsg", "Unable to load access logs.");
+            }
+        } else {
+            try {
+                logs = dbmanager.getLogsByUserId(user.getUserID());
+                request.setAttribute("accessLogs", logs);
+            } catch (SQLException e) {
+                Logger.getLogger(EditUserServlet.class.getName()).log(Level.SEVERE, "Error fetching access logs", e);
+                request.setAttribute("errorMsg", "Unable to load access logs.");
+            }
+        }
+        request.getRequestDispatcher("editUser.jsp").forward(request, response);
+    }
+    
 }
