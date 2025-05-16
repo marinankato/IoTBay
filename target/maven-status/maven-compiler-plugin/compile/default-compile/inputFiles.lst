@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /Users/marinakato/Intro to Software Dev/IoTBay-1/src/main/java/controller/ShoppingCartServlet.java
 /Users/marinakato/Intro to Software Dev/IoTBay-1/src/main/java/controller/Validator.java
 /Users/marinakato/Intro to Software Dev/IoTBay-1/src/main/java/model/Payment.java
@@ -31,3 +32,32 @@
 /Users/marinakato/Intro to Software Dev/IoTBay-1/src/main/java/model/ShoppingCart.java
 /Users/marinakato/Intro to Software Dev/IoTBay-1/src/main/java/model/CartItem.java
 /Users/marinakato/Intro to Software Dev/IoTBay-1/src/main/java/model/AccessLogs.java
+=======
+/Users/jquisumbing/IoTBay/src/main/java/controller/IoTDeviceServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/model/CartItem.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/DeleteUserServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/UserManagementServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/model/dao/DBUserConnector.java
+/Users/jquisumbing/IoTBay/src/main/java/model/Cart.java
+/Users/jquisumbing/IoTBay/src/main/java/model/dao/DBOrderManager.java
+/Users/jquisumbing/IoTBay/src/main/java/model/dao/IoTDeviceDAO.java
+/Users/jquisumbing/IoTBay/src/main/java/model/User.java
+/Users/jquisumbing/IoTBay/src/main/java/model/Order.java
+/Users/jquisumbing/IoTBay/src/main/java/model/dao/DBUser.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/TestUserDB.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/RegisterServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/model/dao/DBUserManager.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/OrderServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/model/Payment.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/EditUserServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/ShoppingCartServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/Validator.java
+/Users/jquisumbing/IoTBay/src/main/java/model/dao/DBOrderConnector.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/LoginServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/model/Product.java
+/Users/jquisumbing/IoTBay/src/main/java/model/Shipment.java
+/Users/jquisumbing/IoTBay/src/main/java/model/IoTDevice.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/ConnServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/GuestLoginServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/model/ShoppingCart.java
+>>>>>>> main

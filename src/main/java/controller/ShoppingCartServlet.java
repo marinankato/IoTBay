@@ -15,12 +15,12 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-
 @WebServlet("/cart")
 public class ShoppingCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        // simply show the cart
         req.getRequestDispatcher("/cart.jsp").forward(req, resp);
     }
 
@@ -35,39 +35,39 @@ public class ShoppingCartServlet extends HttpServlet {
         }
 
         String action = req.getParameter("action");
-        if ("add".equals(action)) {
-            int did = Integer.parseInt(req.getParameter("deviceId"));
-            int qty = Integer.parseInt(req.getParameter("quantity"));
+        int did = Integer.parseInt(req.getParameter("deviceId"));
 
-            List<IoTDevice> all;
-            try {
-                IoTDeviceDAO dao = new IoTDeviceDAO();    
-                all = dao.getAllDevices();               
-            } catch (ClassNotFoundException | SQLException e) {
-                throw new ServletException("Unable to load devices from database", e);
-            }
-
-            IoTDevice chosen = null;
-            for (IoTDevice d : all) {
-                if (d.getId() == did) {
-                    chosen = d;
+        try {
+            IoTDeviceDAO dao = new IoTDeviceDAO();
+            switch (action) {
+                case "add": {
+                    int qty = Integer.parseInt(req.getParameter("quantity"));
+                    IoTDevice dev = dao.getDeviceById(did);
+                    cart.addItem(new CartItem(dev.getId(), dev.getName(), dev.getPrice(), qty));
+                    // decrement stock
+                    dao.adjustQuantity(did, -qty);
                     break;
                 }
+                case "updateQty": {
+                    int newQty = Integer.parseInt(req.getParameter("quantity"));
+                    int oldQty = cart.getQuantity(did);
+                    cart.updateQuantity(did, newQty);
+                    // if user increased qty, delta negative => minus from stock; if decreased, delta positive => add back
+                    dao.adjustQuantity(did, oldQty - newQty);
+                    break;
+                }
+                case "remove": {
+                    int removedQty = cart.getQuantity(did);
+                    cart.removeItem(did);
+                    // restore stock
+                    dao.adjustQuantity(did, removedQty);
+                    break;
+                }
+                default:
+                    session.setAttribute("error", "Unknown cart action: " + action);
             }
-            if (chosen == null) {
-                throw new ServletException("Device #" + did + " not found");
-            }
-
-            cart.addItem(new CartItem(
-                chosen.getId(),
-                chosen.getName(),
-                chosen.getPrice(),
-                qty
-            ));
-
-        } else if ("remove".equals(action)) {
-            int did = Integer.parseInt(req.getParameter("deviceId"));
-            cart.removeItem(did);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new ServletException(e);
         }
 
         req.getRequestDispatcher("/cart.jsp").forward(req, resp);

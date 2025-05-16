@@ -35,7 +35,7 @@ public class DBUserManager {
         ResultSet rs = ps.executeQuery();
 
         // search the ResultSet for a user using the parameters
-        if (rs.next()) {
+        /*if (rs.next()) {
             // If a match is found, retrieve user data from the ResultSet
             int userId = rs.getInt("userID"); 
             String firstName = rs.getString("firstName");
@@ -46,7 +46,20 @@ public class DBUserManager {
             Date logoutDate = rs.getDate("logoutDate");
 
             // Create and return a new User object with the retrieved data
-            return new User(userId, firstName, lastName, phoneNo, email, password, role);
+            // return new User(email, password);
+            return new User(id, firstName, lastName, phoneNo, email, password, role);
+        }*/
+        if (rs.next()) {
+            User u = new User(
+                rs.getString("firstName"),
+                rs.getString("lastName"),
+                rs.getString("phoneNo"),
+                rs.getString("email"),
+                rs.getString("password"),
+                rs.getString("role")
+            );
+            u.setUserID(rs.getInt("userID"));
+            return u;
         }
         return null;
     }
