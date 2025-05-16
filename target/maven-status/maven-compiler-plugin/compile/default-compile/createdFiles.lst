@@ -10,7 +10,6 @@ model/Cart.class
 model/dao/IoTDeviceDAO.class
 model/CartItem.class
 model/Payment.class
-model/dao/DBOrder.class
 model/Order.class
 model/dao/DBUserManager.class
 controller/IoTDeviceServlet.class
@@ -22,6 +21,7 @@ model/dao/DBOrderConnector.class
 controller/RegisterServlet.class
 controller/OrderServlet.class
 controller/EditUserServlet.class
+controller/GuestLoginServlet.class
 controller/Validator.class
 model/User.class
 model/dao/DBUser.class

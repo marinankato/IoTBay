@@ -138,19 +138,20 @@
   </style>
 </head>
 <body>
-<%
+  <%
+  // Must be logged in
   User user = (User) session.getAttribute("user");
   if (user == null) {
-    response.sendRedirect("login.jsp"); 
+    response.sendRedirect("login.jsp");
     return;
   }
-  @SuppressWarnings("unchecked")
-  List<Order> orders = (List<Order>) session.getAttribute("orders");
+  // Pull orders list from session (set by OrderServlet)
 
+  List<Order> orders = (List<Order>) session.getAttribute("orders");
+    // Get cart count
   ShoppingCart cart = (ShoppingCart) session.getAttribute("shoppingCart");
   int cartCount = (cart == null ? 0 : cart.getItems().size());
 %>
-
 
 <div class="header">
   <a href="dashboard.jsp" class="logo">IoTBay</a>
@@ -158,78 +159,73 @@
 </div>
 
 <div class="container">
-  
   <h2>Your Orders</h2>
   <div class="search-add">
     <a href="devices" class="btn-new-order">New Order</a>
-    <a href="${pageContext.request.contextPath}/cart"
-       class="btn-new-order">
+    <a href="<%= request.getContextPath() %>/cart" class="btn-new-order">
       View Cart (<%= cartCount %>)
     </a>
   </div>
 
   <form class="search"
-  action="<%= request.getContextPath() %>/order"
-  method="get">
-<label>Order ID:
-<input type="text" name="orderID"
-       value="<%= request.getParameter("orderID")==null?"":request.getParameter("orderID") %>"/>
-</label>
-<label>Date:
-<input type="date" name="orderDate"
-       value="<%= request.getParameter("orderDate")==null?"":request.getParameter("orderDate") %>"/>
-</label>
-<button type="submit">Search</button>
-</form>
+        action="<%= request.getContextPath() %>/order"
+        method="get">
+    <label>Order ID:
+      <input type="text" name="orderID"
+             value="<%= request.getParameter("orderID")==null?"":request.getParameter("orderID") %>"/>
+    </label>
+    <label>Date:
+      <input type="date" name="orderDate"
+             value="<%= request.getParameter("orderDate")==null?"":request.getParameter("orderDate") %>"/>
+    </label>
+    <button type="submit">Search</button>
+  </form>
 
-<%
-  String error = (String) request.getAttribute("error");
-  if (error != null) {
-%>
-  <p class="error"><%= error %></p>
-<%
-  }
-%>
-
-<% if (orders != null && !orders.isEmpty()) { %>
-  <table>
-    <tr><th>ID</th><th>Date</th><th>Total</th><th>Status</th><th>Actions</th></tr>
-    <% for (Order o : orders) {
-         boolean sub = o.getOrderStatus();
-         String fmt = new SimpleDateFormat("yyyy-MM-dd")
-                          .format(o.getOrderDate());
-    %>
-    <tr>
-      <td><%= o.getOrderID() %></td>
-      <td><%= fmt            %></td>
-      <td>$<%= String.format("%.2f", o.getTotalPrice()) %></td>
-      <td><%= sub ? "Submitted" : "Saved" %></td>
-      <td>
-
-        <% if (!sub) { %>
-        <!-- Update form -->
-        <form action="order" method="post" style="display:inline">
-          <input type="hidden" name="action"    value="update"/>
-          <input type="hidden" name="orderID"   value="<%= o.getOrderID() %>"/>
-          <input type="hidden" name="orderStatus" value="false"/>
-          <input type="date"   name="orderDate"  value="<%= fmt %>" required/>
-          <input type="text"   name="totalPrice" value="<%= String.format("%.2f", o.getTotalPrice()) %>" required/>
-          <input type="submit" value="Update"/>
-        </form>
-        <!-- Cancel form -->
-        <form action="order" method="post" style="display:inline">
-          <input type="hidden" name="action"  value="cancel"/>
-          <input type="hidden" name="orderID" value="<%= o.getOrderID() %>"/>
-          <input type="submit" value="Cancel"/>
-        </form>
-        <% } %>
-      </td>
-    </tr>
-    <% } %>
-  </table>
-<% } else { %>
-  <p>No orders found.</p>
-<% } %>
+  <% 
+     String error = (String) request.getAttribute("error");
+     if (error != null) {
+  %>
+    <p class="error"><%= error %></p>
+  <%
+     }
+  %>
+  <% if (orders != null && !orders.isEmpty()) { %>
+    <table> 
+      <tr><th>ID</th><th>Date</th><th>Total</th><th>Status</th><th>Actions</th></tr>
+      <% for (Order o : orders) {
+           String fmt = new java.text.SimpleDateFormat("yyyy-MM-dd")
+                           .format(o.getOrderDate());
+      %>
+        <tr>
+          <td><%= o.getOrderID() %></td>
+          <td><%= fmt %></td>
+          <td>$<%= String.format("%.2f", o.getTotalPrice()) %></td>
+          <td><%= o.getOrderStatus() ? "Submitted" : "Saved" %></td>
+          <td>
+            <% if (!o.getOrderStatus()) { %>
+            <form action="<%= request.getContextPath() %>/order" method="post" style="display:inline">
+              <input type="hidden" name="action"    value="update"/>
+              <input type="hidden" name="orderID"   value="<%= o.getOrderID() %>"/>
+              <!-- keep status=false so still "saved" -->
+              <input type="hidden" name="orderStatus" value="false"/>
+              <input type="date"   name="orderDate"  value="<%= fmt %>" required/>
+              <input type="text"   name="totalPrice"
+                     value="<%= String.format("%.2f", o.getTotalPrice()) %>" required/>
+              <button type="submit">Update</button>
+            </form>
+            <form action="<%= request.getContextPath() %>/order" method="post" style="display:inline">
+              <input type="hidden" name="action"  value="cancel"/>
+              <input type="hidden" name="orderID" value="<%= o.getOrderID() %>"/>
+              <button type="submit">Cancel</button>
+            </form>
+          <% } %>
+        </td>
+      </tr>
+      <% } %>
+    </table>
+  <% } else { %>
+    <p>No orders found.</p>
+  <% } %>
 </div>
 </body>
 </html>

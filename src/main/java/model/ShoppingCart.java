@@ -1,39 +1,55 @@
 package model;
+
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShoppingCart implements Serializable {
-    private final Map<Integer,CartItem> items = new LinkedHashMap<>();
+    private final List<CartItem> items = new ArrayList<>();
 
-    public void addItem(CartItem it) {
-        CartItem existing = items.get(it.getDeviceId());
-        if (existing != null) {
-            existing.setQuantity(existing.getQuantity() + it.getQuantity());
-        } else {
-            items.put(it.getDeviceId(), it);
+    public void addItem(CartItem item) {
+        for (CartItem ci : items) {
+            if (ci.getDeviceId() == item.getDeviceId()) {
+                ci.setQuantity(ci.getQuantity() + item.getQuantity());
+                return;
+            }
+        }
+        items.add(item);
+    }
+
+    public void updateQuantity(int deviceId, int quantity) {
+        for (CartItem ci : items) {
+            if (ci.getDeviceId() == deviceId) {
+                ci.setQuantity(quantity);
+                return;
+            }
         }
     }
-    
+
     public void removeItem(int deviceId) {
-        items.remove(deviceId);
+        items.removeIf(ci -> ci.getDeviceId() == deviceId);
     }
 
-    public Collection<CartItem> getItems() {
-        return items.values();
+    public int getQuantity(int deviceId) {
+        for (CartItem ci : items) {
+            if (ci.getDeviceId() == deviceId) {
+                return ci.getQuantity();
+            }
+        }
+        return 0;
+    }
+
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
+    public List<CartItem> getItems() {
+        return items;
     }
 
     public double getTotal() {
-        return items.values()
-                    .stream()
+        return items.stream()
                     .mapToDouble(CartItem::getLineTotal)
                     .sum();
-    }
-
-    public boolean isEmpty() { 
-        return items.isEmpty(); 
-
-    }
-    public void clear() { 
-        items.clear(); 
     }
 }

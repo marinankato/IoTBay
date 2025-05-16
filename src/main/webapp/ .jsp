@@ -141,7 +141,7 @@
             <img src="./images/history.jpg">
             <h3>Order History</h3>
             <p>View your past orders, create an order and track their status.</p>
-            <a href="<%= request.getContextPath() %>/order">View Orders</a>
+            <a href="${pageContext.request.contextPath}/order">View Orders</a>
         </div>
 
         <div class="box">

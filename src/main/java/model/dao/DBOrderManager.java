@@ -1,8 +1,13 @@
+
+
+
 package model.dao;
 
 import model.Order;
+
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBOrderManager {
     private final Connection conn;
@@ -11,21 +16,29 @@ public class DBOrderManager {
         this.conn = conn;
     }
 
-    // --- CREATE ---
-    public void insertOrder(Order order) throws SQLException {
+    /** 
+     * INSERT and return the generated orderID 
+     */
+    public int insertOrderAndReturnKey(Order order) throws SQLException {
         String sql = "INSERT INTO Orders (userID, orderDate, totalPrice, orderStatus) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, order.getRelatedCustomer());
+        try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, order.getUserID());
             stmt.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
             stmt.setDouble(3, order.getTotalPrice());
             stmt.setBoolean(4, order.getOrderStatus());
             stmt.executeUpdate();
+
+            try (ResultSet keys = stmt.getGeneratedKeys()) {
+                if (keys.next()) return keys.getInt(1);
+                else throw new SQLException("No generated key returned");
+            }
         }
     }
 
-    // --- READ ALL ---
+    /** READ all orders for a user */
     public List<Order> getOrdersByUser(int userID) throws SQLException {
         List<Order> list = new ArrayList<>();
+        
         String sql = "SELECT * FROM Orders WHERE userID=? ORDER BY orderDate DESC";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userID);
@@ -35,15 +48,15 @@ public class DBOrderManager {
                 }
             }
         }
+                                                                                
         return list;
     }
 
-    // --- SEARCH by ID and/or DATE ---
+    /** SEARCH by optional orderID and/or orderDate */
     public List<Order> searchOrders(int userID, Integer orderID, java.sql.Date orderDate)
             throws SQLException {
         List<Order> list = new ArrayList<>();
-        StringBuilder sql = new StringBuilder(
-            "SELECT * FROM Orders WHERE userID=?");
+        StringBuilder sql = new StringBuilder("SELECT * FROM Orders WHERE userID=?");
         if (orderID   != null) sql.append(" AND orderID=?");
         if (orderDate != null) sql.append(" AND orderDate=?");
         sql.append(" ORDER BY orderDate DESC");
@@ -53,24 +66,19 @@ public class DBOrderManager {
             stmt.setInt(idx++, userID);
             if (orderID   != null) stmt.setInt(idx++, orderID);
             if (orderDate != null) stmt.setDate(idx++, orderDate);
+
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new Order(
-                      rs.getInt("orderID"),
-                      rs.getInt("userID"),
-                      rs.getDate("orderDate"),
-                      rs.getDouble("totalPrice"),
-                      rs.getBoolean("orderStatus")
-                    ));
+                    list.add(mapRow(rs));
                 }
             }
         }
         return list;
     }
 
-    // --- UPDATE STATUS (cancel) ---
+    /** UPDATE just the status (e.g. cancel or resubmit) */
     public void updateOrderStatus(int orderID, boolean status) throws SQLException {
-        String sql = "UPDATE Orders SET orderStatus = ? WHERE orderID = ?";
+        String sql = "UPDATE Orders SET orderStatus=? WHERE orderID=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setBoolean(1, status);
             stmt.setInt(2, orderID);
@@ -78,7 +86,7 @@ public class DBOrderManager {
         }
     }
 
-    // --- UPDATE FULL ORDER ---
+    /** FULL UPDATE */
     public void updateOrder(Order o) throws SQLException {
         String sql = "UPDATE Orders SET orderDate=?, totalPrice=?, orderStatus=? WHERE orderID=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -90,21 +98,20 @@ public class DBOrderManager {
         }
     }
 
-    private Order mapRow(ResultSet rs) throws SQLException {
-        return new Order(
-            rs.getInt("orderID"),
-            rs.getInt("userID"),
-            rs.getDate("orderDate"),
-            rs.getDouble("totalPrice"),
-            rs.getBoolean("orderStatus")
-        );
+    /** CANCEL = set status=false */
+    public void cancelOrder(int orderID) throws SQLException {
+        updateOrderStatus(orderID, false);
     }
 
-    public void deleteOrder(int orderID) throws SQLException {
-        String sql = "DELETE FROM Orders WHERE orderID = ?";
-        try (PreparedStatement p = conn.prepareStatement(sql)) {
-            p.setInt(1, orderID);
-            p.executeUpdate();
-        }
+    private Order mapRow(ResultSet rs) throws SQLException {
+        int orderId       = rs.getInt("orderID");
+        int customerId    = rs.getInt("userID");
+        String dateString = rs.getString("orderDate");            // grab the raw “yyyy-MM-dd”
+        java.sql.Date d   = java.sql.Date.valueOf(dateString);    // convert it
+        double total      = rs.getDouble("totalPrice");
+        boolean status    = rs.getInt("orderStatus") != 0;         // or rs.getBoolean(...)
+    
+        return new Order(orderId, customerId, d, total, status);
     }
+
 }

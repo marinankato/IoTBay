@@ -19,7 +19,7 @@ public class Order implements Serializable{
       public int getOrderID(){
          return this.orderID;
       }
-      public int getRelatedCustomer(){
+      public int getUserID(){
          return this.userID;
       }
       public double getTotalPrice(){

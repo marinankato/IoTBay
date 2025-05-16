@@ -12,7 +12,6 @@
 /Users/jquisumbing/IoTBay/src/main/java/controller/TestUserDB.java
 /Users/jquisumbing/IoTBay/src/main/java/controller/RegisterServlet.java
 /Users/jquisumbing/IoTBay/src/main/java/model/dao/DBUserManager.java
-/Users/jquisumbing/IoTBay/src/main/java/model/dao/DBOrder.java
 /Users/jquisumbing/IoTBay/src/main/java/controller/OrderServlet.java
 /Users/jquisumbing/IoTBay/src/main/java/model/Payment.java
 /Users/jquisumbing/IoTBay/src/main/java/controller/EditUserServlet.java
@@ -24,4 +23,5 @@
 /Users/jquisumbing/IoTBay/src/main/java/model/Shipment.java
 /Users/jquisumbing/IoTBay/src/main/java/model/IoTDevice.java
 /Users/jquisumbing/IoTBay/src/main/java/controller/ConnServlet.java
+/Users/jquisumbing/IoTBay/src/main/java/controller/GuestLoginServlet.java
 /Users/jquisumbing/IoTBay/src/main/java/model/ShoppingCart.java
