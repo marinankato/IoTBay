@@ -81,7 +81,7 @@ public class RegisterServlet extends HttpServlet {
                 Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, e);
                 e.printStackTrace();
             }
-            request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("welcome.jsp").forward(request, response);
         }
     }
 }

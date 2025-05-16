@@ -79,7 +79,6 @@
         <a href="dashboard.jsp">Continue to Dashboard</a>
         </div>
     </div>
-    <%-- <jsp:include page="/LoginServlet" flush="true" /> --%>
+<jsp:include page="/LoginServlet" flush="true" />
 </body>
-
 </html>
