@@ -160,10 +160,10 @@
   int cartCount = (cart == null ? 0 : cart.getItems().size());
 %>
 
-  <div class="header">        
-    <a href="dashboard.jsp" class="logo">IoTBay</a>
-    <span class="welcomeText">Logged in as: <%= user.getFirstName() %></span>
-  </div>
+<div class="header">
+  <a href="dashboard.jsp" class="logo">IoTBay</a>
+  <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
+</div>
 
 <div class="container">
   <h2>Your Orders</h2>

@@ -4,12 +4,22 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBOrderConnector {
-    protected String url    = "jdbc:sqlite:/Users/jquisumbing/IoTBay/database/iotdb.db";
-    protected String driver = "org.sqlite.JDBC";
+// package model.dao;
 
-    protected Connection conn;
+// import java.sql.Connection;
 
+// public abstract class DBOrder {
+
+//     // this path URL will differ for everyone, change to your path to db
+//     protected String URL = "jdbc:sqlite:/Users/marinakato/Intro to Software Dev/IoTBay-1/database/iotdb.db";
+//     protected String driver = "org.sqlite.JDBC";
+//     protected Connection conn;
+
+// }
+// add above commented code to a new file called DBOrder.java
+
+public class DBOrderConnector extends DBOrder{
+   
     public DBOrderConnector() throws ClassNotFoundException, SQLException {
         Class.forName(driver);
         this.conn = DriverManager.getConnection(url);

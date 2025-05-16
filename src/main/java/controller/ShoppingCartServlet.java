@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
+// import java.util.List;
 @WebServlet("/cart")
 public class ShoppingCartServlet extends HttpServlet {
     @Override

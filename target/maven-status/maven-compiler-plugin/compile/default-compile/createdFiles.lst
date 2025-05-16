@@ -11,6 +11,7 @@ model/Cart.class
 model/dao/IoTDeviceDAO.class
 model/CartItem.class
 model/Payment.class
+model/dao/DBOrder.class
 model/Order.class
 model/dao/DBUserManager.class
 controller/IoTDeviceServlet.class

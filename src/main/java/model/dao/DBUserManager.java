@@ -9,10 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/* 
-* DBManager is the primary DAO class to interact with the database. 
-* Complete the existing methods of this classes to perform CRUD operations with the db.
-*/
 
 public class DBUserManager {
 
@@ -35,32 +31,32 @@ public class DBUserManager {
         ResultSet rs = ps.executeQuery();
 
         // search the ResultSet for a user using the parameters
-        /*if (rs.next()) {
+        if (rs.next()) {
             // If a match is found, retrieve user data from the ResultSet
             int userId = rs.getInt("userID"); 
             String firstName = rs.getString("firstName");
             String lastName = rs.getString("lastName");
             String phoneNo = rs.getString("phoneNo");
             String role = rs.getString("role");
-            Date loginDate = rs.getDate("loginDate");
-            Date logoutDate = rs.getDate("logoutDate");
+            // Date loginDate = rs.getDate("loginDate");
+            // Date logoutDate = rs.getDate("logoutDate");
 
             // Create and return a new User object with the retrieved data
             // return new User(email, password);
-            return new User(id, firstName, lastName, phoneNo, email, password, role);
-        }*/
-        if (rs.next()) {
-            User u = new User(
-                rs.getString("firstName"),
-                rs.getString("lastName"),
-                rs.getString("phoneNo"),
-                rs.getString("email"),
-                rs.getString("password"),
-                rs.getString("role")
-            );
-            u.setUserID(rs.getInt("userID"));
-            return u;
+            return new User(userId, firstName, lastName, phoneNo, email, password, role);
         }
+        // if (rs.next()) {
+        //     User u = new User(
+        //         rs.getString("firstName"),
+        //         rs.getString("lastName"),
+        //         rs.getString("phoneNo"),
+        //         rs.getString("email"),
+        //         rs.getString("password"),
+        //         rs.getString("role")
+        //     );
+        //     u.setUserID(rs.getInt("userID"));
+        //     return u;
+        // }
         return null;
     }
 
@@ -180,8 +176,8 @@ public class DBUserManager {
             String phoneNo = rs.getString("phoneNo");
             String password = rs.getString("password");
             String role = rs.getString("role");
-            Date loginDate = rs.getDate("loginDate");
-            Date logoutDate = rs.getDate("logoutDate");
+            // Date loginDate = rs.getDate("loginDate");
+            // Date logoutDate = rs.getDate("logoutDate");
 
             // Create and return a new User object with the retrieved data
             return new User(userId, firstName, lastName, phoneNo, email, password, role);
