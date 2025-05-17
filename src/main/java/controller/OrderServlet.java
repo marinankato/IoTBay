@@ -94,46 +94,42 @@ public class OrderServlet extends HttpServlet {
 
             switch (action) {
                 case "checkout":
-                    // create new order & get its generated ID
                     double total = Double.parseDouble(req.getParameter("totalPrice"));
                     Order newOrder = new Order(0, user.getUserID(), new Date(), total, Order.SUBMITTED);
                     int newId = mgr.insertOrderAndReturnKey(newOrder);
                     session.setAttribute("message", "Order #" + newId + " placed.");
-                    break;
+                    resp.sendRedirect(req.getContextPath()+"/order");
+                    cf.closeConnection();
+                    return;
 
                 case "update":
-                    // update date & total (status remains false/"Saved")
                     int uid = Integer.parseInt(req.getParameter("orderID"));
                     Date dt = DF.parse(req.getParameter("orderDate"));
                     double price = Double.parseDouble(req.getParameter("totalPrice"));
                     mgr.updateOrder(new Order(uid, user.getUserID(), dt, price, Order.SAVED));
                     session.setAttribute("message", "Order #" + uid + " updated.");
-                    break;
+                    resp.sendRedirect(req.getContextPath()+"/order");
+                    cf.closeConnection();
+                    return;
 
                 case "cancel":
-                    // mark as cancelled (status=false)
-                    /*int cid = Integer.parseInt(req.getParameter("orderID"));
-                    mgr.cancelOrder(cid);
-                    session.setAttribute("message", "Order #" + cid + " cancelled.");
-                    break;*/
                     int cid = Integer.parseInt(req.getParameter("orderID"));
                     mgr.cancelOrder(cid);
                     session.setAttribute("message", "Order #" + cid + " cancelled.");
                     // Redirect so doGet() re-loads the fresh data
-                    resp.sendRedirect(req.getContextPath() + "/order");
-                    break;
+                    resp.sendRedirect(req.getContextPath()+"/order");
+                    cf.closeConnection();
+                    return;
 
                 default:
                     session.setAttribute("error", "Unknown action: " + action);
+                    resp.sendRedirect(req.getContextPath()+"/order");
+                    cf.closeConnection();
+                    return;
             }
 
-            cf.closeConnection();
         } catch (Exception e) {
             throw new ServletException(e);
         }
-
-        // after any POST, show the history again
-        req.getRequestDispatcher("/orderHistory.jsp")
-           .forward(req, resp);
     }
 }
