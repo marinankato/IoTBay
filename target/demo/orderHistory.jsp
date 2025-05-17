@@ -232,6 +232,10 @@
               <input type="hidden" name="orderID" value="<%=o.getOrderID()%>"/>
               <button type="submit">Cancel</button>
             </form>
+            <a href="<%= request.getContextPath() %>/orderDetails?orderID=<%= o.getOrderID() %>"
+              class="btn-new-order">
+             Details
+           </a>
           <% } %>
         </td>
       </tr>

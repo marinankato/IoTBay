@@ -1,6 +1,7 @@
 controller/DeleteUserServlet.class
 model/Product.class
 model/dao/AccessLogsDBConnector.class
+controller/OrderDetailsServlet.class
 controller/TestUserDB.class
 model/Shipment.class
 controller/ConnServlet.class
@@ -31,3 +32,4 @@ model/AccessLogs.class
 model/dao/AccessLogsDBManager.class
 model/User.class
 model/dao/DBUser.class
+model/dao/DBOrderItem.class

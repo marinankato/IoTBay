@@ -42,7 +42,7 @@ public class DBOrderManager {
     public List<Order> getOrdersByUser(int userID) throws SQLException {
         List<Order> list = new ArrayList<>();
 
-        String sql = "SELECT * FROM Orders WHERE userID=? ORDER BY orderDate DESC";
+        String sql = "SELECT * FROM Orders WHERE userID = ? ORDER BY orderDate DESC";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userID);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -119,10 +119,25 @@ public class DBOrderManager {
         }
     }
 
+    /** Fetch a single Order by primary key */
+    public Order findById(int orderID) throws SQLException {
+        String sql = "SELECT * FROM Orders WHERE orderID = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, orderID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs);
+                } else {
+                    throw new SQLException("No such order: " + orderID);
+                }
+            }
+        }
+    }
+
     private Order mapRow(ResultSet rs) throws SQLException {
-        int orderId    = rs.getInt("orderID");
+        int orderId = rs.getInt("orderID");
         int customerId = rs.getInt("userID");
-    
+
         String raw = rs.getString("orderDate");
         java.util.Date utilDate;
         try {
@@ -131,10 +146,10 @@ public class DBOrderManager {
             Timestamp ts = rs.getTimestamp("orderDate");
             utilDate = new java.util.Date(ts.getTime());
         }
-    
-        double total  = rs.getDouble("totalPrice");
+
+        double total = rs.getDouble("totalPrice");
         int status = rs.getInt("orderStatus");
-    
+
         return new Order(orderId, customerId, utilDate, total, status);
     }
 }

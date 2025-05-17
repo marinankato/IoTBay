@@ -30,6 +30,16 @@ CREATE TABLE Orders (
     FOREIGN KEY(userID) REFERENCES Users(userID)
 );
 
+DROP TABLE IF EXISTS OrderItems;
+CREATE TABLE OrderItems (
+    orderItemID   INTEGER PRIMARY KEY AUTOINCREMENT,
+    orderID       INTEGER NOT NULL,
+    deviceID      INTEGER NOT NULL,
+    quantity      INTEGER NOT NULL,
+    unitPrice     NUMERIC(7,2) NOT NULL,
+    FOREIGN KEY(orderID ) REFERENCES Orders(orderID),
+    FOREIGN KEY(deviceID) REFERENCES iot_device(device_id)
+);
 DROP TABLE IF EXISTS AccessLogs;
 CREATE TABLE AccessLogs (
     "logId"     INTEGER PRIMARY KEY AUTOINCREMENT,
