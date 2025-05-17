@@ -201,7 +201,7 @@
 
 <div class="header">
   <a href="dashboard.jsp" class="logo">IoTBay</a>
-  <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
+  <span class="welcomeText">Logged in as: <%= user.getFirstName() %></span>
 </div>
 
 <div class="container">
