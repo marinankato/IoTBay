@@ -152,14 +152,20 @@
     .btn-cancel {
       display: inline-block;
       padding: 8px 14px;
-      background-color: #dc3545;    
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 1em;
+      line-height: 1;
+      text-decoration: none;
+      text-align: center;
+      vertical-align: middle;
+      transition: background-color 0.2s ease;
+      margin-right: 8px;  
+      background-color: #dc3545;
       color: #fff;
       border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background-color 0.2s ease;
     }
+
     .btn-cancel:hover {
       background-color: #c82333;
     }
@@ -267,13 +273,17 @@
         <td>
           <% if (o.isSaved()) { %>
             <a href="<%= request.getContextPath() %>/orderDetails?orderID=<%= o.getOrderID() %>"
-              class="btn-new-order btn-inline">
+              class="btn-new-order">
               Details
             </a>
-            <form action="${pageContext.request.contextPath}/order" method="post" style="margin:0;">
-              <input type="hidden" name="action"  value="cancel"/>
-              <input type="hidden" name="orderID" value="${o.orderID}"/>
-              <button type="submit" class="btn-cancel btn-inline">Cancel</button>
+            <form action="<%= request.getContextPath() %>/order"
+              method="post"
+              style="display:inline; margin:0;">
+          <input type="hidden" name="action"  value="cancel"/>
+          <input type="hidden" name="orderID" value="<%= o.getOrderID() %>"/>
+          <button type="submit" class="btn-cancel">
+            Cancel
+          </button>
             </form>
           <% } %>
         </td>
