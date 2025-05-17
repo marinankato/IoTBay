@@ -15,12 +15,21 @@ public class CartItem implements Serializable {
         this.quantity  = quantity;
     }
 
-    public int    getDeviceId()   { return deviceId; }
-    public String getName()       { return name; }
-    public double getUnitPrice()  { return unitPrice; }
-    public int    getQuantity()   { return quantity; }
-    public void   setQuantity(int q) { this.quantity = q; }
-
+    public int    getDeviceId()   { 
+        return deviceId; 
+    }
+    public String getName()       { 
+        return name; 
+    }
+    public double getUnitPrice()  { 
+        return unitPrice; 
+    }
+    public int    getQuantity()   { 
+        return quantity; 
+    }
+    public void   setQuantity(int q) { 
+        this.quantity = q;
+     }
     /** price × qty */
     public double getLineTotal() {
         return unitPrice * quantity;

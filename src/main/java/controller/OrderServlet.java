@@ -1,8 +1,11 @@
 package controller;
 
+import model.CartItem;
 import model.Order;
+import model.ShoppingCart;
 import model.User;
 import model.dao.DBOrderConnector;
+import model.dao.DBOrderItem;
 import model.dao.DBOrderManager;
 
 import jakarta.servlet.ServletException;
@@ -18,6 +21,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.text.SimpleDateFormat;
+
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
     private static final SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
@@ -33,18 +37,19 @@ public class OrderServlet extends HttpServlet {
             return;
         }
 
-        String idParam   = req.getParameter("orderID");
+        String idParam = req.getParameter("orderID");
         String dateParam = req.getParameter("orderDate");
-        Integer orderID  = (idParam   != null && !idParam.isEmpty())
-                              ? Integer.valueOf(idParam)
-                              : null;
+        Integer orderID = (idParam != null && !idParam.isEmpty())
+                ? Integer.valueOf(idParam)
+                : null;
         java.sql.Date orderDate = null;
         try {
             if (dateParam != null && !dateParam.isEmpty()) {
                 Date d = DF.parse(dateParam);
                 orderDate = new java.sql.Date(d.getTime());
             }
-        } catch (Exception ignore) { }
+        } catch (Exception ignore) {
+        }
 
         List<Order> orders;
         try {
@@ -64,7 +69,6 @@ public class OrderServlet extends HttpServlet {
                 orders = mgr.getOrdersByUser(user.getUserID());
             }
 
-
             cf.closeConnection();
         } catch (ClassNotFoundException | SQLException e) {
             throw new ServletException(e);
@@ -72,7 +76,7 @@ public class OrderServlet extends HttpServlet {
 
         session.setAttribute("orders", orders);
         req.getRequestDispatcher("/orderHistory.jsp")
-           .forward(req, resp);
+                .forward(req, resp);
     }
 
     @Override
@@ -87,6 +91,7 @@ public class OrderServlet extends HttpServlet {
         }
 
         String action = req.getParameter("action");
+
         try {
             DBOrderConnector cf = new DBOrderConnector();
             Connection conn = cf.openConnection();
@@ -94,12 +99,33 @@ public class OrderServlet extends HttpServlet {
 
             switch (action) {
                 case "checkout":
+                    // 1) read total
                     double total = Double.parseDouble(req.getParameter("totalPrice"));
-                    Order newOrder = new Order(0, user.getUserID(), new Date(), total, Order.SUBMITTED);
-                    int newId = mgr.insertOrderAndReturnKey(newOrder);
+                    // 2) insert ORDER with status = SUBMITTED
+                    Order placed = new Order(
+                            0,
+                            user.getUserID(),
+                            new java.util.Date(),
+                            total,
+                            Order.SUBMITTED);
+                    int newId = mgr.insertOrderAndReturnKey(placed);
+
+                    // 3) write order-items
+                    ShoppingCart cart = (ShoppingCart) session.getAttribute("shoppingCart");
+                    DBOrderItem itemMgr = new DBOrderItem(conn);
+                    for (CartItem ci : cart.getItems()) {
+                        itemMgr.addItem(
+                                newId,
+                                ci.getDeviceId(),
+                                ci.getQuantity(),
+                                ci.getUnitPrice());
+                    }
+
+                    // 4) clear the cart
+                    cart.getItems().clear();
+
                     session.setAttribute("message", "Order #" + newId + " placed.");
-                    resp.sendRedirect(req.getContextPath()+"/order");
-                    cf.closeConnection();
+                    resp.sendRedirect(req.getContextPath() + "/order");
                     return;
 
                 case "update":
@@ -108,7 +134,7 @@ public class OrderServlet extends HttpServlet {
                     double price = Double.parseDouble(req.getParameter("totalPrice"));
                     mgr.updateOrder(new Order(uid, user.getUserID(), dt, price, Order.SAVED));
                     session.setAttribute("message", "Order #" + uid + " updated.");
-                    resp.sendRedirect(req.getContextPath()+"/order");
+                    resp.sendRedirect(req.getContextPath() + "/order");
                     cf.closeConnection();
                     return;
 
@@ -117,13 +143,13 @@ public class OrderServlet extends HttpServlet {
                     mgr.cancelOrder(cid);
                     session.setAttribute("message", "Order #" + cid + " cancelled.");
                     // Redirect so doGet() re-loads the fresh data
-                    resp.sendRedirect(req.getContextPath()+"/order");
+                    resp.sendRedirect(req.getContextPath() + "/order");
                     cf.closeConnection();
                     return;
 
                 default:
                     session.setAttribute("error", "Unknown action: " + action);
-                    resp.sendRedirect(req.getContextPath()+"/order");
+                    resp.sendRedirect(req.getContextPath() + "/order");
                     cf.closeConnection();
                     return;
             }

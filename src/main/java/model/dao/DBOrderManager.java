@@ -17,6 +17,20 @@ public class DBOrderManager {
 
     private static final SimpleDateFormat DATE_ONLY = new SimpleDateFormat("yyyy-MM-dd");
 
+    /** insert one row into OrderItems */
+    public void addItem(int orderId, int deviceId, int quantity, double unitPrice)
+            throws SQLException {
+        String sql = "INSERT INTO OrderItems (orderID, deviceID, quantity, unitPrice) "
+                + "VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ps.setInt(2, deviceId);
+            ps.setInt(3, quantity);
+            ps.setDouble(4, unitPrice);
+            ps.executeUpdate();
+        }
+    }
+
     /**
      * INSERT and return the generated orderID
      */

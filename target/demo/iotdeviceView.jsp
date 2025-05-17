@@ -3,7 +3,6 @@
 <%@ page import="model.User" %>
 
 <%
-    // Check if the user is logged in and has the role of "staff"
     User user = (User) session.getAttribute("user");
     boolean isStaff = user != null && "staff".equalsIgnoreCase(user.getRole());
     boolean isCustomer = user != null && "customer".equalsIgnoreCase(user.getRole());
@@ -218,9 +217,15 @@
                         <% } else if (isCustomer) { %>
                             <td>
                                 <form action="<%= request.getContextPath() %>/cart" method="post">
-                                    <input type="hidden" name="deviceId" value="<%= device.getId() %>" />
-                                    <input type="number" name="quantity" min="1" max="<%= device.getQuantity() %>" value="1" required />
-                                    <input type="submit" value="Add to Cart" />
+                                    <input type="hidden" name="action"   value="add"/>
+                                    <input type="hidden" name="deviceId" value="<%= device.getId() %>"/>
+                                    <input type="number"
+                                           name="quantity"
+                                           min="1"
+                                           max="<%= device.getQuantity() %>"
+                                           value="1"
+                                           required />
+                                    <button type="submit">Add to Cart</button>
                                 </form>
                             </td>
                         <% } %>

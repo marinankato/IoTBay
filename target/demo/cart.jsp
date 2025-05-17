@@ -102,12 +102,19 @@ if (message != null) {
       </tr>
     </table>
 
+    <form action="<%= request.getContextPath() %>/order"
+        method="post" style="display:inline">
+    <input type="hidden" name="action"     value="save"/>
+    <input type="hidden" name="totalPrice" value="<%= cart.getTotal() %>"/>
+    <button type="submit" class="btn">Save Order</button>
+  </form>
     <!-- proceed to checkout -->
     <form action="<%= request.getContextPath() %>/checkout" method="post">
       <input type="hidden" name="action"     value="checkout"/>
       <input type="hidden" name="totalPrice" value="<%= cart.getTotal() %>"/>
       <button type="submit" class="btn">Proceed to Checkout</button>
     </form>
+
   <% } %>
 </div>
 </body>

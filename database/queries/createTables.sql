@@ -26,7 +26,7 @@ CREATE TABLE Orders (
     userID      INTEGER NOT NULL,
     orderDate   DATE        NOT NULL,
     totalPrice  NUMERIC(7,2) NOT NULL,
-    orderStatus INTEGER     NOT NULL     DEFAULT 0,
+    orderStatus INTEGER     NOT NULL,
     FOREIGN KEY(userID) REFERENCES Users(userID)
 );
 DROP TABLE IF EXISTS OrderItems;

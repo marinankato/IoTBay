@@ -52,4 +52,9 @@ public class ShoppingCart implements Serializable {
                     .mapToDouble(CartItem::getLineTotal)
                     .sum();
     }
+
+    public void clear() {
+        items.clear();
+    }
+
 }
