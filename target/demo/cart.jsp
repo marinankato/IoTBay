@@ -28,18 +28,36 @@
 </head>
 <body>
 <%
-  User user = (User) session.getAttribute("user");
-  if (user == null) { response.sendRedirect("login.jsp"); return; }
-  ShoppingCart cart = (ShoppingCart)session.getAttribute("shoppingCart");
-  if (cart == null) {
-    cart = new ShoppingCart();
-    session.setAttribute("shoppingCart", cart);
-  }
+User user = (User) session.getAttribute("user");
+if (user == null) { response.sendRedirect("login.jsp"); return; }
+
+// get or create cart
+ShoppingCart cart = (ShoppingCart) session.getAttribute("shoppingCart");
+if (cart == null) {
+  cart = new ShoppingCart();
+  session.setAttribute("shoppingCart", cart);
+}
+
+// show & clear any error/message
+String error   = (String) session.getAttribute("error");
+String message = (String) session.getAttribute("message");
+if (error != null) {
+%>
+  <p class="error"><%= error %></p>
+<%
+  session.removeAttribute("error");
+}
+if (message != null) {
+%>
+  <p class="message"><%= message %></p>
+<%
+  session.removeAttribute("message");
+}
 %>
 
 <div class="header">
   <a href="dashboard.jsp" class="logo">IoTBay</a>
-  <span class="welcomeText">Logged in as: <%=user.getEmail()%></span>
+  <span class="welcomeText">Logged in as: <%=user.getFirstName()%></span>
 </div>
 
 <div class="container">
@@ -47,28 +65,32 @@
 
   <% if (cart.isEmpty()) { %>
     <p class="empty">Your cart is empty.</p>
-    <a href="devices" class="btn">Continue Shopping</a>
+    <a href="<%= request.getContextPath() %>/devices" class="btn">Continue Shopping</a>
   <% } else { %>
     <table>
       <tr><th>Item</th><th>Unit Price</th><th>Quantity</th><th>Line Total</th><th>Actions</th></tr>
       <% for (CartItem item : cart.getItems()) { %>
         <tr>
-          <td><%=item.getName()%></td>
-          <td>$<%=String.format("%.2f", item.getUnitPrice())%></td>
-          <td><%=item.getQuantity()%></td>
-          <td>$<%=String.format("%.2f", item.getLineTotal())%></td>
+          <td><%= item.getName() %></td>
+          <td>$<%= String.format("%.2f", item.getUnitPrice()) %></td>
+          <td><%= item.getQuantity() %></td>
+          <td>$<%= String.format("%.2f", item.getLineTotal()) %></td>
           <td>
             <!-- update quantity -->
-            <form class="inline" action="${pageContext.request.contextPath}/cart" method="post">
+            <form class="inline"
+                  action="<%= request.getContextPath() %>/cart"
+                  method="post">
               <input type="hidden" name="action"    value="updateQty"/>
-              <input type="hidden" name="deviceId"  value="<%=item.getDeviceId()%>"/>
-              <input type="number" name="quantity" min="1" value="<%=item.getQuantity()%>"/>
+              <input type="hidden" name="deviceId"  value="<%= item.getDeviceId() %>"/>
+              <input type="number" name="quantity" min="1" value="<%= item.getQuantity() %>"/>
               <button type="submit" class="btn">Update</button>
             </form>
             <!-- remove item -->
-            <form class="inline" action="${pageContext.request.contextPath}/cart" method="post">
-              <input type="hidden" name="action"    value="remove"/>
-              <input type="hidden" name="deviceId"  value="<%=item.getDeviceId()%>"/>
+            <form class="inline"
+                  action="<%= request.getContextPath() %>/cart"
+                  method="post">
+              <input type="hidden" name="action"   value="remove"/>
+              <input type="hidden" name="deviceId" value="<%= item.getDeviceId() %>"/>
               <button type="submit" class="btn">Remove</button>
             </form>
           </td>
@@ -76,14 +98,14 @@
       <% } %>
       <tr>
         <td colspan="3"><strong>Total:</strong></td>
-        <td colspan="2">$<%=String.format("%.2f", cart.getTotal())%></td>
+        <td colspan="2">$<%= String.format("%.2f", cart.getTotal()) %></td>
       </tr>
     </table>
 
     <!-- proceed to checkout -->
-    <form action="${pageContext.request.contextPath}/order" method="post">
+    <form action="<%= request.getContextPath() %>/checkout" method="post">
       <input type="hidden" name="action"     value="checkout"/>
-      <input type="hidden" name="totalPrice" value="<%=cart.getTotal()%>"/>
+      <input type="hidden" name="totalPrice" value="<%= cart.getTotal() %>"/>
       <button type="submit" class="btn">Proceed to Checkout</button>
     </form>
   <% } %>

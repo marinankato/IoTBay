@@ -14,16 +14,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
-// import java.util.List;
 @WebServlet("/cart")
 public class ShoppingCartServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        // simply show the cart
-        req.getRequestDispatcher("/cart.jsp").forward(req, resp);
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -35,32 +27,61 @@ public class ShoppingCartServlet extends HttpServlet {
         }
 
         String action = req.getParameter("action");
-        int did = Integer.parseInt(req.getParameter("deviceId"));
+        String didParam = req.getParameter("deviceId");
+        if (didParam == null || !didParam.matches("\\d+")) {
+            session.setAttribute("error", "Invalid product ID.");
+            resp.sendRedirect(req.getContextPath() + "/cart");
+            return;
+        }
+        int did = Integer.parseInt(didParam);
 
         try {
             IoTDeviceDAO dao = new IoTDeviceDAO();
             switch (action) {
                 case "add": {
-                    int qty = Integer.parseInt(req.getParameter("quantity"));
+                    String qtyParam = req.getParameter("quantity");
+                    if (qtyParam == null || !qtyParam.matches("\\d+")) {
+                        session.setAttribute("error", "Invalid quantity.");
+                        break;
+                    }
+                    int qty = Integer.parseInt(qtyParam);
                     IoTDevice dev = dao.getDeviceById(did);
+                    if (dev.getQuantity() < qty) {
+                        session.setAttribute("error", "Sorry, only " 
+                            + dev.getQuantity() + " left in stock.");
+                        break;
+                    }
                     cart.addItem(new CartItem(dev.getId(), dev.getName(), dev.getPrice(), qty));
-                    // decrement stock
                     dao.adjustQuantity(did, -qty);
+                    session.setAttribute("message", 
+                        "Added " + qty + " × " + dev.getName() + " to your cart.");
                     break;
                 }
                 case "updateQty": {
-                    int newQty = Integer.parseInt(req.getParameter("quantity"));
+                    String newQtyParam = req.getParameter("quantity");
+                    if (newQtyParam == null || !newQtyParam.matches("\\d+")) {
+                        session.setAttribute("error", "Invalid quantity.");
+                        break;
+                    }
+                    int newQty = Integer.parseInt(newQtyParam);
                     int oldQty = cart.getQuantity(did);
+                    IoTDevice dev = dao.getDeviceById(did);
+                    int delta = oldQty - newQty; // positive => add back, negative => remove more
+                    if (delta < 0 && dev.getQuantity() < -delta) {
+                        session.setAttribute("error", "Sorry, only " 
+                            + dev.getQuantity() + " left in stock.");
+                        break;
+                    }
                     cart.updateQuantity(did, newQty);
-                    // if user increased qty, delta negative => minus from stock; if decreased, delta positive => add back
-                    dao.adjustQuantity(did, oldQty - newQty);
+                    dao.adjustQuantity(did, delta);
+                    session.setAttribute("message", "Updated quantity for " + dev.getName() + ".");
                     break;
                 }
                 case "remove": {
                     int removedQty = cart.getQuantity(did);
                     cart.removeItem(did);
-                    // restore stock
                     dao.adjustQuantity(did, removedQty);
+                    session.setAttribute("message", "Removed item from your cart.");
                     break;
                 }
                 default:
@@ -70,6 +91,13 @@ public class ShoppingCartServlet extends HttpServlet {
             throw new ServletException(e);
         }
 
+        resp.sendRedirect(req.getContextPath() + "/cart");
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        // just show cart.jsp
         req.getRequestDispatcher("/cart.jsp").forward(req, resp);
     }
 }

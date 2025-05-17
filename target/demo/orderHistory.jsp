@@ -181,12 +181,6 @@
       margin-top: 8px;    
     }
     
-    .btn-inline {
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 8px;
-    }
-    
   </style>
 </head>
 <body>
