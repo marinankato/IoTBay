@@ -56,9 +56,9 @@ if (message != null) {
 %>
 
 <div class="header">
-  <a href="dashboard.jsp" class="logo">IoTBay</a>
-  <span class="welcomeText">Logged in as: <%=user.getFirstName()%></span>
-</div>
+    <a href="dashboard.jsp" class="logo">IoTBay</a>
+    <span class="welcomeText">Logged in as: <%= user.getFirstName() %></span>
+  </div>
 
 <div class="container">
   <h2>Your Shopping Cart</h2>
