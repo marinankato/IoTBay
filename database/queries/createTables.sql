@@ -29,7 +29,6 @@ CREATE TABLE Orders (
     orderStatus INTEGER     NOT NULL     DEFAULT 0,
     FOREIGN KEY(userID) REFERENCES Users(userID)
 );
-
 DROP TABLE IF EXISTS OrderItems;
 CREATE TABLE OrderItems (
     orderItemID   INTEGER PRIMARY KEY AUTOINCREMENT,

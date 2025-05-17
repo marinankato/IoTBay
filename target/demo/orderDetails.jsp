@@ -54,68 +54,68 @@
     }
     .btn-new-order:hover { background:#0056b3; }
 
-    /* our new red cancel */
-    .btn-cancel {
-      display:inline-block; padding:8px 14px;
-      background:#dc3545; color:#fff; border-radius:6px;
-      cursor:pointer; border:none; transition:background 0.2s;
-    }
-    .btn-cancel:hover { background:#c82333; }
   </style>
 </head>
 <body>
-<%
-  User user = (User) session.getAttribute("user");
-  if (user == null) {
-    response.sendRedirect("login.jsp");
-    return;
-  }
-  Order order      = (Order) request.getAttribute("order");
-  List<CartItem> items = (List<CartItem>) request.getAttribute("items");
+<<%
+User user = (User) session.getAttribute("user");
+if (user == null) {
+  response.sendRedirect("login.jsp");
+  return;
+}
+Order order         = (Order) request.getAttribute("order");
+List<CartItem> items = (List<CartItem>) request.getAttribute("items");
 %>
 <div class="header">
-    <a href="dashboard.jsp" class="logo">IoTBay</a>
-    <span class="welcomeText">Logged in as: <%= user.getEmail() %></span>
-  </div>
+<a href="dashboard.jsp" class="logo">IoTBay</a>
+<span class="welcomeText">Logged in as: <%= user.getFirstName() %></span>
+</div>
 
 <div class="container">
-  <h2>Order #<%= order.getOrderID() %> Details</h2>
-  <p><strong>Date:</strong>
-     <%= new SimpleDateFormat("yyyy-MM-dd")
-            .format(order.getOrderDate()) %>
-  </p>
-  <p><strong>Total:</strong>
-     $<%= String.format("%.2f", order.getTotalPrice()) %>
-  </p>
+<h2>Order #<%= order.getOrderID() %> Details</h2>
+<p><strong>Date:</strong>
+   <%= new SimpleDateFormat("yyyy-MM-dd")
+          .format(order.getOrderDate()) %>
+</p>
+<p><strong>Total:</strong>
+   $<%= String.format("%.2f", order.getTotalPrice()) %>
+</p>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Item</th>
-        <th>Unit Price</th>
-        <th>Quantity</th>
-        <th>Line Total</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% for (CartItem ci : items) { %>
-      <tr>
-        <td><%= ci.getName() %></td>
-        <td>$<%= String.format("%.2f", ci.getUnitPrice()) %></td>
-        <td><%= ci.getQuantity() %></td>
-        <td>
-          $<%= String.format("%.2f",
-                ci.getUnitPrice() * ci.getQuantity()) %>
-        </td>
-      </tr>
+<h3>Items in this Order</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Unit Price</th>
+      <th>Quantity</th>
+      <th>Line Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%
+      double subtotal = 0;
+      for (CartItem ci : items) {
+        double line = ci.getQuantity() * ci.getUnitPrice();
+        subtotal += line;
+    %>
+    <tr>
+      <td><%= ci.getName() %></td>
+      <td>$<%= String.format("%.2f", ci.getUnitPrice()) %></td>
+      <td><%= ci.getQuantity() %></td>
+      <td>$<%= String.format("%.2f", line) %></td>
+    </tr>
     <% } %>
-    </tbody>
-  </table>
+    <tr>
+      <td colspan="3" style="text-align:right;"><strong>Subtotal:</strong></td>
+      <td><strong>$<%= String.format("%.2f", subtotal) %></strong></td>
+    </tr>
+  </tbody>
+</table>
 
-  <a href="<%= request.getContextPath() %>/order"
-     class="btn-new-order">
-    « Back to Orders
-  </a>
+<a href="<%= request.getContextPath() %>/order"
+   class="btn-new-order">
+  « Back to Orders
+</a>
 </div>
 </body>
 </html>

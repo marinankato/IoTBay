@@ -47,6 +47,27 @@ INSERT INTO Orders (orderID, userID, orderDate, totalPrice, orderStatus) VALUES
   (19, 3, '2025-05-19',  30.30, 0),
   (20, 3, '2025-05-20',  65.65, 1);
 
+INSERT INTO OrderItems (orderID, deviceID, quantity, unitPrice) VALUES
+  ( 1, 10, 1,  49.99), 
+  ( 2,  5, 1, 129.95),  
+  ( 3,  3, 1,  75.50),
+  ( 4,  4, 1, 199.99),
+  ( 5,  7, 1,  39.95),
+  ( 6,  6, 1,  89.20),
+  ( 7,  2, 1, 149.49),
+  ( 8,  8, 1,  19.99),
+  ( 9,  9, 1,  59.00),
+  (10, 11, 1, 109.99),
+  (11, 12, 1,  24.75),
+  (12,  5, 1,  79.99),
+  (13, 13, 1,  42.00),
+  (14,  2, 1, 120.00),
+  (15,  7, 1,  55.55),
+  (16,  3, 1, 199.95),
+  (17, 15, 1,  15.00),
+  (18,  1, 1,  99.99),
+  (19, 19, 1,  30.30),
+  (20,  6, 1,  65.65);
 INSERT INTO iot_device (device_name, device_type, unit_price, quantity) VALUES
 ('Smart Sensor', 'Sensor', 99.99, 50),
 ('IoT Camera', 'Camera', 149.99, 30),
