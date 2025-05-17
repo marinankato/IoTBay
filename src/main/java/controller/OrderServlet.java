@@ -18,8 +18,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.text.SimpleDateFormat;
-
-
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
     private static final SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
@@ -35,10 +33,6 @@ public class OrderServlet extends HttpServlet {
             return;
         }
 
-        // ── DEBUG #1: which userID are we using? ──
-        System.out.println(">>> OrderServlet.doGet: session userID = " + user.getUserID());
-
-        // 2) Parse optional search filters
         String idParam   = req.getParameter("orderID");
         String dateParam = req.getParameter("orderDate");
         Integer orderID  = (idParam   != null && !idParam.isEmpty())
@@ -58,9 +52,6 @@ public class OrderServlet extends HttpServlet {
             DBOrderConnector cf = new DBOrderConnector();
             Connection conn = cf.openConnection();
 
-            // ── DEBUG #2: what Connection did we actually get? ──
-            System.out.println(">>> DBOrderConnector.openConnection() → " + conn);
-
             DBOrderManager mgr = new DBOrderManager(conn);
 
             // 4) Either search or fetch all
@@ -73,20 +64,12 @@ public class OrderServlet extends HttpServlet {
                 orders = mgr.getOrdersByUser(user.getUserID());
             }
 
-            // ── DEBUG #3: how many rows did we pull? ──
-            System.out.println(">>> Retrieved " + orders.size()
-                               + " orders (filters: orderID=" + orderID
-                               + ", orderDate=" + orderDate + ")");
-            for (Order o : orders) {
-                System.out.println("    → " + o);
-            }
 
             cf.closeConnection();
         } catch (ClassNotFoundException | SQLException e) {
             throw new ServletException(e);
         }
 
-        // 5) Save into session & forward to JSP
         session.setAttribute("orders", orders);
         req.getRequestDispatcher("/orderHistory.jsp")
            .forward(req, resp);
@@ -113,7 +96,7 @@ public class OrderServlet extends HttpServlet {
                 case "checkout":
                     // create new order & get its generated ID
                     double total = Double.parseDouble(req.getParameter("totalPrice"));
-                    Order newOrder = new Order(0, user.getUserID(), new Date(), total, false);
+                    Order newOrder = new Order(0, user.getUserID(), new Date(), total, Order.SUBMITTED);
                     int newId = mgr.insertOrderAndReturnKey(newOrder);
                     session.setAttribute("message", "Order #" + newId + " placed.");
                     break;
@@ -123,15 +106,21 @@ public class OrderServlet extends HttpServlet {
                     int uid = Integer.parseInt(req.getParameter("orderID"));
                     Date dt = DF.parse(req.getParameter("orderDate"));
                     double price = Double.parseDouble(req.getParameter("totalPrice"));
-                    mgr.updateOrder(new Order(uid, user.getUserID(), dt, price, false));
+                    mgr.updateOrder(new Order(uid, user.getUserID(), dt, price, Order.SAVED));
                     session.setAttribute("message", "Order #" + uid + " updated.");
                     break;
 
                 case "cancel":
                     // mark as cancelled (status=false)
+                    /*int cid = Integer.parseInt(req.getParameter("orderID"));
+                    mgr.cancelOrder(cid);
+                    session.setAttribute("message", "Order #" + cid + " cancelled.");
+                    break;*/
                     int cid = Integer.parseInt(req.getParameter("orderID"));
                     mgr.cancelOrder(cid);
                     session.setAttribute("message", "Order #" + cid + " cancelled.");
+                    // Redirect so doGet() re-loads the fresh data
+                    resp.sendRedirect(req.getContextPath() + "/order");
                     break;
 
                 default:

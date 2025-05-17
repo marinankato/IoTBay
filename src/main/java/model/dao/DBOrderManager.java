@@ -26,7 +26,7 @@ public class DBOrderManager {
             stmt.setInt(1, order.getUserID());
             stmt.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
             stmt.setDouble(3, order.getTotalPrice());
-            stmt.setBoolean(4, order.getOrderStatus());
+            stmt.setInt(4, order.getOrderStatus());
             stmt.executeUpdate();
 
             try (ResultSet keys = stmt.getGeneratedKeys()) {
@@ -88,10 +88,10 @@ public class DBOrderManager {
     }
 
     /** UPDATE just the status (e.g. cancel or resubmit) */
-    public void updateOrderStatus(int orderID, boolean status) throws SQLException {
+    public void updateOrderStatus(int orderID, int status) throws SQLException {
         String sql = "UPDATE Orders SET orderStatus=? WHERE orderID=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setBoolean(1, status);
+            stmt.setInt(1, status);
             stmt.setInt(2, orderID);
             stmt.executeUpdate();
         }
@@ -103,7 +103,7 @@ public class DBOrderManager {
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setDate(1, new java.sql.Date(o.getOrderDate().getTime()));
             stmt.setDouble(2, o.getTotalPrice());
-            stmt.setBoolean(3, o.getOrderStatus());
+            stmt.setInt(3, o.getOrderStatus());
             stmt.setInt(4, o.getOrderID());
             stmt.executeUpdate();
         }
@@ -111,9 +111,13 @@ public class DBOrderManager {
 
     /** CANCEL = set status=false */
     public void cancelOrder(int orderID) throws SQLException {
-        updateOrderStatus(orderID, false);
+        String sql = "UPDATE Orders SET orderStatus=? WHERE orderID=?";
+        try (var ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, Order.CANCELLED);
+            ps.setInt(2, orderID);
+            ps.executeUpdate();
+        }
     }
-
 
     private Order mapRow(ResultSet rs) throws SQLException {
         int orderId    = rs.getInt("orderID");
@@ -129,7 +133,7 @@ public class DBOrderManager {
         }
     
         double total  = rs.getDouble("totalPrice");
-        boolean status = rs.getBoolean("orderStatus");
+        int status = rs.getInt("orderStatus");
     
         return new Order(orderId, customerId, utilDate, total, status);
     }
