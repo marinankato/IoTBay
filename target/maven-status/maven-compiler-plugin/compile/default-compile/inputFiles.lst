@@ -14,6 +14,7 @@
 /Users/jquisumbing/IoTBay/src/main/java/controller/RegisterServlet.java
 /Users/jquisumbing/IoTBay/src/main/java/model/dao/DBUserManager.java
 /Users/jquisumbing/IoTBay/src/main/java/model/dao/DBOrder.java
+/Users/jquisumbing/IoTBay/src/main/java/model/dao/AccessLogsDB.java
 /Users/jquisumbing/IoTBay/src/main/java/model/dao/AccessLogsDBConnector.java
 /Users/jquisumbing/IoTBay/src/main/java/controller/OrderServlet.java
 /Users/jquisumbing/IoTBay/src/main/java/model/Payment.java

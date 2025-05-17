@@ -26,10 +26,9 @@ public class DBOrderConnector extends DBOrder{
     }
 
     public Connection openConnection() {
-        System.out.println(">>> [DBOrderConnector] opening DB at: " + url);
-        return this.conn;
-       // return conn;
+       return conn;
     }
+    
     public void closeConnection() throws SQLException {
         if (conn != null && !conn.isClosed()) {
             conn.close();
