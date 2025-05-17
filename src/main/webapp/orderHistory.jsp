@@ -65,12 +65,14 @@
     .search-add {
       margin-bottom: 30px;
     }
+
     form.search {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       margin-bottom: 20px;
     }
+
     input[type="text"],
     input[type="date"] {
       padding: 8px;
@@ -78,6 +80,7 @@
       border-radius: 6px;
       width: 180px;
     }
+
     input[type="submit"] {
       padding: 8px 14px;
       background-color: #007bff;
@@ -87,6 +90,7 @@
       cursor: pointer;
       transition: background-color 0.2s ease;
     }
+
     input[type="submit"]:hover {
       background-color: #0056b3;
     }
@@ -129,6 +133,7 @@
       display: inline-block;
       margin-right: 5px;
     }
+    
     .btn-new-order {
       display: inline-block;
       padding: 8px 14px;
@@ -139,9 +144,37 @@
       margin-bottom: 20px;
       transition: background-color 0.2s;
     }
+
     .btn-new-order:hover {
       background-color: #0056b3;
     }
+    
+    .btn-cancel {
+      display: inline-block;
+      padding: 8px 14px;
+      background-color: #dc3545;    /* red */
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+    .btn-cancel:hover {
+      background-color: #c82333;
+    }
+    
+    .btn-block {
+      display: block;
+      width: 120px;       
+      text-align: center;
+      margin: 4px auto;    
+    }
+
+    td .btn-block + .btn-block {
+      margin-top: 8px;    
+    }
+    
   </style>
 </head>
 <body>
@@ -227,15 +260,15 @@
         </td>
         <td>
           <% if (o.isSaved()) { %>
-            <form action="<%=request.getContextPath()%>/order" method="post">
+            <a  href="${pageContext.request.contextPath}/orderDetails?orderID=${o.orderID}"
+                class="btn-new-order btn-block">
+              Details
+            </a>
+            <form action="${pageContext.request.contextPath}/order" method="post" style="margin:0;">
               <input type="hidden" name="action"  value="cancel"/>
-              <input type="hidden" name="orderID" value="<%=o.getOrderID()%>"/>
-              <button type="submit">Cancel</button>
+              <input type="hidden" name="orderID" value="${o.orderID}"/>
+              <button type="submit" class="btn-cancel btn-block">Cancel</button>
             </form>
-            <a href="<%= request.getContextPath() %>/orderDetails?orderID=<%= o.getOrderID() %>"
-              class="btn-new-order">
-             Details
-           </a>
           <% } %>
         </td>
       </tr>
