@@ -1,2 +1,3 @@
 model/DBUserManagerTest.class
+model/DBOrderItemTest.class
 model/DBOrderManagerTest.class

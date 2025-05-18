@@ -66,4 +66,27 @@ public class DBOrderItem {
         }
     }
 
+    /** Delete one line‐item from an order */
+    public void deleteItem(int orderID, int deviceID) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "DELETE FROM OrderItems WHERE orderID=? AND deviceID=?")) {
+            ps.setInt(1, orderID);
+            ps.setInt(2, deviceID);
+            ps.executeUpdate();
+        }
+    }
+
+    /** Update quantity (and unitPrice if you allow price changes) */
+    public void updateItem(int orderID, int deviceID, int quantity, double unitPrice)
+            throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "UPDATE OrderItems SET quantity=?, unitPrice=? WHERE orderID=? AND deviceID=?")) {
+            ps.setInt(1, quantity);
+            ps.setDouble(2, unitPrice);
+            ps.setInt(3, orderID);
+            ps.setInt(4, deviceID);
+            ps.executeUpdate();
+        }
+    }
+
 }

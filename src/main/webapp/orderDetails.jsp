@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-     import="model.User,model.Order,model.CartItem,java.util.List,java.text.SimpleDateFormat" %>
+     import="model.User,model.IoTDevice,model.Order,model.CartItem,java.util.List,java.text.SimpleDateFormat" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,14 +57,15 @@
   </style>
 </head>
 <body>
-<<%
+<%
 User user = (User) session.getAttribute("user");
 if (user == null) {
   response.sendRedirect("login.jsp");
   return;
 }
-Order order         = (Order) request.getAttribute("order");
+Order order = (Order) request.getAttribute("order");
 List<CartItem> items = (List<CartItem>) request.getAttribute("items");
+List<IoTDevice> all  = (List<IoTDevice>) request.getAttribute("allDevices");
 %>
 <div class="header">
 <a href="dashboard.jsp" class="logo">IoTBay</a>
@@ -72,50 +73,63 @@ List<CartItem> items = (List<CartItem>) request.getAttribute("items");
 </div>
 
 <div class="container">
-<h2>Order #<%= order.getOrderID() %> Details</h2>
-<p><strong>Date:</strong>
-   <%= new SimpleDateFormat("yyyy-MM-dd")
-          .format(order.getOrderDate()) %>
-</p>
-<p><strong>Total:</strong>
-   $<%= String.format("%.2f", order.getTotalPrice()) %>
-</p>
+    <h2>Order #<%=order.getOrderID()%> Details</h2>
+    <p><strong>Total:</strong> $<%=order.getTotalPrice()%></p>
+  
+    <table>
+      <tr><th>Item</th><th>Price</th><th>Qty</th><th>Line</th><th>Actions</th></tr>
+      <% for(CartItem ci: items) { %>
+        <tr>
+          <td><%=ci.getName()%></td>
+          <td>$<%=ci.getUnitPrice()%></td>
+          <td><%=ci.getQuantity()%></td>
+          <td>$<%=ci.getUnitPrice()*ci.getQuantity()%></td>
+          <td>
+            <form style="display:inline" method="post" action="orderDetails">
+              <input type="hidden" name="orderID" value="<%=order.getOrderID()%>"/>
+              <input type="hidden" name="action" value="remove"/>
+              <input type="hidden" name="deviceID" value="<%=ci.getDeviceId()%>"/>
+              <button type="submit">🗑️</button>
+            </form>
+            <form style="display:inline" method="post" action="orderDetails">
+              <input type="hidden" name="orderID"    value="<%=order.getOrderID()%>"/>
+              <input type="hidden" name="action"     value="updateQty"/>
+              <input type="hidden" name="deviceID"   value="<%=ci.getDeviceId()%>"/>
+              <input type="number" name="quantity"   min="1"
+                     value="<%=ci.getQuantity()%>"/>
+              <input type="hidden" name="unitPrice"
+                     value="<%=ci.getUnitPrice()%>"/>
+              <button type="submit">↺</button>
+            </form>
+          </td>
+        </tr>
+      <% } %>
+      <tr><td colspan="5">
+        <strong>Add another product:</strong>
+          <form method="post" action="orderDetails" style="display:inline">
+            <input type="hidden" name="orderID"  value="<%=order.getOrderID()%>"/>
+            <input type="hidden" name="action"   value="add"/>
+            <select name="deviceID">
+              <% for (IoTDevice d : all) {
+                   boolean already =
+                     items.stream().anyMatch(ci -> ci.getDeviceId() == d.getId());
+              %>
+                <option value="<%=d.getId()%>"
+                        <%= already ? "disabled" : "" %>>
+                  <%=d.getName()%> (stock: <%=d.getQuantity()%>)
+                </option>
+              <% } %>
+            </select>
+            <input type="number" name="quantity" min="1" value="1"/>
+            <%-- you could set unitPrice via JS onchange --%>
+            <input type="hidden" name="unitPrice" value=""/>
+            <button type="submit">➕ Add</button>
+          </form>
+        </td>
+      </tr>
+    </table>
 
-<h3>Items in this Order</h3>
-<table>
-  <thead>
-    <tr>
-      <th>Item</th>
-      <th>Unit Price</th>
-      <th>Quantity</th>
-      <th>Line Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%
-      double subtotal = 0;
-      for (CartItem ci : items) {
-        double line = ci.getQuantity() * ci.getUnitPrice();
-        subtotal += line;
-    %>
-    <tr>
-      <td><%= ci.getName() %></td>
-      <td>$<%= String.format("%.2f", ci.getUnitPrice()) %></td>
-      <td><%= ci.getQuantity() %></td>
-      <td>$<%= String.format("%.2f", line) %></td>
-    </tr>
-    <% } %>
-    <tr>
-      <td colspan="3" style="text-align:right;"><strong>Subtotal:</strong></td>
-      <td><strong>$<%= String.format("%.2f", subtotal) %></strong></td>
-    </tr>
-  </tbody>
-</table>
-
-<a href="<%= request.getContextPath() %>/order"
-   class="btn-new-order">
-  « Back to Orders
-</a>
-</div>
+    <a href="order" class="btn-new-order">« Back to Orders</a>
+  </div>
 </body>
 </html>

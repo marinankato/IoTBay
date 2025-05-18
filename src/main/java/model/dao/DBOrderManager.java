@@ -148,6 +148,25 @@ public class DBOrderManager {
         }
     }
 
+    /** Re‐compute totalPrice from the OrderItems, and update the Orders table. */
+    public void recalcTotal(int orderID) throws SQLException {
+        String sumSql = "SELECT SUM(quantity * unitPrice) AS tot FROM OrderItems WHERE orderID=?";
+        double tot = 0.0;
+        try (PreparedStatement ps = conn.prepareStatement(sumSql)) {
+            ps.setInt(1, orderID);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next())
+                    tot = rs.getDouble("tot");
+            }
+        }
+        try (PreparedStatement ps = conn.prepareStatement(
+                "UPDATE Orders SET totalPrice=? WHERE orderID=?")) {
+            ps.setDouble(1, tot);
+            ps.setInt(2, orderID);
+            ps.executeUpdate();
+        }
+    }
+
     private Order mapRow(ResultSet rs) throws SQLException {
         int orderId = rs.getInt("orderID");
         int customerId = rs.getInt("userID");

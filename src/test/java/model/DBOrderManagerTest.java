@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
 
-
 public class DBOrderManagerTest {
     private static final int TEST_USER_ID = 42; 
     private DBOrderConnector cf;
