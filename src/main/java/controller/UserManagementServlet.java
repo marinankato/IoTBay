@@ -10,6 +10,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import model.dao.DBUserManager;
+<<<<<<< HEAD
+=======
+
+>>>>>>> a8db5bec37548f8bbed118e008a3bdc9e54cb37c
 @WebServlet("/user-management")
 public class UserManagementServlet extends HttpServlet {
     private DBUserManager dao;
