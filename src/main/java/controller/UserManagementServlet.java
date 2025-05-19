@@ -8,12 +8,8 @@ import java.util.Map;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-
+import model.dao.DBUserConnector;
 import model.dao.DBUserManager;
-<<<<<<< HEAD
-=======
-
->>>>>>> a8db5bec37548f8bbed118e008a3bdc9e54cb37c
 @WebServlet("/user-management")
 public class UserManagementServlet extends HttpServlet {
     private DBUserManager dao;
@@ -21,9 +17,12 @@ public class UserManagementServlet extends HttpServlet {
     @Override
     public void init() {
         try {
-            dao = new DBUserManager(null);
+            DBUserConnector connector = new DBUserConnector();
+            dao = new DBUserManager(connector.openConnection());
         } catch (SQLException e) {
             throw new RuntimeException("Failed to initilaise DBUserManager", e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         
     }
@@ -46,7 +45,7 @@ public class UserManagementServlet extends HttpServlet {
         String phone = req.getParameter("phone");
         List<Map<String, String>> users = dao.searchUsers(fname, lname, phone);
         req.setAttribute("users", users);
-        req.getRequestDispatcher("user-management.jsp").forward(req, resp);
+        req.getRequestDispatcher("userManagement.jsp").forward(req, resp);
     }
 
     @Override
