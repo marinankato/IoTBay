@@ -90,6 +90,45 @@
         <button type="submit">Search</button>
     </form>
 
+    <%
+        List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users");
+        if (users != null) {
+            if (users.isEmpty()) {
+    %>
+        <p>No users found matching your search criteria.</p>
+    <%
+            } else {
+    %>
+        <p>Found <%= users.size() %> user(s):</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (Map<String, String> u : users) { %>
+                    <tr>
+                        <td><%= u.get("id") %></td>
+                        <td><%= u.get("firstName") %></td>
+                        <td><%= u.get("lastName") %></td>
+                        <td><%= u.get("phoneNo") %></td>
+                        <td><%= u.get("email") %></td>
+                        <td><%= u.get("role") %></td>
+                        <td><%= u.get("status") %></td>
+                        <td>
+                            <a href="user-management?action=update&id=<%= u.get("id") %>">Update</a> |
+                            <a href="user-management?action=delete&id=<%= u.get("id") %>">Delete</a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    <%
+            }
+        }
+    %>
+
     <hr/>
 
     <!-- Update User Form -->

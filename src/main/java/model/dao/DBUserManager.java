@@ -195,7 +195,7 @@ public class DBUserManager {
 
             while(rs.next()) {
                 Map<String, String> user = new HashMap<>();
-                user.put("id", String.valueOf(rs.getInt("id")));
+                user.put("userID", String.valueOf(rs.getInt("userID")));
                 user.put("firstName", rs.getString("firstName"));
                 user.put("lastName", rs.getString("lastName"));
                 user.put("phoneNo", rs.getString("phoneNo"));
@@ -209,38 +209,7 @@ public class DBUserManager {
         return allUsers;
     }
 
-    //method to search users
-    public List<Map<String, String>> searchUsers(String searchQuery) {
-        List<Map<String, String>> searchedUsers = new ArrayList<>();
-        try {
-            String query = "SELECT * FROM Users WHERE (firstName LIKE ? AND lastName LIKE ?) OR phoneNo LIKE ?";
-            PreparedStatement ps = conn.prepareStatement(query);
-            String searchPattern = "%" + searchQuery + "%";
-
-            ps.setString(1, searchPattern);
-            ps.setString(2, searchPattern);
-            ps.setString(3, searchPattern);
-
-            ResultSet resultSet = ps.executeQuery();
-
-            while (resultSet.next()) {
-                Map<String, String> user = new HashMap<>();
-                user.put("id", String.valueOf(resultSet.getInt("id")));
-                user.put("firstName", resultSet.getString("firstName"));
-                user.put("lastName", resultSet.getString("lastName"));
-                user.put("phoneNo", resultSet.getString("phoneNo"));
-                user.put("email", resultSet.getString("email"));
-                user.put("role", resultSet.getString("role"));
-
-                searchedUsers.add(user);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return searchedUsers;
-    }
-
-
+    
     //delete users with user id
     public void deleteUser(int userID) {
         try {
@@ -255,12 +224,12 @@ public class DBUserManager {
 
     public Map<String, String> getUserById(int id) {
     Map<String, String> user = new HashMap<>();
-    String sql = "SELECT * FROM Users WHERE id = ?";
+    String sql = "SELECT * FROM Users WHERE userID = ?";
     try (PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            user.put("id", String.valueOf(rs.getInt("id")));
+            user.put("userID", String.valueOf(rs.getInt("userID")));
             user.put("firstName", rs.getString("firstName"));
             user.put("lastName", rs.getString("lastName"));
             user.put("phoneNo", rs.getString("phoneNo"));
@@ -275,7 +244,7 @@ public class DBUserManager {
 }
 
     //update users search with id
-    public void updateUser(int id, String firstName, String lastName, String phoneNo, String email, String role, String status) {
+    public void updateUser(int userID, String firstName, String lastName, String phoneNo, String email, String role, String status) {
         String sql = "UPDATE Users SET firstName=?, lastName=?, phoneNo=?, email=?, role=?, status=? WHERE id=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, firstName);
@@ -284,7 +253,7 @@ public class DBUserManager {
             ps.setString(4, email);
             ps.setString(5, role);
             ps.setString(6, status);
-            ps.setInt(7, id);
+            ps.setInt(7, userID);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -309,38 +278,38 @@ public class DBUserManager {
     }
 
     //search users
-    public List<Map<String, String>> searchUsers(String fname, String lname, String phone) {
-        List<Map<String, String>> results = new ArrayList<>();
-        String sql = "SELECT * FROM Users WHERE " +
-                     "(firstName LIKE ? OR ? = '') AND " +
-                     "(lastName LIKE ? OR ? = '') AND " +
-                     "(phoneNo LIKE ? OR ? = '')";
+   public List<Map<String, String>> searchUsers(String fname, String lname, String phone) {
+    List<Map<String, String>> results = new ArrayList<>();
+    String sql = "SELECT * FROM Users WHERE " +
+                 "(firstName LIKE ? OR ? = '') AND " +
+                 "(lastName LIKE ? OR ? = '') AND " +
+                 "(phoneNo LIKE ? OR ? = '')";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, "%" + fname + "%");
-            ps.setString(2, fname);
-            ps.setString(3, "%" + lname + "%");
-            ps.setString(4, lname);
-            ps.setString(5, "%" + phone + "%");
-            ps.setString(6, phone);
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, "%" + fname + "%");
+        ps.setString(2, fname);
+        ps.setString(3, "%" + lname + "%");
+        ps.setString(4, lname);
+        ps.setString(5, "%" + phone + "%");
+        ps.setString(6, phone);
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Map<String, String> user = new HashMap<>();
-                user.put("id", rs.getString("id"));
-                user.put("firstName", rs.getString("firstName"));
-                user.put("lastName", rs.getString("lastName"));
-                user.put("phoneNo", rs.getString("phoneNo"));
-                user.put("email", rs.getString("email"));
-                user.put("role", rs.getString("role"));
-                results.add(user);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Map<String, String> user = new HashMap<>();
+            user.put("userID", String.valueOf(rs.getInt("userID")));
+            user.put("firstName", rs.getString("firstName"));
+            user.put("lastName", rs.getString("lastName"));
+            user.put("phoneNo", rs.getString("phoneNo"));
+            user.put("email", rs.getString("email"));
+            user.put("role", rs.getString("role"));
+            results.add(user);
         }
-        return results;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-
+    return results;
+}
 
 }
 
