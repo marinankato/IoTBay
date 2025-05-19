@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import model.dao.DBUserManager;
-
+@WebServlet("/user-management")
 public class UserManagementServlet extends HttpServlet {
     private DBUserManager dao;
 
