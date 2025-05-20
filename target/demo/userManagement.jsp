@@ -48,7 +48,9 @@
 </head>
 
 <% User user = (User)session.getAttribute("user");
-List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users"); %>
+List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users");
+Map<String, String> editingUser = (Map<String, String>) request.getAttribute("editingUser");
+%>
 <body>
     <div class="header">
         <a href="dashboard.jsp" class="logo">IoTBay</a>
@@ -65,7 +67,7 @@ List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribu
         <div class="form-group">
             First Name: <input type="text" name="firstName" required />
             Last Name: <input type="text" name="lastName" required />
-            Phone Number: <input type="text" name="phone" required />
+            Phone Number: <input type="text" name="phoneNo" required />
         </div>
         <div class="form-group">
             Email: <input type="email" name="email" required />
@@ -89,7 +91,7 @@ List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribu
     <form name="searchForm" action="user-management" method="get">
         First Name: <input type="text" name="firstName" />
         Last Name: <input type="text" name="lastName" />
-        Phone: <input type="text" name="phone" />
+        Phone: <input type="text" name="phoneNo" />
         <button type="submit">Search</button>
         <p>To display all users simply search with a empty input and all users will be displayed.</p>
     </form>
@@ -106,22 +108,29 @@ List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribu
         <table>
             <thead>
                 <tr>
-                    <th>ID</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th>
+                    <th>ID</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Role</th><th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <% for (Map<String, String> u : users) { %>
                     <tr>
-                        <td><%= u.get("id") %></td>
+                        <td><%= u.get("userID") %></td>
                         <td><%= u.get("firstName") %></td>
                         <td><%= u.get("lastName") %></td>
                         <td><%= u.get("phoneNo") %></td>
                         <td><%= u.get("email") %></td>
                         <td><%= u.get("role") %></td>
-                        <td><%= u.get("status") %></td>
                         <td>
-                            <a href="user-management?action=update&id=<%= u.get("id") %>">Update</a> |
-                            <a href="user-management?action=delete&id=<%= u.get("id") %>">Delete</a>
+                            <form action="user-management" method="get" style="display:inline;">
+                                        <input type="hidden" name="action" value="updateUser" />
+                                        <input type="hidden" name="id" value="<%= u.get("userID") %>" />
+                                        <button type="submit">Update</button>
+                            </form>
+                            <form action="user-management" method="get" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                        <input type="hidden" name="action" value="delete" />
+                                        <input type="hidden" name="id" value="<%= u.get("userID") %>" />
+                                        <button type="submit">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 <% } %>
@@ -134,39 +143,32 @@ List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribu
 
     <hr/>
 
-    <!-- Update User Form -->
-    <%
-        Map<String, String> editingUser = (Map<String, String>) request.getAttribute("editingUser");
-        if (editingUser != null) {
-    %>
-        <h3>Update User</h3>
-        <form action="user-management" method="post">
-            <input type="hidden" name="action" value="updateUser" />
-            <input type="hidden" name="userId" value="<%= editingUser.get("id") %>" />
-            <div class="form-group">
-                First Name: <input type="text" name="firstName" value="<%= editingUser.get("firstName") %>" required />
-                Last Name: <input type="text" name="lastName" value="<%= editingUser.get("lastName") %>" required />
-                Phone: <input type="text" name="phone" value="<%= editingUser.get("phoneNo") %>" required />
-            </div>
-            <div class="form-group">
-                Email: <input type="email" name="email" value="<%= editingUser.get("email") %>" required />
-                Role:
-                <select name="role">
-                    <option value="customer" <%= "customer".equals(editingUser.get("role")) ? "selected" : "" %>>Customer</option>
-                    <option value="staff" <%= "staff".equals(editingUser.get("role")) ? "selected" : "" %>>Staff</option>
-                </select>
-                Status:
-                <select name="status">
-                    <option value="active" <%= "active".equals(editingUser.get("status")) ? "selected" : "" %>>Active</option>
-                    <option value="inactive" <%= "inactive".equals(editingUser.get("status")) ? "selected" : "" %>>Inactive</option>
-                </select>
-            </div>
-            <button type="submit">Update User</button>
-        </form>
-        <hr/>
-    <%
-        }
-    %>
+    <!-- Update Form (only appears if editingUser is set)  -->
+
+        <% if (editingUser != null) { %>
+            <hr />
+            <h3>Update User</h3>
+            <form action="user-management" method="post">
+                <input type="hidden" name="action" value="updateUser" />
+                <input type="hidden" name="userID" value="<%= editingUser.get("userID") %>" />
+                <div class="form-group">
+                    First Name: <input type="text" name="firstName" value="<%= editingUser.get("firstName") %>" required />
+                    Last Name: <input type="text" name="lastName" value="<%= editingUser.get("lastName") %>" required />
+                    Phone: <input type="text" name="phoneNo" value="<%= editingUser.get("phoneNo") %>" required />
+                </div>
+                <div class="form-group">
+                    Email: <input type="email" name="email" value="<%= editingUser.get("email") %>" required />
+                    Role:
+                    <select name="role">
+                        <option value="customer" <%= "customer".equals(editingUser.get("role")) ? "selected" : "" %>>Customer</option>
+                        <option value="staff" <%= "staff".equals(editingUser.get("role")) ? "selected" : "" %>>Staff</option>
+                    </select>
+                </div>
+                <button type="submit">Update User</button>
+            </form>
+        <% } %>
+    
+        
 </div>
 </body>
 </html>

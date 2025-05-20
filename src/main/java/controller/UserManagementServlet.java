@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+// import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,27 +31,27 @@ public class UserManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-
-        if ("update".equals(action)) {
-            int id = Integer.parseInt(req.getParameter("id"));
-            Map<String, String> user = dao.getUserById(id);
+        String id = req.getParameter("id");
+        if ("updateUser".equals(action) && id != null) {
+            Map<String, String> user = dao.getUserById(Integer.parseInt(id));
             req.setAttribute("editingUser", user);
-        } else if ("delete".equals(action)) {
-            int id = Integer.parseInt(req.getParameter("id"));
-            dao.deleteUser(id);
+            req.getRequestDispatcher("/userManagement.jsp").forward(req, resp);
+        } else if ("delete".equals(action) && id != null) {
+            
+            dao.deleteUser(Integer.parseInt(id));
         }
 
         String fname = req.getParameter("firstName");
         String lname = req.getParameter("lastName");
-        String phone = req.getParameter("phone");
+        String phoneNo = req.getParameter("phoneNo");
 
         boolean isSearch = (fname != null && !fname.isEmpty()) || 
                    (lname != null && !lname.isEmpty()) || 
-                   (phone != null && !phone.isEmpty());
+                   (phoneNo != null && !phoneNo.isEmpty());
 
         List<Map<String, String>> users;
         if (isSearch) {
-            users = dao.searchUsers(fname, lname, phone);
+            users = dao.searchUsers(fname, lname, phoneNo);
             
         } else {
             users = dao.getAllUsers();
@@ -68,21 +69,30 @@ public class UserManagementServlet extends HttpServlet {
             dao.createUser(
                 req.getParameter("firstName"),
                 req.getParameter("lastName"),
-                req.getParameter("phone"),
+                req.getParameter("phoneNo"),
                 req.getParameter("email"),
                 req.getParameter("password"),
                 req.getParameter("role")
             );
         } else if ("updateUser".equals(action)) {
-            dao.updateUser(
-                Integer.parseInt(req.getParameter("userId")),
-                req.getParameter("firstName"),
-                req.getParameter("lastName"),
-                req.getParameter("phone"),
-                req.getParameter("email"),
-                req.getParameter("role"),
-                req.getParameter("status")
-            );
+            String userIdStr = req.getParameter("userID");
+            int userId = Integer.parseInt(userIdStr);
+
+            String firstName = req.getParameter("firstName");
+            String lastName = req.getParameter("lastName");
+            String phoneNo = req.getParameter("phoneNo");
+            String email = req.getParameter("email");
+            String role = req.getParameter("role");
+
+
+            
+            dao.updateUser(userId, firstName, lastName, phoneNo, email, role);
+
+            List<Map<String, String>> users = dao.getAllUsers();
+            req.setAttribute("users", users);
+            req.getRequestDispatcher("userManagement.jsp").forward(req, resp);
+            return;
+
         }
 
         resp.sendRedirect("user-management");

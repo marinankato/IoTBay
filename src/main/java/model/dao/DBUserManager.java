@@ -235,7 +235,6 @@ public class DBUserManager {
             user.put("phoneNo", rs.getString("phoneNo"));
             user.put("email", rs.getString("email"));
             user.put("role", rs.getString("role"));
-            user.put("status", rs.getString("status"));
         }
     } catch (SQLException e) {
         e.printStackTrace();
@@ -244,16 +243,15 @@ public class DBUserManager {
 }
 
     //update users search with id
-    public void updateUser(int userID, String firstName, String lastName, String phoneNo, String email, String role, String status) {
-        String sql = "UPDATE Users SET firstName=?, lastName=?, phoneNo=?, email=?, role=?, status=? WHERE id=?";
+    public void updateUser(int userID, String firstName, String lastName, String phoneNo, String email, String role) {
+        String sql = "UPDATE Users SET firstName=?, lastName=?, phoneNo=?, email=?, role=? WHERE userID=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, firstName);
             ps.setString(2, lastName);
             ps.setString(3, phoneNo);
             ps.setString(4, email);
             ps.setString(5, role);
-            ps.setString(6, status);
-            ps.setInt(7, userID);
+            ps.setInt(6, userID);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
