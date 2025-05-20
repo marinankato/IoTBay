@@ -44,9 +44,11 @@
             margin-left: auto;
         }
     </style>
+
 </head>
 
-<% User user = (User)session.getAttribute("user"); %>
+<% User user = (User)session.getAttribute("user");
+List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users"); %>
 <body>
     <div class="header">
         <a href="dashboard.jsp" class="logo">IoTBay</a>
@@ -81,17 +83,18 @@
 
     <hr/>
 
-    <!-- Search User -->
-    <h3>Search Users</h3>
-    <form action="user-management" method="get">
+    <!-- Search User and User List -->
+     <!-- combined htem due to issues with the two tables being in sync-->
+    <h3>Search Users and Display all Users</h3>
+    <form name="searchForm" action="user-management" method="get">
         First Name: <input type="text" name="firstName" />
         Last Name: <input type="text" name="lastName" />
         Phone: <input type="text" name="phone" />
         <button type="submit">Search</button>
+        <p>To display all users simply search with a empty input and all users will be displayed.</p>
     </form>
 
     <%
-        List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users");
         if (users != null) {
             if (users.isEmpty()) {
     %>
@@ -164,41 +167,6 @@
     <%
         }
     %>
-
-    <!-- User List Table -->
-    <h2>User List</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th>
-            </tr>
-        </thead>
-        <%-- not quite working as yet so am just commenting out for the moment --%>
-        <%-- <tbody>
-        <%
-            List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users");
-            if (users != null) {
-                for (Map<String, String> user : users) {
-        %>
-            <tr>
-                <td><%= user.get("id") %></td>
-                <td><%= user.get("firstName") %></td>
-                <td><%= user.get("lastName") %></td>
-                <td><%= user.get("phoneNo") %></td>
-                <td><%= user.get("email") %></td>
-                <td><%= user.get("role") %></td>
-                <td><%= user.get("status") %></td>
-                <td>
-                    <a href="user-management?action=update&id=<%= user.get("id") %>">Update</a> |
-                    <a href="user-management?action=delete&id=<%= user.get("id") %>">Delete</a>
-                </td>
-            </tr>
-        <%
-                }
-            }
-        %>
-        </tbody> --%>
-    </table>
 </div>
 </body>
 </html>

@@ -43,7 +43,19 @@ public class UserManagementServlet extends HttpServlet {
         String fname = req.getParameter("firstName");
         String lname = req.getParameter("lastName");
         String phone = req.getParameter("phone");
-        List<Map<String, String>> users = dao.searchUsers(fname, lname, phone);
+
+        boolean isSearch = (fname != null && !fname.isEmpty()) || 
+                   (lname != null && !lname.isEmpty()) || 
+                   (phone != null && !phone.isEmpty());
+
+        List<Map<String, String>> users;
+        if (isSearch) {
+            users = dao.searchUsers(fname, lname, phone);
+            
+        } else {
+            users = dao.getAllUsers();
+            
+        }
         req.setAttribute("users", users);
         req.getRequestDispatcher("userManagement.jsp").forward(req, resp);
     }

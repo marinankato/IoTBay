@@ -143,7 +143,7 @@
                 <img src="./images/user_access.jpg">
                 <h3>User Records</h3>
                 <p>Manage and view all existing user accounts.</p>
-                <a href="userManagement.jsp">View User Accounts</a>
+                <a href="user-management">View User Accounts</a>
             </div>
 
             <div class="box">
