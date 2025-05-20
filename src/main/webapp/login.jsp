@@ -108,8 +108,10 @@
         <h2>Login</h2>
 
         <%-- show the error message if invalid login attempt --%>
-        <% String errMsg = (String)session.getAttribute("errorMsg"); %>
-        <% if (errMsg != null) { %>
+        <% 
+        String errMsg = (String)session.getAttribute("errorMsg");
+        if (errMsg != null) { 
+        %>
             <div class="errorMessage"><%= errMsg %></div>
         <% } %>
         

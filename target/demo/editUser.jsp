@@ -150,12 +150,36 @@
         text-align: center;
         color: #999;
     }
+
+    .errorMessage {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid #f5c6cb;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: left;
+        }
   </style>
 </head>
 
 <%
   User user = (User) session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
   List<AccessLogs> logs = (List<AccessLogs>) request.getAttribute("accessLogs");
+
+    // show the error message if invalid edit/update attempt 
+    String errMsg = (String)session.getAttribute("errorMsg");
+    if (errMsg != null) { 
+%>
+    <div class="errorMessage"><%= errMsg %></div>
+<%
+    session.removeAttribute("errorMsg"); // remove errorMsg from session after displaying
+    } 
 %>
 
 <body>
