@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import model.User;
+import model.dao.AccessLogsDBManager;
 import model.dao.DBUserManager;
 
 @WebServlet("/LogoutServlet")
@@ -24,6 +25,10 @@ public class LogoutServlet extends HttpServlet {
 
         if (session != null) {
             DBUserManager dbmanager = (DBUserManager) session.getAttribute("manager");
+            AccessLogsDBManager logsManager = (AccessLogsDBManager) session.getAttribute("logsManager");
+            if (logsManager == null || dbmanager == null) {
+                throw new IOException("Can't find DB Manager");
+            }
             User user = (User) session.getAttribute("user");
             LocalDateTime logoutDateTime = LocalDateTime.now();
 
@@ -31,7 +36,7 @@ public class LogoutServlet extends HttpServlet {
             if (user!= null && !"guest".equalsIgnoreCase(user.getRole())) {
                 try {
                     dbmanager.updateUserLogoutDate(user.getEmail(), LocalDateTime.now());
-                    dbmanager.addAccessDate(user.getUserID(), "logged out", logoutDateTime);
+                    logsManager.addAccessDate(user.getUserID(), "logged out", logoutDateTime);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

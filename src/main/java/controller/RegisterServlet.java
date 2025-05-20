@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import model.User;
+import model.dao.AccessLogsDBManager;
 import model.dao.DBUserManager;
 
 @WebServlet("/RegisterServlet")
@@ -41,7 +42,8 @@ public class RegisterServlet extends HttpServlet {
 
         // 5- retrieve the manager instance from session
         DBUserManager dbmanager = (DBUserManager) session.getAttribute("manager");
-        if (dbmanager == null) {
+        AccessLogsDBManager logsManager = (AccessLogsDBManager) session.getAttribute("logsManager");
+        if (logsManager == null || dbmanager == null) {
             throw new IOException("Can't find DB Manager");
         }
 
@@ -76,7 +78,7 @@ public class RegisterServlet extends HttpServlet {
 
                 user = new User(userId, firstName, lastName, phoneNo, email, password, role);
                 session.setAttribute("user", user);
-                dbmanager.addAccessDate(user.getUserID(), "logged in", LocalDateTime.now());
+                logsManager.addAccessDate(user.getUserID(), "logged in", LocalDateTime.now());
             } catch (SQLException e) {
                 Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, e);
                 e.printStackTrace();

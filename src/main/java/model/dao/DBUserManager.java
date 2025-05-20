@@ -131,22 +131,6 @@ public class DBUserManager {
         System.out.println(rowsUpdated + " logout timestamp updated for " + email + " at " + formattedDate);
     }
 
-    // store user id, action (login/logout) and date 
-    public void addAccessDate(int userId, String action, LocalDateTime accessDate) throws SQLException {
-        String query = "INSERT INTO AccessLogs (userId, action, accessDate) VALUES (?, ?, ?)";
-        PreparedStatement ps = this.conn.prepareStatement(query);
-    
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = accessDate.format(formatter);
-    
-        ps.setInt(1, userId);
-        ps.setString(2, action);
-        ps.setString(3, formattedDate);
-    
-        int rowsInserted = ps.executeUpdate();
-        System.out.println(rowsInserted + " access timestamp added for userId:" + userId + " at " + formattedDate);
-    }
-
     public User findUserEmail(String email) throws SQLException{
         String sql = "SELECT * FROM Users WHERE email = ?";
         PreparedStatement ps = this.conn.prepareStatement(sql);

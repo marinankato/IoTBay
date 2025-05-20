@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import model.User;
+import model.dao.AccessLogsDBManager;
 import model.dao.DBUserManager;
 
 @WebServlet("/LoginServlet")
@@ -33,7 +34,8 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         // 5- retrieve the manager instance from session
         DBUserManager dbmanager = (DBUserManager) session.getAttribute("manager");
-        if (dbmanager == null) {
+        AccessLogsDBManager logsManager = (AccessLogsDBManager) session.getAttribute("logsManager");
+        if (logsManager == null || dbmanager == null) {
             throw new IOException("Can't find DB Manager");
         }
 
@@ -66,7 +68,7 @@ public class LoginServlet extends HttpServlet {
                 LocalDateTime loginDateTime = LocalDateTime.now();
                 try {
                     dbmanager.updateUserLoginDate(user.getEmail(), loginDateTime);
-                    dbmanager.addAccessDate(user.getUserID(), "logged in", loginDateTime);
+                    logsManager.addAccessDate(user.getUserID(), "logged in", loginDateTime);
                 } catch (SQLException e) {
                     Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, e);
                     e.printStackTrace();

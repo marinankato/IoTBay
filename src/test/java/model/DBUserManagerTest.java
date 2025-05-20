@@ -13,12 +13,14 @@ public class DBUserManagerTest {
 
     private Connection conn;
     private DBUserManager dbUserManager;
+    private AccessLogsDBManager logsManager;
 
     @Before
     public void setUp() throws Exception {
         // Create an in-memory SQLite database for testing
         conn = DriverManager.getConnection("jdbc:sqlite::memory:");
         dbUserManager = new DBUserManager(conn);
+        logsManager = new AccessLogsDBManager(conn);
 
         // Create Users table
         String createUserTable = "CREATE TABLE Users (" +
@@ -106,7 +108,7 @@ public class DBUserManagerTest {
         assertNotNull("User should exist", user);
 
         // Add an access log
-        dbUserManager.addAccessDate(user.getUserID(), "login", LocalDateTime.of(2025, 5, 19, 10, 0));
+        logsManager.addAccessDate(user.getUserID(), "login", LocalDateTime.of(2025, 5, 19, 10, 0));
 
         // Check logs directly
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM AccessLogs WHERE userId = ?");
@@ -122,10 +124,9 @@ public class DBUserManagerTest {
         User user = dbUserManager.findUser("t@test.com", "password");
         assertNotNull("User must exist", user);
 
-        dbUserManager.addAccessDate(user.getUserID(), "login", LocalDateTime.now());
-        dbUserManager.addAccessDate(user.getUserID(), "logout", LocalDateTime.now());
+        logsManager.addAccessDate(user.getUserID(), "login", LocalDateTime.now());
+        logsManager.addAccessDate(user.getUserID(), "logout", LocalDateTime.now());
 
-        AccessLogsDBManager logsManager = new AccessLogsDBManager(conn);
         List<AccessLogs> logs = logsManager.getLogsByUserId(user.getUserID());
 
         assertTrue("Should return at least two logs", logs.size() >= 2);
@@ -138,11 +139,10 @@ public class DBUserManagerTest {
         assertNotNull("User must exist", user);
 
         // Insert test access logs using DBUserManager
-        dbUserManager.addAccessDate(user.getUserID(), "login", LocalDateTime.of(2025, 5, 19, 9, 0));
-        dbUserManager.addAccessDate(user.getUserID(), "logout", LocalDateTime.of(2025, 5, 18, 18, 0));
+        logsManager.addAccessDate(user.getUserID(), "login", LocalDateTime.of(2025, 5, 19, 9, 0));
+        logsManager.addAccessDate(user.getUserID(), "logout", LocalDateTime.of(2025, 5, 18, 18, 0));
 
         // Use AccessLogsDBManager to test retrieval by date
-        AccessLogsDBManager logsManager = new AccessLogsDBManager(conn);
         List<AccessLogs> logs = logsManager.getLogsByUserIdAndDate(user.getUserID(), LocalDate.of(2025, 5, 19));
 
         assertEquals("Should only return logs for the matching date", 1, logs.size());
