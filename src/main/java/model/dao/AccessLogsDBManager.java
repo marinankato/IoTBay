@@ -42,7 +42,7 @@ public class AccessLogsDBManager {
 
     public List<AccessLogs> getLogsByUserIdAndDate(int userId, LocalDate date) throws SQLException {
         List<AccessLogs> logs = new ArrayList<>();
-        String query = "SELECT * FROM AccessLogs WHERE userID = ? AND accessDate LIKE ?";
+        String query = "SELECT * FROM AccessLogs WHERE userID = ? AND accessDate LIKE ? ORDER BY accessDate DESC";
         PreparedStatement ps = conn.prepareStatement(query);
     
         ps.setInt(1, userId);

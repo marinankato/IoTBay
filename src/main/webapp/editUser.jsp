@@ -204,7 +204,7 @@
 
         <%-- filter the date to view logs --%>
         <form action="EditUserServlet" method="get">
-            <label for="filterDate" style="font-weight: bold; color: #333333;">Filter by Date:</label>
+            <label for="filterDate">Filter by Date:</label>
             <%
                 String filterDate = request.getParameter("filterDate");
                 if (filterDate == null) filterDate = "";
