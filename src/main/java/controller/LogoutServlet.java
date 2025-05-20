@@ -20,13 +20,14 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(); // Get session if exists
+        HttpSession session = request.getSession(false); // Get session if exists
 
         if (session != null) {
             DBUserManager dbmanager = (DBUserManager) session.getAttribute("manager");
             User user = (User) session.getAttribute("user");
             LocalDateTime logoutDateTime = LocalDateTime.now();
-            // if there is a user and user is registered (they are not a guest)
+
+            // log the logout time if user is registered (they are not a guest)
             if (user!= null && !"guest".equalsIgnoreCase(user.getRole())) {
                 try {
                     dbmanager.updateUserLogoutDate(user.getEmail(), LocalDateTime.now());

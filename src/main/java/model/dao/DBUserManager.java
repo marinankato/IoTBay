@@ -38,25 +38,10 @@ public class DBUserManager {
             String lastName = rs.getString("lastName");
             String phoneNo = rs.getString("phoneNo");
             String role = rs.getString("role");
-            // Date loginDate = rs.getDate("loginDate");
-            // Date logoutDate = rs.getDate("logoutDate");
 
             // Create and return a new User object with the retrieved data
-            // return new User(email, password);
             return new User(userId, firstName, lastName, phoneNo, email, password, role);
         }
-        // if (rs.next()) {
-        //     User u = new User(
-        //         rs.getString("firstName"),
-        //         rs.getString("lastName"),
-        //         rs.getString("phoneNo"),
-        //         rs.getString("email"),
-        //         rs.getString("password"),
-        //         rs.getString("role")
-        //     );
-        //     u.setUserID(rs.getInt("userID"));
-        //     return u;
-        // }
         return null;
     }
 
@@ -176,9 +161,7 @@ public class DBUserManager {
             String phoneNo = rs.getString("phoneNo");
             String password = rs.getString("password");
             String role = rs.getString("role");
-            // Date loginDate = rs.getDate("loginDate");
-            // Date logoutDate = rs.getDate("logoutDate");
-
+            
             // Create and return a new User object with the retrieved data
             return new User(userId, firstName, lastName, phoneNo, email, password, role);
         }
@@ -204,7 +187,7 @@ public class DBUserManager {
                 allUsers.add(user);
             }
         } catch (SQLException e) {
-            System.out.println(e.getStackTrace());
+            e.getStackTrace();
         }
         return allUsers;
     }
