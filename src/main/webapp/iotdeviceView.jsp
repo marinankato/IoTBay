@@ -225,7 +225,7 @@
                                            max="<%= device.getQuantity() %>"
                                            value="1"
                                            required />
-                                    <button type="submit">Add to Cart</button>
+                                    <input type="submit" value="Add to Cart"/>
                                 </form>
                             </td>
                         <% } %>
