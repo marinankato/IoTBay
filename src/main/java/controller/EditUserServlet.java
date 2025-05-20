@@ -62,7 +62,12 @@ public class EditUserServlet extends HttpServlet {
 
             } catch (SQLException ex) {
                 Logger.getLogger(EditUserServlet.class.getName()).log(Level.SEVERE, null, ex);
-                throw new ServletException("Database error when updating user", ex);
+                if (ex.getMessage().contains("UNIQUE constraint failed: Users.email")) {
+                    session.setAttribute("errorMsg", "That email is already in use by another account.");
+                    request.getRequestDispatcher("editUser.jsp").forward(request, response);
+                } else {
+                    throw new ServletException("Database error when updating user", ex);
+                }
             }
         }
     }

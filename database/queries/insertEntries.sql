@@ -1,17 +1,17 @@
 INSERT INTO Users (firstName, lastName, phoneNo, email, password, role, loginDate, logoutDate)
 VALUES 
-('Bob', 'Watts','0411222333','admin@gmail.com','password123', 'admin', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
-('John', 'Watson','0411222333','staff@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
-('Mary', 'Clark','0411222333','customer@gmail.com','password123', 'customer', '2025-05-05 10:13:44', '2025-05-05 10:23:44'),
-('Jennifer', 'Brown','0411222333','a@gmail.com','password123', 'customer', '2024-02-11 13:23:44', '2024-02-11 13:27:44'),
-('Alice', 'White','0411222333','b@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
-('Luck', 'Do','0411222333','c@gmail.com','password123', 'customer', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
-('Bob', 'Jane','0411222333','d@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
-('Jane', 'Lane','0411222333','e@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
-('Kale', 'Watts','0411222333','veggie@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
-('Brocolli', 'Watts','0411222333','f@gmail.com','password123', 'customer', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
-('Alana', 'Philip','0411222333','g@gmail.com','password123', 'customer', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
-('Amelie', 'Watts','0411222333','h@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
+('Bob', 'Watts','0411222333','admin@gmail.com','password123', 'admin', '2025-05-18 14:17:07', '2025-05-18 14:47:07'),
+('John', 'Watson','0411222333','staff@gmail.com','password123', 'staff', '2025-05-14 20:47:07', '2025-05-14 21:47:07'),
+('Mary', 'Clark','0411222333','customer@gmail.com','password123', 'customer', '2025-05-14 20:47:07', '2025-05-14 22:47:07'),
+('Jennifer', 'Brown','0411222333','a@gmail.com','password123', 'customer', '2025-05-14 20:47:07', '2025-05-14 21:47:07'),
+('Alice', 'White','0411222333','b@gmail.com','password123', 'staff', '2025-05-14 20:47:07', '2025-05-14 20:57:07'),
+('Luck', 'Do','0411222333','c@gmail.com','password123', 'customer', '2025-05-14 20:47:07', '2025-05-14 20:49:07'),
+('Bob', 'Jane','0411222333','d@gmail.com','password123', 'staff', '2025-05-14 20:47:07', '2025-05-14 20:51:07'),
+('Jane', 'Lane','0411222333','e@gmail.com','password123', 'staff', '2025-05-14 20:47:07', '2025-05-14 20:57:07'),
+('Kale', 'Watts','0411222333','veggie@gmail.com','password123', 'staff', '2025-05-14 20:47:07', '2025-05-14 20:52:07'),
+('Brocolli', 'Watts','0411222333','f@gmail.com','password123', 'customer', '2025-05-14 20:47:07', '2025-05-14 20:48:57'),
+('Alana', 'Philip','0411222333','g@gmail.com','password123', 'customer', '2025-05-14 20:47:07', '2025-05-14 20:49:47'),
+('Amelie', 'Watts','0411222333','h@gmail.com','password123', 'staff', '2025-05-14 20:47:07', '2025-05-14 20:57:37'),
 ('Carl', 'Chapman','0411222333','i@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
 ('Henry', 'Boss','0411222333','j@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
 ('Jack', 'Mac','0411222333','k@gmail.com','password123', 'customer', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
@@ -23,7 +23,6 @@ VALUES
 ('Marie', 'Antoinette','0411222333','marie@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
 ('Coco', 'Chanel','0411222333','test@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44'),
 ('Marc', 'Jacobs','0411222333','someone@gmail.com','password123', 'staff', '2024-11-11 13:23:44', '2024-11-11 13:23:44');
-
 
 INSERT INTO Orders (orderID, userID, orderDate, totalPrice, orderStatus) VALUES
   ( 1, 3, '2025-05-01',  49.99, 0),  -- Saved
@@ -111,4 +110,10 @@ VALUES
 ('7', 'logged out', '2025-05-14 20:51:07'),
 ('8', 'logged out', '2025-05-14 20:57:07'),
 ('9', 'logged out', '2025-05-14 20:52:07'),
-('10', 'logged out', '2025-05-14 20:48:57');
+('10', 'logged out', '2025-05-14 20:48:57'),
+('1', 'logged in', '2025-05-15 20:47:07'),
+('1', 'logged out', '2025-05-15 20:49:07'),
+('1', 'logged in', '2025-05-16 10:57:07'),
+('1', 'logged out', '2025-05-16 11:27:07'),
+('1', 'logged in', '2025-05-18 14:17:07'),
+('1', 'logged out', '2025-05-18 14:47:07');
