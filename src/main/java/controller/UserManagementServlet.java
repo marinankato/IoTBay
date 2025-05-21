@@ -31,7 +31,7 @@ public class UserManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        String id = req.getParameter("id");
+        String id = req.getParameter("userID");
         if ("updateUser".equals(action) && id != null) {
             Map<String, String> user = dao.getUserById(Integer.parseInt(id));
             req.setAttribute("editingUser", user);

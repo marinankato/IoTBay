@@ -141,8 +141,6 @@
             <button type="submit">Create User</button>
         </form>
 
-        <hr />
-
         <!-- Search Users & Display all Users -->
         <h3>Search Users and Display all Users</h3>
         <form action="user-management" method="get">
@@ -217,7 +215,6 @@
         <%
             if (editingUser != null) {
         %>
-        <hr />
         <h3>Edit User</h3>
         <form action="user-management" method="post">
             <input type="hidden" name="action" value="updateUser" />
