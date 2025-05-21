@@ -14,6 +14,7 @@ public class User implements Serializable {
     String role;
     LocalDateTime loginDate;
     LocalDateTime logoutDate;
+    String status;
 
     public User() {
     }
