@@ -19,11 +19,6 @@ public class User implements Serializable {
     public User() {
     }
 
-    // public User(String email, String password) {
-    //     this.email = email;
-    //     this.password = password;
-    // }
-
     public User(int userId, String firstName, String lastName, String phoneNo, String email, String password, String role) {
         this.userID = userId;
         this.firstName = firstName;
@@ -45,6 +40,7 @@ public class User implements Serializable {
         this.role = role;
         this.loginDate = loginDate;
         this.logoutDate = logoutDate;
+        this.status = status;
     }
 
     public int getUserID() {

@@ -18,7 +18,7 @@ CREATE TABLE "Users" (
     "role" VARCHAR(25),
     "loginDate" TEXT,
     "logoutDate" TEXT,
-    "status" TEXT CHECK(status IN ('active', 'inactive')),
+    "status" TEXT DEFAULT 'active' CHECK(status IN ('active', 'inactive')),
     PRIMARY KEY("userID" AUTOINCREMENT)
 );
 DROP TABLE IF EXISTS Orders;
