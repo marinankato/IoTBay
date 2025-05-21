@@ -19,10 +19,10 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
+    // public User(String email, String password) {
+    //     this.email = email;
+    //     this.password = password;
+    // }
 
     public User(int userId, String firstName, String lastName, String phoneNo, String email, String password, String role) {
         this.userID = userId;
@@ -34,7 +34,8 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public User(int userId, String firstName, String lastName, String phoneNo, String email, String password, String role, LocalDateTime loginDate, LocalDateTime logoutDate) {
+    public User(int userId, String firstName, String lastName, String phoneNo, String email, String password,
+                String role, LocalDateTime loginDate, LocalDateTime logoutDate, String status) {
         this.userID = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -116,6 +117,14 @@ public class User implements Serializable {
 
     public void setLogoutDate(LocalDateTime logoutDate) {
         this.logoutDate = logoutDate;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

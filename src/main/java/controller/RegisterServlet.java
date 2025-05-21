@@ -50,7 +50,7 @@ public class RegisterServlet extends HttpServlet {
         User user = null;
         try {
             // 6- find user by email 
-            user = dbmanager.findUserEmail(email);
+            user = dbmanager.findUserByEmail(email);
             
         } catch (SQLException ex) {
             Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);

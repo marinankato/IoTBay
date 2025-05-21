@@ -32,7 +32,8 @@ public class DBUserManagerTest {
                 "password TEXT, " +
                 "role TEXT, " +
                 "loginDate TEXT, " +
-                "logoutDate TEXT)";
+                "logoutDate TEXT," +
+                "status TEXT)";
         conn.createStatement().execute(createUserTable);
 
         // Create AccessLogs table
@@ -40,10 +41,10 @@ public class DBUserManagerTest {
                 "logID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "userId INTEGER, action TEXT, accessDate TEXT)";
         conn.createStatement().execute(createAccessLogsTable);
-
+        
         // Insert a test user
-        String insertUserSQL = "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role) " +
-                "VALUES ('John', 'Doe', '0404111222', 't@test.com', 'password', 'customer')";
+        String insertUserSQL = "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role, loginDate, logoutDate, status) " +
+                "VALUES ('Bob', 'Watts','0411222333','t@test.com','password', 'admin', '2025-05-18 14:17:07', '2025-05-18 14:47:07', 'active')";
         conn.createStatement().execute(insertUserSQL);
     }
 
@@ -59,7 +60,7 @@ public class DBUserManagerTest {
 
         assertNotNull("User should be found with correct credentials", user);
         assertEquals("t@test.com", user.getEmail());
-        assertEquals("customer", user.getRole());
+        assertEquals("admin", user.getRole());
     }
 
     // user story 101 (fail)

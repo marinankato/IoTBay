@@ -13,6 +13,8 @@ import java.util.Map;
 public class DBUserManager {
 
     private Connection conn;
+     // Format the datetime as a string SQLite can understand (e.g. "2025-05-14 18:32:00")
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public DBUserManager(Connection conn) throws SQLException {
         this.conn = conn;
@@ -38,9 +40,15 @@ public class DBUserManager {
             String lastName = rs.getString("lastName");
             String phoneNo = rs.getString("phoneNo");
             String role = rs.getString("role");
-
+            String status = rs.getString("status");
+            // Read as string then convert to LocalDateTime
+            String loginDateStr = rs.getString("loginDate");
+            LocalDateTime loginDate = loginDateStr != null ? LocalDateTime.parse(loginDateStr, formatter) : null;
+            String logoutDateStr = rs.getString("logoutDate");
+            LocalDateTime logoutDate = logoutDateStr != null ? LocalDateTime.parse(logoutDateStr, formatter) : null;
+            
             // Create and return a new User object with the retrieved data
-            return new User(userId, firstName, lastName, phoneNo, email, password, role);
+            return new User(userId, firstName, lastName, phoneNo, email, password, role, loginDate, logoutDate, status);
         }
         return null;
     }
@@ -85,6 +93,7 @@ public class DBUserManager {
         System.out.println(rowsUpdated + " user fields updated.");
     }
 
+    // MODIFY SO THE USER IS DEACTIVATED RATHER THAN DELETED
     // delete a user from the database
     public void deleteUser(String email) throws SQLException {
         String query = "DELETE FROM Users WHERE email = ?";
@@ -99,13 +108,18 @@ public class DBUserManager {
         }
     }
 
+    public void deactivateUser() throws SQLException {
+        // code to set User status to "inactive"
+    }
+
+    public void activateUser() throws SQLException {
+        // code to set User status to "active"
+    }
+
     //  set/update the user to hold their most recent login date/time 
     public void updateUserLoginDate(String email, LocalDateTime loginDateTime) throws SQLException {
         String query = "UPDATE Users SET loginDate = ? WHERE email = ?";
         PreparedStatement ps = this.conn.prepareStatement(query);
-
-        // Format the datetime as a string SQLite can understand (e.g. "2025-05-14 18:32:00")
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = loginDateTime.format(formatter);
 
         ps.setString(1, formattedDate);
@@ -119,9 +133,6 @@ public class DBUserManager {
     public void updateUserLogoutDate(String email, LocalDateTime logoutDateTime) throws SQLException {
         String query = "UPDATE Users SET logoutDate = ? WHERE email = ?";
         PreparedStatement ps = this.conn.prepareStatement(query);
-
-        // Format the datetime as a string SQLite can understand (e.g. "2025-05-14 18:32:00")
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = logoutDateTime.format(formatter);
 
         ps.setString(1, formattedDate);
@@ -131,7 +142,7 @@ public class DBUserManager {
         System.out.println(rowsUpdated + " logout timestamp updated for " + email + " at " + formattedDate);
     }
 
-    public User findUserEmail(String email) throws SQLException{
+    public User findUserByEmail(String email) throws SQLException{
         String sql = "SELECT * FROM Users WHERE email = ?";
         PreparedStatement ps = this.conn.prepareStatement(sql);
         ps.setString(1, email);
@@ -145,9 +156,15 @@ public class DBUserManager {
             String phoneNo = rs.getString("phoneNo");
             String password = rs.getString("password");
             String role = rs.getString("role");
+            String status = rs.getString("status");
+            // Read as string then convert to LocalDateTime
+            String loginDateStr = rs.getString("loginDate");
+            LocalDateTime loginDate = loginDateStr != null ? LocalDateTime.parse(loginDateStr, formatter) : null;
+            String logoutDateStr = rs.getString("logoutDate");
+            LocalDateTime logoutDate = logoutDateStr != null ? LocalDateTime.parse(logoutDateStr, formatter) : null;
             
             // Create and return a new User object with the retrieved data
-            return new User(userId, firstName, lastName, phoneNo, email, password, role);
+            return new User(userId, firstName, lastName, phoneNo, email, password, role, loginDate, logoutDate, status);
         }
         return null;
     }

@@ -24,15 +24,11 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 1- retrieve the current session
         HttpSession session = request.getSession();
-        // 2- create an instance of the Validator class
         Validator validator = new Validator();
-        // 3- capture the posted email
         String email = request.getParameter("email");
-        // 4- capture the posted password
         String password = request.getParameter("password");
-        // 5- retrieve the manager instance from session
+
         DBUserManager dbmanager = (DBUserManager) session.getAttribute("manager");
         AccessLogsDBManager logsManager = (AccessLogsDBManager) session.getAttribute("logsManager");
         if (logsManager == null || dbmanager == null) {
@@ -41,45 +37,38 @@ public class LoginServlet extends HttpServlet {
 
         User user = null;
         
-        if (!validator.validateEmail(email) /* 7- validate email */ ) {
-            // 8-set incorrect email error to the session
-            // purpose is to demonstrate error message in login page
+        if (!validator.validateEmail(email)) {
             session.setAttribute("errorMsg", "Your email is not correctly formatted.");
-            // 9- redirect user back to the login.jsp
             request.getRequestDispatcher("login.jsp").forward(request, response);
-        } else if (!validator.validatePassword(password) /* 10- validate password */ ) {
-            // 11-set incorrect password error to the session
+        } else if (!validator.validatePassword(password)) {
             session.setAttribute("errorMsg", "Your password should be at least 6 characters long.");
-            // 12- redirect user back to the login.jsp
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             try {
-                // find user by email and password
                 user = dbmanager.findUser(email, password);
             } catch (SQLException ex) {
                 Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (user != null) {
-                // 12.5 clear your session of error messages
+            // check if there is a matching user account
+            if (user == null) {
+                session.setAttribute("errorMsg", "The login credentials don't match.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            // check if that account is active
+            } else if (!"active".equalsIgnoreCase(user.getStatus())) {
+                session.setAttribute("errorMsg", "The account has been deactivated. Contact admin.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            } else {
+                // User is not null and status is active
                 session.removeAttribute("errorMsg");
-                // 13-save the logged in user object to the session
                 session.setAttribute("user", user);
-                // get the current datetime and log it for the user
                 LocalDateTime loginDateTime = LocalDateTime.now();
                 try {
                     dbmanager.updateUserLoginDate(user.getEmail(), loginDateTime);
                     logsManager.addAccessDate(user.getUserID(), "logged in", loginDateTime);
                 } catch (SQLException e) {
                     Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, e);
-                    e.printStackTrace();
                 }
-                // 14- redirect user to the main page(show login success message)
                 request.getRequestDispatcher("welcome.jsp").forward(request, response);
-            } else {
-            // 15-set user does not exist error to the session
-            session.setAttribute("errorMsg", "The login credentials don't match.");
-            // 16- redirect user back to the login.jsp
-            request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         }   
     }
