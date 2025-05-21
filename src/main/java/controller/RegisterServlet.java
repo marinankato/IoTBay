@@ -73,6 +73,7 @@ public class RegisterServlet extends HttpServlet {
         } else {
             // they are new so need to be added onto database
             try {
+                session.removeAttribute("errorMsg");
                 int userId = dbmanager.addUser(firstName, lastName, phoneNo, email, password, role);
                 dbmanager.updateUserLoginDate(email, LocalDateTime.now());
 
