@@ -102,9 +102,9 @@
         margin-right: 10px;
     }
 
-    input[type="submit"] {
+    .save-button {
         background-color: #007bff;
-        color: #fff;
+        color: #ffffff;
         border: none;
         padding: 10px 20px;
         border-radius: 5px;
@@ -112,16 +112,22 @@
         cursor: pointer;
     }
 
-    input[type="submit"]:hover {
+    .save-button:hover {
         background-color: #0056b3;
     }
 
-    .delete-button {
+    .deactivate-button {
         margin-top: 15px;
         background-color: #dc3545;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
     }
 
-    .delete-button:hover {
+    .deactivate-button:hover {
         background-color: #c82333;
     }
 
@@ -139,16 +145,16 @@
 
     th {
         background-color: #f8f9fa;
-        color: #333;
+        color: #333333;
     }
 
     td {
-        color: #555;
+        color: #555555;
     }
 
     .no-logs {
         text-align: center;
-        color: #999;
+        color: #999999;
     }
 
     .errorMessage {
@@ -213,13 +219,13 @@
               <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
           </div>
 
-          <input type="submit" value="Save Changes">
+          <input type="submit" class="save-button" value="Save Changes">
         </form>
 
-        <form action="DeleteUserServlet" method="post"
-              onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+        <form action="DeactivateUserServlet" method="post"
+              onsubmit="return confirm('Are you sure you want to deactivate your account?');">
             <input type="hidden" name="email" value="<%= user.getEmail() %>">
-            <input type="submit" class="delete-button" value="Delete Account">
+            <input type="submit" class="deactivate-button" value="Cancel Registration">
         </form>
     </div>
 

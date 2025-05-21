@@ -26,26 +26,28 @@ public class LogoutServlet extends HttpServlet {
         if (session != null) {
             DBUserManager dbmanager = (DBUserManager) session.getAttribute("manager");
             AccessLogsDBManager logsManager = (AccessLogsDBManager) session.getAttribute("logsManager");
+
             if (logsManager == null || dbmanager == null) {
                 throw new IOException("Can't find DB Manager");
             }
-            User user = (User) session.getAttribute("user");
-            LocalDateTime logoutDateTime = LocalDateTime.now();
+                User user = (User) session.getAttribute("user");
+                LocalDateTime logoutDateTime = LocalDateTime.now();
 
-            // log the logout time if user is registered (they are not a guest)
-            if (user!= null && !"guest".equalsIgnoreCase(user.getRole())) {
-                try {
-                    dbmanager.updateUserLogoutDate(user.getEmail(), LocalDateTime.now());
-                    logsManager.addAccessDate(user.getUserID(), "logged out", logoutDateTime);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                 // log the logout time if user is registered (they are not a guest)
+                if (user != null) {
+                    try {
+                        if (!"guest".equalsIgnoreCase(user.getRole())) {
+                            dbmanager.updateUserLogoutDate(user.getEmail(), logoutDateTime);
+                            logsManager.addAccessDate(user.getUserID(), "logged out", logoutDateTime);
+                        } else {
+                            System.out.println("Guest session ended.");
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
-            } else if ("guest".equalsIgnoreCase(user.getRole())) {
-                System.out.println("Guest session ended.");
-            }
-            session.invalidate(); // Clear session
+            session.invalidate(); // clear the session
         }
-
         response.sendRedirect("logout.jsp");
     }
 }

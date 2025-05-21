@@ -150,4 +150,26 @@ public class DBUserManagerTest {
         assertEquals("Action should be login", "login", logs.get(0).getAction());
         assertEquals("Date should match", 19, logs.get(0).getAccessDate().getDayOfMonth());
     }
+
+    // user story 904 (success)
+    @Test
+    public void testDeactivateUserSetsStatusToInactive() throws SQLException {
+        // Ensure the user starts as active
+        PreparedStatement preCheck = conn.prepareStatement("SELECT status FROM Users WHERE email = ?");
+        preCheck.setString(1, "t@test.com");
+        ResultSet preResult = preCheck.executeQuery();
+        assertTrue("User should exist before deactivation", preResult.next());
+        assertEquals("active", preResult.getString("status"));
+
+        // Deactivate the user
+        dbUserManager.deactivateUser("t@test.com");
+
+        // Check if the user's status is now inactive
+        PreparedStatement ps = conn.prepareStatement("SELECT status FROM Users WHERE email = ?");
+        ps.setString(1, "t@test.com");
+        ResultSet rs = ps.executeQuery();
+
+        assertTrue("User should still exist after deactivation", rs.next());
+        assertEquals("inactive", rs.getString("status"));
+    }
 }

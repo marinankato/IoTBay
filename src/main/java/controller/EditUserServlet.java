@@ -33,7 +33,6 @@ public class EditUserServlet extends HttpServlet {
         String phoneNo = request.getParameter("phoneNo");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        // String role = request.getParameter("role");
         String originalEmail = request.getParameter("originalEmail"); 
         
         DBUserManager dbmanager = (DBUserManager) session.getAttribute("manager");

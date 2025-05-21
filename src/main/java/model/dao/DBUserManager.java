@@ -108,12 +108,21 @@ public class DBUserManager {
         }
     }
 
-    public void deactivateUser() throws SQLException {
-        // code to set User status to "inactive"
+    // set the user's account to inactive
+    public void deactivateUser(String email) throws SQLException {
+        String sql = "UPDATE Users SET status = ? WHERE email = ?";
+        PreparedStatement ps = this.conn.prepareStatement(sql);
+
+        String status = "inactive";
+        ps.setString(1, status);
+        ps.setString(2, email); 
+        int rowsUpdated = ps.executeUpdate();
+        System.out.println(rowsUpdated + " account deactivated for " + email);
     }
 
-    public void activateUser() throws SQLException {
-        // code to set User status to "active"
+     // set User's status to "active"
+    public void activateUser(User user) throws SQLException {
+       
     }
 
     //  set/update the user to hold their most recent login date/time 
@@ -219,6 +228,7 @@ public class DBUserManager {
             user.put("phoneNo", rs.getString("phoneNo"));
             user.put("email", rs.getString("email"));
             user.put("role", rs.getString("role"));
+            user.put("status", rs.getString("status"));
         }
     } catch (SQLException e) {
         e.printStackTrace();
