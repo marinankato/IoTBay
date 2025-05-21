@@ -1,7 +1,4 @@
-target/classes/model/dao/DBUser.class
-target/classes/model/dao/DBOrder.class
 src/main/java/model/dao/DBOrder.java
 src/main/java/model/dao/DBUser.java
-target/demo/WEB-INF/classes/model/dao/DBUser.class
-target/demo/WEB-INF/classes/model/dao/DBOrder.class
 src/main/java/model/dao/AccessLogsDB.java
+/target/
