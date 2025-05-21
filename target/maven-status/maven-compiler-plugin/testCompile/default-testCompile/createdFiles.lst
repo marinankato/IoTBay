@@ -1,4 +1,4 @@
-model/DBOrderItemTest.class
-model/IoTDeviceDAOTest.class
-model/DBUserManagerTest.class
-model/DBOrderManagerTest.class
+model\DBOrderManagerTest.class
+model\DBUserManagerTest.class
+model\DBOrderItemTest.class
+model\IoTDeviceDAOTest.class

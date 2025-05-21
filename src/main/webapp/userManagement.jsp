@@ -174,7 +174,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Role</th><th>Actions</th>
+                        <th>ID</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Role</th><th>Actions</th><th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -201,6 +201,7 @@
                                 <input type="submit" value="Delete" />
                             </form>
                         </td>
+                        <td><%= u.get("status") %></td>
                     </tr>
                 <%
                     }
