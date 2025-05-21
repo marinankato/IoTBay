@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IoTDeviceDAO {
-    private static final String URL = "jdbc:sqlite:/IoTBay/database/iotdb.db";
+    private static final String URL = "jdbc:sqlite:/Users/marinakato/Intro to Software Dev/IoTBay/database/iotdb.db";
     private static final String DRIVER = "org.sqlite.JDBC";
 
     private Connection connect() throws ClassNotFoundException, SQLException {
