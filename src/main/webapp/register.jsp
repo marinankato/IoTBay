@@ -100,12 +100,18 @@
 
     </style>
 </head>
+
+<% 
+    // clear existing error message on page load
+    session.removeAttribute("errorMsg");
+%>
+
 <body>
     <div class="register">
         <h2>Register</h2>
 
         <%-- show the error message if invalid attempt --%>
-        <% String errMsg = (String)session.getAttribute("errorMsg"); %>
+        <% String errMsg = (String)request.getAttribute("errorMsg"); %>
         <% if (errMsg != null) { %>
             <div class="errorMessage"><%= errMsg %></div>
         <% } %>

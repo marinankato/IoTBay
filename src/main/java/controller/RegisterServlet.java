@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
         String role = request.getParameter("role");
         
         if (role == null || (!role.equals("customer") && !role.equals("staff"))) {
-            session.setAttribute("errorMsg", "Please select a valid role.");
+            request.setAttribute("errorMsg", "Please select a valid role.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
@@ -59,16 +59,16 @@ public class RegisterServlet extends HttpServlet {
         if (!validator.validateEmail(email) /* 7- validate email */ ) {
             // 8-set incorrect email error to the session
             // purpose is to demonstrate error message in login page
-            session.setAttribute("errorMsg", "Your email is not correctly formatted.");
+            request.setAttribute("errorMsg", "Your email is not correctly formatted.");
             // 9- redirect user back to the login.jsp
             request.getRequestDispatcher("register.jsp").forward(request, response);
         } else if (!validator.validatePassword(password) /* 10- validate password */ ) {
             // 11-set incorrect password error to the session
-            session.setAttribute("errorMsg", "Your password must be at least 6 characters long.");
+            request.setAttribute("errorMsg", "Your password must be at least 6 characters long.");
             // 12- redirect user back to the login.jsp
             request.getRequestDispatcher("register.jsp").forward(request, response);
         } else if (user != null) {
-            session.setAttribute("errorMsg", "You already have an account.");
+            request.setAttribute("errorMsg", "You already have an account.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             // they are new so need to be added onto database

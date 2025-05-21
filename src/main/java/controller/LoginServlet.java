@@ -38,10 +38,10 @@ public class LoginServlet extends HttpServlet {
         User user = null;
         
         if (!validator.validateEmail(email)) {
-            session.setAttribute("errorMsg", "Your email is not correctly formatted.");
+            request.setAttribute("errorMsg", "Your email is not correctly formatted.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else if (!validator.validatePassword(password)) {
-            session.setAttribute("errorMsg", "Your password should be at least 6 characters long.");
+            request.setAttribute("errorMsg", "Your password should be at least 6 characters long.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             try {
@@ -51,11 +51,11 @@ public class LoginServlet extends HttpServlet {
             }
             // check if there is a matching user account
             if (user == null) {
-                session.setAttribute("errorMsg", "The login credentials don't match.");
+                request.setAttribute("errorMsg", "The login credentials don't match.");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             // check if that account is active
             } else if (!"active".equalsIgnoreCase(user.getStatus())) {
-                session.setAttribute("errorMsg", "The account has been deactivated. Contact admin.");
+                request.setAttribute("errorMsg", "The account has been deactivated. Contact admin.");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
                 // User is not null and status is active
