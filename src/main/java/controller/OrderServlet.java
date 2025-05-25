@@ -98,6 +98,37 @@ public class OrderServlet extends HttpServlet {
             DBOrderManager mgr = new DBOrderManager(conn);
 
             switch (action) {
+                case "save": {
+                    // 1) read total
+                    double total = Double.parseDouble(req.getParameter("totalPrice"));
+                    // 2) insert ORDER with status = SAVED
+                    Order draft = new Order(
+                            0,
+                            user.getUserID(),
+                            new Date(),
+                            total,
+                            Order.SAVED);
+                    int draftId = mgr.insertOrderAndReturnKey(draft);
+
+                    // 3) write order-items
+                    ShoppingCart cart = (ShoppingCart) session.getAttribute("shoppingCart");
+                    DBOrderItem itemMgr = new DBOrderItem(conn);
+                    for (CartItem ci : cart.getItems()) {
+                        itemMgr.addItem(
+                                draftId,
+                                ci.getDeviceId(),
+                                ci.getQuantity(),
+                                ci.getUnitPrice());
+                    }
+
+
+                    cart.getItems().clear();
+
+                    session.setAttribute("message", "Order #" + draftId + " saved.");
+                    resp.sendRedirect(req.getContextPath() + "/order");
+                    cf.closeConnection();
+                    return;
+                }
                 case "checkout":
                     // 1) read total
                     double total = Double.parseDouble(req.getParameter("totalPrice"));

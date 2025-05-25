@@ -56,7 +56,7 @@ public class DBOrderManager {
     public List<Order> getOrdersByUser(int userID) throws SQLException {
         List<Order> list = new ArrayList<>();
 
-        String sql = "SELECT * FROM Orders WHERE userID = ? ORDER BY orderDate DESC";
+        String sql = "SELECT * FROM Orders WHERE userID = ? ORDER BY orderDate DESC, orderID DESC";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userID);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -79,7 +79,7 @@ public class DBOrderManager {
             sql.append(" AND orderID=?");
         if (orderDate != null)
             sql.append(" AND orderDate=?");
-        sql.append(" ORDER BY orderDate DESC");
+        sql.append(" ORDER BY orderDate DESC, orderID");
 
         try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
             int idx = 1;
@@ -89,7 +89,8 @@ public class DBOrderManager {
                 stmt.setInt(idx++, orderID);
             }
             if (orderDate != null) {
-                stmt.setString(idx++, orderDate.toString());
+                stmt.setDate(idx++, orderDate);
+
             }
 
             try (ResultSet rs = stmt.executeQuery()) {

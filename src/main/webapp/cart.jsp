@@ -40,19 +40,19 @@ if (cart == null) {
 
 // show & clear any error/message
 String error   = (String) session.getAttribute("error");
-String message = (String) session.getAttribute("message");
-if (error != null) {
+  String message = (String) session.getAttribute("message");
+  if (error != null) {
 %>
-  <p class="error"><%= error %></p>
+    <div class="error"><%= error %></div>
 <%
-  session.removeAttribute("error");
-}
-if (message != null) {
+    session.removeAttribute("error");
+  }
+  if (message != null) {
 %>
-  <p class="message"><%= message %></p>
+    <div class="message"><%= message %></div>
 <%
-  session.removeAttribute("message");
-}
+    session.removeAttribute("message");
+  }
 %>
 
 <div class="header">

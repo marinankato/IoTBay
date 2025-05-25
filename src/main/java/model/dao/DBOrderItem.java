@@ -15,9 +15,9 @@ public class DBOrderItem {
 
     public List<CartItem> getItemsForOrder(int orderID) throws SQLException {
         String sql = "SELECT oi.deviceID, d.device_name, oi.quantity, oi.unitPrice " +
-                "FROM OrderItems oi " +
-                "  JOIN iot_device d ON oi.deviceID = d.device_id " +
-                "WHERE oi.orderID = ?";
+                     "FROM OrderItems oi " +
+                     " LEFT JOIN iot_device d ON oi.deviceID = d.device_id " +
+                     "WHERE oi.orderID = ?";
 
         List<CartItem> items = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
