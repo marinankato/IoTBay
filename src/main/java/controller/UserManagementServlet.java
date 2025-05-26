@@ -72,7 +72,8 @@ public class UserManagementServlet extends HttpServlet {
                 req.getParameter("phoneNo"),
                 req.getParameter("email"),
                 req.getParameter("password"),
-                req.getParameter("role")
+                req.getParameter("role"),
+                req.getParameter("status")
             );
         } else if ("updateUser".equals(action)) {
             String userIdStr = req.getParameter("userID");
@@ -83,10 +84,11 @@ public class UserManagementServlet extends HttpServlet {
             String phoneNo = req.getParameter("phoneNo");
             String email = req.getParameter("email");
             String role = req.getParameter("role");
+            String status = req.getParameter("status");
 
 
             
-            dao.updateUser(userId, firstName, lastName, phoneNo, email, role);
+            dao.updateUser(userId, firstName, lastName, phoneNo, email, role, status);
 
             List<Map<String, String>> users = dao.getAllUsers();
             req.setAttribute("users", users);

@@ -194,6 +194,7 @@ public class DBUserManager {
                 user.put("phoneNo", rs.getString("phoneNo"));
                 user.put("email", rs.getString("email"));
                 user.put("role", rs.getString("role"));
+                user.put("status", rs.getString("status"));
                 allUsers.add(user);
             }
         } catch (SQLException e) {
@@ -237,8 +238,8 @@ public class DBUserManager {
 }
 
     //update users search with id
-    public void updateUser(int userID, String firstName, String lastName, String phoneNo, String email, String role) {
-        String sql = "UPDATE Users SET firstName=?, lastName=?, phoneNo=?, email=?, role=? WHERE userID=?";
+    public void updateUser(int userID, String firstName, String lastName, String phoneNo, String email, String role, String status) {
+        String sql = "UPDATE Users SET firstName=?, lastName=?, phoneNo=?, email=?, role=?, status=?, WHERE userID=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, firstName);
             ps.setString(2, lastName);
@@ -246,6 +247,7 @@ public class DBUserManager {
             ps.setString(4, email);
             ps.setString(5, role);
             ps.setInt(6, userID);
+            ps.setString(7, status);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -254,8 +256,8 @@ public class DBUserManager {
 
     //create users properly
     public void createUser(String parameter, String parameter2, String parameter3, String parameter4, String parameter5,
-            String parameter6) {
-        String sql = "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+            String parameter6, String parameter7) {
+        String sql = "INSERT INTO Users (firstName, lastName, phoneNo, email, password, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, parameter);
             ps.setString(2, parameter2);
@@ -263,6 +265,7 @@ public class DBUserManager {
             ps.setString(4, parameter4);
             ps.setString(5, parameter5);
             ps.setString(6, parameter6);
+            ps.setString(7, parameter7);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -295,6 +298,7 @@ public class DBUserManager {
             user.put("phoneNo", rs.getString("phoneNo"));
             user.put("email", rs.getString("email"));
             user.put("role", rs.getString("role"));
+            user.put("status", rs.getString("status"));
             results.add(user);
         }
     } catch (SQLException e) {
