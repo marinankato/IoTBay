@@ -237,22 +237,22 @@ public class DBUserManager {
     return user;
 }
 
-    //update users search with id
-    public void updateUser(int userID, String firstName, String lastName, String phoneNo, String email, String role, String status) {
-        String sql = "UPDATE Users SET firstName=?, lastName=?, phoneNo=?, email=?, role=?, status=?, WHERE userID=?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, firstName);
-            ps.setString(2, lastName);
-            ps.setString(3, phoneNo);
-            ps.setString(4, email);
-            ps.setString(5, role);
-            ps.setInt(6, userID);
-            ps.setString(7, status);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        //update users search with id
+        public void updateUser(int userID, String firstName, String lastName, String phoneNo, String email, String role, String status) {
+            String sql = "UPDATE Users SET firstName=?, lastName=?, phoneNo=?, email=?, role=?, status=? WHERE userID=?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, firstName);
+                ps.setString(2, lastName);
+                ps.setString(3, phoneNo);
+                ps.setString(4, email);
+                ps.setString(5, role);
+                ps.setString(6, status);
+                ps.setInt(7, userID);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-    }
 
     //create users properly
     public void createUser(String parameter, String parameter2, String parameter3, String parameter4, String parameter5,

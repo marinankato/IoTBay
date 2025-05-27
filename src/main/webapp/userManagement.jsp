@@ -138,6 +138,13 @@
                     <option value="staff">Staff</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="status">Account Status:</label>
+                <select id="status" name="status">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
             <button type="submit">Create User</button>
         </form>
 
@@ -246,6 +253,13 @@
                 <select id="editRole" name="role">
                     <option value="customer" <%= "customer".equals(editingUser.get("role")) ? "selected" : "" %>>Customer</option>
                     <option value="staff" <%= "staff".equals(editingUser.get("role")) ? "selected" : "" %>>Staff</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="editStatus">Account Status:</label>
+                <select id="editStatus" name="status">
+                    <option value="active" <%= "active".equals(editingUser.get("status")) ? "selected" : "" %>>Active</option>
+                    <option value="inactive" <%= "inactive".equals(editingUser.get("status")) ? "selected" : "" %>>Inactive</option>
                 </select>
             </div>
             <button type="submit">Update User</button>
