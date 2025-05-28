@@ -120,11 +120,6 @@ public class DBUserManager {
         System.out.println(rowsUpdated + " account deactivated for " + email);
     }
 
-     // set User's status to "active"
-    public void activateUser(User user) throws SQLException {
-       
-    }
-
     //  set/update the user to hold their most recent login date/time 
     public void updateUserLoginDate(String email, LocalDateTime loginDateTime) throws SQLException {
         String query = "UPDATE Users SET loginDate = ? WHERE email = ?";

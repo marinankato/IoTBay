@@ -21,7 +21,6 @@
 			text-align: center;
 		}
 
-
 		form {
 			background-color: #ffffff;
 			padding: 20px 40px;

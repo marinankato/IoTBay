@@ -131,6 +131,20 @@
         background-color: #c82333;
     }
 
+    .filter-button {
+        background-color: #007bff;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .filter-button:hover {
+        background-color: #0056b3;
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -138,7 +152,7 @@
     }
 
     th, td {
-        border: 1px solid #ddd;
+        border: 1px solid #dddddd;
         padding: 10px;
         text-align: left;
     }
@@ -240,7 +254,7 @@
                 if (filterDate == null) filterDate = "";
             %>
             <input type="date" id="filterDate" name="filterDate" value="<%= filterDate %>">
-            <input type="submit" value="Filter">
+            <input type="submit" class="filter-button" value="Filter">
         </form>
         
         <table>
